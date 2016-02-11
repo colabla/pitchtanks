@@ -1,5 +1,6 @@
 angular.module('pitchTanks', [
   'ui.router',
+  'ngStorage',
 ])
 
 .run(
@@ -22,15 +23,19 @@ angular.module('pitchTanks', [
       abstract: true,
       url: '/',
       templateUrl: `${DIR}/layout.html`,
-      controller: ['$scope', '$state', 'AuthService',
-        function ($scope, $state, AuthService) { // eslint-disable-line func-names
+      controller: ['$scope', '$state', 'AuthService', '$localStorage', '$sessionStorage',
+        function (                             // eslint-disable-line func-names
+          $scope, $state, AuthService,
+          $localStorage, $sessionStorage
+        ) {
+          $scope.$storage = $localStorage;
           $scope.templates = {
             header: `${DIR}/shared/header.html`,
             footer: `${DIR}/shared/footer.html`,
           };
 
           $scope.user = () => {
-            return AuthService.getUser();
+            return $scope.$storage.user;
           };
         },
       ],
@@ -45,10 +50,13 @@ angular.module('pitchTanks', [
       url: 'login/accept',
       templateUrl: `${DIR}/login.html`,
       controller: [
-        '$http', '$state', 'AuthService',
-        function ($http, $state, AuthService) { // eslint-disable-line func-names
+        '$http', '$state', '$scope',
+        function (                           // eslint-disable-line func-names
+          $http, $state, $scope
+        ) {
           $http.get('/api/user/').success((data) => {
-            AuthService.setUser(data);
+            // AuthService.setUser(data);
+            $scope.$storage.user = data;
             $state.go('app.home');
           });
         },

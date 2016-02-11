@@ -43,7 +43,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 routes(app, passport, db, __dirname);
-
+console.log(process.env.NODE_ENV);
 app.listen(process.env.PORT || 3000, () => {
 	console.log(`App running on port ${process.env.PORT || 3000}`);
 });

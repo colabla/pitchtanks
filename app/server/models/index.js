@@ -4,7 +4,13 @@ const mongoose = require('mongoose');
 
 // mongoose.connect(`mongodb://${process.env.MONGO_URL}`);
 // mongoose.connect(process.env.MONGO_URL);
-mongoose.connect('mongodb://127.0.0.1:27017');
+let uri;
+if (process.env.NODE_ENV === 'development') {
+	uri = 'mongodb://127.0.0.1:27017';
+} else {
+	uri = process.env.MONGOLAB_URI;
+}
+mongoose.connect(uri);
 
 const User = mongoose.model('User', {
 	firstName: { type: String },
