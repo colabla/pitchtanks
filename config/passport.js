@@ -127,14 +127,14 @@ module.exports = (passport, db) => {
         }
 
         // Catch bad response
-        if (!profile.name) {
+        if (!profile.displayName) {
           console.log(profile);
           return done(profile);
         }
 
         // if there is no user, create them
         const newUser = new User();
-        const names = getNames(profile.name);
+        const names = getNames(profile.displayName);
 
         // set all of the user data that we need
         newUser.twitter.id = profile.id;
