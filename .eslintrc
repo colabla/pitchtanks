@@ -1,0 +1,14 @@
+{
+  "extends": "eslint-config-airbnb/base",
+
+  "rules": {
+      "no-console": 0,
+      "indent": 0,
+      "no-unused-vars": 0,
+      "no-shadow": 0,
+      "arrow-body-style": [2, "always"],
+      "no-param-reassign": 0,
+      "no-undef": 0,
+      "no-trailing-spaces": 0,
+  }
+}

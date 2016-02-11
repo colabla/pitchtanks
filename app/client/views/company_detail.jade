@@ -1,0 +1,90 @@
+extends ./layout.jade
+
+block main_content
+
+  .row.text-center(style='margin-top:30px;')
+    .col-xs-12(style='margin-bottom:30px;')
+      p.lead
+        | Think you have a great pitch? Let the world decide.
+        a.btn.btn-default(href='/register') Sign up now
+        a.btn.btn-success(href='/login') Login
+      p.lead
+        | Not doing so hot? We'll send you information to make your pitch perfect.
+        a.btn.btn-default(href='#') Subscribe
+    .col-xs-12.col-sm-8
+      .panel.panel-default
+        .panel-body
+          .media
+            .media-left
+              a(href='#')
+                img.media-object.img-thumbnail(src='http://lorempixel.com/150/150/')
+            .media-body.text-left
+              h3.media-heading Cole Surfboards
+              p "Shaping the future since 1973"
+              p(style='color:#ccc;')
+                | Joined December 12, 2014
+                br
+                | Los Angeles, CA
+                br
+                | Mobile SaaS
+              p
+                a(href='#', editable-text='user.company.url', e-required='') www.colesurfboards.com
+    .col-xs-12.col-sm-4
+      .panel.panel-default
+        .panel-body
+          div
+            span.vcenter(style='font-size:42px;font-style:bold;') 12
+            span.vcenter(style='font-size:18px;margin-left:15px;') BATTLES
+          hr
+          div
+            span.vcenter(style='font-size:42px;font-style:bold;') 57
+            span.vcenter(style='font-size:18px;margin-left:15px;') SCORE
+  .row
+    .col-xs-12.col-sm-8
+      h4(style='color:#ccc;') Product Pitch
+      .panel.panel-default
+        .panel-body
+          h4 Cole Surfboards'
+            span(style='color:#808080;') &nbsp;Pitch
+          p Donec ullamcorper nulla non metus auctor fringilla. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Nullam id dolor id nibh ultricies vehicula ut id elit. Donec sed odio dui.
+          section.video
+            video#my-video.video-js(controls='', preload='auto', width='570', poster='MY_VIDEO_POSTER.jpg', data-setup='{}')
+              source(src='http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_5mb.mp4', type='video/mp4')
+              p.vjs-no-js
+                | To view this video please enable JavaScript, and consider upgrading to a web browser that
+                a(href='http://videojs.com/html5-video-support/', target='_blank') supports HTML5 video
+
+          a.btn.btn-primary.pull-left(href='', style='margin-top:15px;') Change Video
+          a.btn.btn-success.pull-right(href='', style='margin-top:15px;')
+            i.fa.fa-thumbs-up
+            |  Upvote (127)
+    .col-xs-12.col-sm-4
+      h4(style='color:#ccc;') Related Pitches
+      .panel.panel-default.text-center
+        .panel-body
+          img.img-responsive(src='http://lorempixel.com/640/480/sports/5')
+          h4 Moeo, LLC
+          p "Duis mollis, est non commodo luctus, nisi erat."
+          .metadata
+            span.thumbsup.pull-right
+              i.fa.fa-thumbs-o-up
+              |  102
+            span.clock.pull-left
+              i.fa.fa-clock-o
+              |  11/23/2015
+            span.clearfix
+      .panel.panel-default.text-center
+        .panel-body
+          img.img-responsive(src='http://lorempixel.com/640/480/sports/5')
+          h4 Moeo, LLC
+          p "Duis mollis, est non commodo luctus, nisi erat."
+          .metadata
+            span.thumbsup.pull-right
+              i.fa.fa-thumbs-o-up
+              |  102
+            span.clock.pull-left
+              i.fa.fa-clock-o
+              |  11/23/2015
+            span.clearfix
+      h4.text-center
+        a(href='/pitches') Go to Pitch Gallery

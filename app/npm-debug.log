@@ -1,0 +1,45 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/jettwein/.nvm/versions/node/v5.4.1/bin/node',
+1 verbose cli   '/Users/jettwein/.nvm/versions/node/v5.4.1/bin/npm',
+1 verbose cli   'run',
+1 verbose cli   'dev' ]
+2 info using npm@3.3.12
+3 info using node@v5.4.1
+4 verbose run-script [ 'predev', 'dev', 'postdev' ]
+5 info lifecycle pitchtanks-node@1.0.0~predev: pitchtanks-node@1.0.0
+6 silly lifecycle pitchtanks-node@1.0.0~predev: no script for predev, continuing
+7 info lifecycle pitchtanks-node@1.0.0~dev: pitchtanks-node@1.0.0
+8 verbose lifecycle pitchtanks-node@1.0.0~dev: unsafe-perm in lifecycle true
+9 verbose lifecycle pitchtanks-node@1.0.0~dev: PATH: /Users/jettwein/.nvm/versions/node/v5.4.1/lib/node_modules/npm/bin/node-gyp-bin:/Users/jettwein/Documents/repos/pitchtanks-node/node_modules/.bin:/Users/jettwein/.nvm/versions/node/v5.4.1/bin:/Users/jettwein/.gem/ruby/2.1.1/bin:/Users/jettwein/.rubies/ruby-2.1.1/lib/ruby/gems/2.1.0/bin:/Users/jettwein/.rubies/ruby-2.1.1/bin:/usr/local/heroku/bin:/usr/local/bin:/Users/jettwein/.gem/ruby/2.1.1/bin:/Users/jettwein/.rubies/ruby-2.1.1/lib/ruby/gems/2.1.0/bin:/Users/jettwein/.rubies/ruby-2.1.1/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/Users/jettwein/.rvm/bin
+10 verbose lifecycle pitchtanks-node@1.0.0~dev: CWD: /Users/jettwein/Documents/repos/pitchtanks-node
+11 silly lifecycle pitchtanks-node@1.0.0~dev: Args: [ '-c', './node_modules/nodemon/bin/nodemon.js app/server.js' ]
+12 info lifecycle pitchtanks-node@1.0.0~dev: Failed to exec dev script
+13 verbose stack Error: pitchtanks-node@1.0.0 dev: `./node_modules/nodemon/bin/nodemon.js app/server.js`
+13 verbose stack spawn ENOENT
+13 verbose stack     at ChildProcess.<anonymous> (/Users/jettwein/.nvm/versions/node/v5.4.1/lib/node_modules/npm/lib/utils/spawn.js:17:16)
+13 verbose stack     at emitTwo (events.js:87:13)
+13 verbose stack     at ChildProcess.emit (events.js:172:7)
+13 verbose stack     at maybeClose (internal/child_process.js:821:16)
+13 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:211:5)
+14 verbose pkgid pitchtanks-node@1.0.0
+15 verbose cwd /Users/jettwein/Documents/repos/pitchtanks-node/app
+16 error Darwin 15.0.0
+17 error argv "/Users/jettwein/.nvm/versions/node/v5.4.1/bin/node" "/Users/jettwein/.nvm/versions/node/v5.4.1/bin/npm" "run" "dev"
+18 error node v5.4.1
+19 error npm  v3.3.12
+20 error file sh
+21 error code ELIFECYCLE
+22 error errno ENOENT
+23 error syscall spawn
+24 error pitchtanks-node@1.0.0 dev: `./node_modules/nodemon/bin/nodemon.js app/server.js`
+24 error spawn ENOENT
+25 error Failed at the pitchtanks-node@1.0.0 dev script './node_modules/nodemon/bin/nodemon.js app/server.js'.
+25 error Make sure you have the latest version of node.js and npm installed.
+25 error If you do, this is most likely a problem with the pitchtanks-node package,
+25 error not with npm itself.
+25 error Tell the author that this fails on your system:
+25 error     ./node_modules/nodemon/bin/nodemon.js app/server.js
+25 error You can get their info via:
+25 error     npm owner ls pitchtanks-node
+25 error There is likely additional logging output above.
+26 verbose exit [ 1, true ]

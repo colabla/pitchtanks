@@ -1,0 +1,11 @@
+.navbar-brand.navbar-brand-img {
+  padding: 0;
+  > .navbar-img {
+    background-image: url('/public/images/PitchTanks.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 236.5px; // Preserve aspect ratio: image is 733w, 155h.
+  }
+}
