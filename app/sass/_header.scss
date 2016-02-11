@@ -9,3 +9,14 @@
     width: 236.5px; // Preserve aspect ratio: image is 733w, 155h.
   }
 }
+
+.nav-profile-img {
+  padding: 0;
+  height: 50px;
+  width: 100%;
+  background-image: url('/public/images/pt-2-square.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+
+}
