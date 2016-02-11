@@ -63,12 +63,18 @@ module.exports = (passport, db) => {
         if (user) {
           return done(null, user); // user found, return that user
         }
+
+        // Check for bad response
+        if (!profile.displayName) {
+          console.log(profile);
+          return done(profile);
+        }
+
         // if there is no user found with that facebook id, create them
         const newUser = new User();
         /*
         **  set all of the facebook information in our user model
         */
-
         const names = getNames(profile.displayName);
 
         // set the users facebook id
@@ -119,6 +125,13 @@ module.exports = (passport, db) => {
         if (user) {
           return done(null, user); // user found, return that user
         }
+
+        // Catch bad response
+        if (!profile.name) {
+          console.log(profile);
+          return done(profile);
+        }
+
         // if there is no user, create them
         const newUser = new User();
         const names = getNames(profile.name);
@@ -164,6 +177,13 @@ module.exports = (passport, db) => {
         if (user) {
           return done(null, user); // user found, return that user
         }
+
+        // Catch bad response
+        if (!profile.name) {
+          console.log(profile);
+          return done(profile);
+        }
+
         // if there is no user, create them
         const newUser = new User();
 
