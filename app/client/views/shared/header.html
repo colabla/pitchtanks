@@ -16,7 +16,7 @@
         <!-- <li><a ui-sref=".home">Home</a></li> -->
         <li><a ui-sref=".pitches">Pitch Gallery</a></li>
         <li><a ui-sref=".about">About</a></li>
-        <li ng-if="!user()"><a ui-sref=".login">Sign up</a></li>
+        <li ng-if="!user()"><a ui-sref=".login" class="signup">Sign up</a></li>
         <!-- <li><a ui-sref=".login">Register</a></li> -->
         <li ng-if="user()">
           <a ui-sref=".profile" class="nav-profile-img">
@@ -28,11 +28,10 @@
             <i class="fa fa-angle-down"></i>
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
+            <li><a ui-sref=".profile">My Profile</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
+            <li><a class="clickable" ng-click="logout()">Logout</a></li>
+            <li><a href="#">Settings</a></li>
           </ul>
         </li>
       </ul>

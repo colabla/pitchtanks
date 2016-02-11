@@ -1,0 +1,36 @@
+.signup-box {
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  padding: 30px 0; // x padding handled by bootstrap
+
+  .signup-box-inner {
+    margin: 0 auto;
+    float: none;
+  }
+}
+
+.btn.btn-social {
+  border-radius: 6px;
+  color: #fff;
+  padding: 15px 40px;
+  line-height: 1;
+  font-size: 20px;
+  margin: 15px auto;
+
+  > .fa {
+    float: left;
+    font-size: 20px;
+  }
+}
+
+.btn-facebook {
+  background-color: #3E5B99;
+}
+
+.btn-linkedin {
+  background-color: #127FBA;
+}
+
+.btn-twitter {
+  background-color: #1DA1F2;
+}

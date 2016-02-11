@@ -33,6 +33,9 @@ angular.module('pitchTanks', [
             header: `${DIR}/shared/header.html`,
             footer: `${DIR}/shared/footer.html`,
           };
+          $scope.logout = () => {
+            delete $scope.$storage.user;
+          };
 
           $scope.user = () => {
             return $scope.$storage.user;

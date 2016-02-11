@@ -1,9 +1,58 @@
 @import 'bootstrap';
 @import 'header';
+@import 'signup';
 
 body {
   padding-top: 100px;
+  font-family: 'Montserrat', sans-serif;
   overflow-y: scroll;
+  font-size: 16px;
+}
+
+.m0 {
+  margin: 0;
+}
+
+.m30-t {
+  margin-top: 30px;
+}
+
+.m30-b {
+  margin-bottom: 30px;
+}
+
+.p30-l {
+  padding-left: 30px;
+}
+
+.p30-r {
+  padding-right: 30px;
+}
+
+.p15-l {
+  padding-left: 15px;
+}
+
+.p15-r {
+  padding-right: 15px;
+}
+
+.pt-title {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.pt-subtitle {
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #ccc;
+}
+
+.clickable {
+  cursor: pointer;
+  cursor: hand;
 }
 
 .navbar {

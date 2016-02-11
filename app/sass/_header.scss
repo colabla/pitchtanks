@@ -22,3 +22,14 @@
     background-repeat: no-repeat;
   }
 }
+
+.navbar-nav > li > a.signup {
+  &:link,
+  &:visited,
+  &:hover,
+  &:active,
+  &:focus {
+      color: #337ab7;
+  }
+  color: #337ab7;
+}
