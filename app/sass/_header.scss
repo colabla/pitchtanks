@@ -10,13 +10,16 @@
   }
 }
 
-.nav-profile-img {
+.navbar-nav>li>a.nav-profile-img {
   padding: 0;
-  height: 50px;
-  width: 100%;
-  background-image: url('/public/images/pt-2-square.png');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-
+  > .profile-img {
+    height: 50px;
+    width: 50px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    background-image: url('/public/images/pt-2-square.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 }
