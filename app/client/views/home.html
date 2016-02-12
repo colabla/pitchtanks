@@ -9,12 +9,8 @@
   <div class="col-xs-12 col-sm-6 vs-panel">
     <div class="panel panel-default">
       <div class="panel-body">
-        <section class="video">
-          <video preload="auto" data-setup="{}" id="video1" class="video-js">
-            <source src="{{battle.video1}}" type="video/mp4"/>
-          </video>
-          <div class="play-button" ng-click="video($event)" data-video="video1"></div>
-        </section><img src="/public/images/company_logos/company-logo-1.png" class="company-logo"/>
+        <video-player v-url="battle.video1" v-id="'video1'"></video-player>
+        <img src="/public/images/company_logos/company-logo-1.png" class="company-logo"/>
         <h4>Moeo, LLC</h4>
         <p>"Duis mollis, est non commodo luctus, nisi erat porttitor ligula."</p><a href="" class="btn btn-primary btn-lg">Vote<span class="badge">124</span></a>
       </div>
@@ -23,12 +19,8 @@
   <div class="col-xs-12 col-sm-6 vs-panel">
     <div class="panel panel-default">
       <div class="panel-body">
-        <section class="video">
-          <video preload="auto" data-setup="{}" class="video-js" id="video2">
-            <source src="{{battle.video2}}" type="video/webm"/>
-          </video>
-          <div class="play-button" ng-click="video($event)" data-video="video2"></div>
-        </section><img src="/public/images/company_logos/company-logo-2.png" class="company-logo"/>
+        <video-player v-url="battle.video2" v-id="'video2'"></video-player>
+        <img src="/public/images/company_logos/company-logo-2.png" class="company-logo"/>
         <h4>Concur</h4>
         <p>"Sed posuere consectetur est at lobortis."</p><a href="" class="btn btn-primary btn-lg">Vote<span class="badge">302</span></a>
       </div>

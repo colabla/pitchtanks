@@ -82,3 +82,7 @@ PitchTanks.run(
     });
   },
 ]);
+
+PTDirectives.forEach((directive) => {
+  directive(PitchTanks);
+});
