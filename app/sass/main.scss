@@ -1,6 +1,7 @@
 @import 'bootstrap';
 @import 'header';
 @import 'signup';
+@import 'home';
 
 body {
   padding-top: 100px;
@@ -38,14 +39,12 @@ body {
 }
 
 .pt-title {
-  font-size: 36px;
   font-weight: 700;
   letter-spacing: -1px;
 }
 
 .pt-subtitle {
   text-transform: uppercase;
-  font-size: 14px;
   letter-spacing: 2px;
   color: #ccc;
 }
@@ -117,72 +116,6 @@ body {
 .navbar-brand span {
   clear: left;
   font-size: 24px;
-}
-
-.home-heading {
-  margin-top: 60px;
-}
-
-.vs-row {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  margin-top: 50px;
-}
-
-.company-logo {
-  height: 100px;
-  margin: 20px auto 0;
-}
-
-.panel-body .badge {
-  margin-left: 5px;
-}
-
-.vs-panel .metadata {
-  margin-top: 40px;
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.vs-panel .metadata .clock {
-  color: #ccc;
-}
-
-.vs-panel .metadata .thumbsup {
-  color: green;
-}
-
-.vs-panel .metadata .thumbsup i {
-  font-size: 21px;
-}
-
-.vs-panel .btn {
-  margin-top: 20px;
-}
-
-.vs-icon-side-by-side {
-  width: 20%;
-  position: absolute;
-  top: 30px;
-  right: 40%;
-  z-index: 10;
-}
-
-.vs-icon-stacked {
-  width: 20%;
-  margin-left: 40%;
-  margin-bottom: 15px;
-  z-index: 10;
-}
-
-.home-steps img {
-  height: 100px;
-}
-
-.home-steps .lead {
-  margin-top: 20px;
 }
 
 .footer {

@@ -24,11 +24,11 @@
           </a>
         </li>
         <li ng-if="user()">
-          <a id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          <a id="navDropdown" data-toggle="dropdown" class="clickable" aria-haspopup="true" aria-expanded="true">
             <i class="fa fa-angle-down"></i>
           </a>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li><a ui-sref=".profile">My Profile</a></li>
+          <ul class="dropdown-menu" aria-labelledby="navDropdown">
+            <li><a class="clickable" ui-sref=".profile">My Profile</a></li>
             <li role="separator" class="divider"></li>
             <li><a class="clickable" ng-click="logout()">Logout</a></li>
             <li><a href="#">Settings</a></li>

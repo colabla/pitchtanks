@@ -1,18 +1,19 @@
 >> {{user()}}
 <div class="row text-center">
   <div class="col-xs-12">
-    <h1 class="home-heading">Vote for the startup with the strongest pitch</h1>
-    <h3 style="color:#ccc;">Here's today's head-to-head matchup!</h3>
+    <h1 class="pt-title m30-b">Vote for the startup with the strongest pitch</h1>
+    <h4 class="pt-subtitle m30-b">Today's head-to-head matchup</h4>
   </div>
 </div>
-<div style="margin-top:50px;position:relative;" class="row text-center">
+<div style="position:relative;" class="row text-center">
   <div class="col-xs-12 col-sm-6 vs-panel">
     <div class="panel panel-default">
       <div class="panel-body">
         <section class="video">
-          <video controls="" preload="auto" data-setup="{}" class="video-js">
-            <source src="http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_5mb.mp4" type="video/mp4"/>
+          <video preload="auto" data-setup="{}" id="video1" class="video-js">
+            <source src="{{battle.video1}}" type="video/mp4"/>
           </video>
+          <div class="play-button" ng-click="video($event)" data-video="video1"></div>
         </section><img src="/public/images/company_logos/company-logo-1.png" class="company-logo"/>
         <h4>Moeo, LLC</h4>
         <p>"Duis mollis, est non commodo luctus, nisi erat porttitor ligula."</p><a href="" class="btn btn-primary btn-lg">Vote<span class="badge">124</span></a>
@@ -23,9 +24,10 @@
     <div class="panel panel-default">
       <div class="panel-body">
         <section class="video">
-          <video controls="" preload="auto" data-setup="{}" class="video-js">
-            <source src="http://techslides.com/demos/sample-videos/small.mp4" type="video/mp4"/>
+          <video preload="auto" data-setup="{}" class="video-js" id="video2">
+            <source src="{{battle.video2}}" type="video/webm"/>
           </video>
+          <div class="play-button" ng-click="video($event)" data-video="video2"></div>
         </section><img src="/public/images/company_logos/company-logo-2.png" class="company-logo"/>
         <h4>Concur</h4>
         <p>"Sed posuere consectetur est at lobortis."</p><a href="" class="btn btn-primary btn-lg">Vote<span class="badge">302</span></a>

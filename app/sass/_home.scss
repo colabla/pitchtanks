@@ -1,0 +1,92 @@
+.play-button {
+  background-image: url('/public/images/movie_play_gray.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  position: absolute;
+  width: 25%;
+  opacity: 0.9;
+  height: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  -webkit-transition: opacity 0.35s ease-in-out;
+  -moz-transition: opacity 0.35s ease-in-out;
+  transition: opacity 0.35s ease-in-out;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.home-heading {
+  margin-top: 60px;
+}
+
+.vs-row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 50px;
+}
+
+.company-logo {
+  height: 100px;
+  margin: 20px auto 0;
+}
+
+.panel-body .badge {
+  margin-left: 5px;
+}
+
+.vs-panel .metadata {
+  margin-top: 40px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.vs-panel .metadata .clock {
+  color: #ccc;
+}
+
+.vs-panel .metadata .thumbsup {
+  color: green;
+}
+
+.vs-panel .metadata .thumbsup i {
+  font-size: 21px;
+}
+
+.vs-panel .btn {
+  margin-top: 20px;
+}
+
+.vs-icon-side-by-side {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 20%;
+  max-width: 150px;
+  z-index: 10;
+}
+
+.vs-icon-stacked {
+  width: 20%;
+  margin-left: 40%;
+  margin-bottom: 15px;
+  z-index: 10;
+}
+
+.home-steps img {
+  height: 100px;
+}
+
+.home-steps .lead {
+  margin-top: 20px;
+}
