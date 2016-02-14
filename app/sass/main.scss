@@ -3,6 +3,7 @@
 @import 'header';
 @import 'signup';
 @import 'home';
+@import 'campaign';
 @import 'directives';
 
 body {
@@ -10,6 +11,7 @@ body {
   font-family: 'Montserrat', sans-serif;
   overflow-y: scroll;
   font-size: 16px;
+  background-color: #F8F9FA;
 }
 
 .br-circle {
@@ -18,6 +20,10 @@ body {
 
 .br-6 {
   border-radius: 6px;
+}
+
+.h100 {
+  height: 100%;
 }
 
 .m0 {
@@ -42,6 +48,22 @@ body {
 
 .p30-r {
   padding-right: 30px;
+}
+
+.p30-t {
+  padding-top: 30px;
+}
+
+.p30-b {
+  padding-bottom: 30px;
+}
+
+.p15 {
+  padding: 15px;
+}
+
+.p30 {
+  padding: 30px;
 }
 
 .p15-t {
