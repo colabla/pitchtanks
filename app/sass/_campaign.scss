@@ -1,10 +1,10 @@
 $campaignBlue: #98B3EE;
 $campaignGrayLight: #E9E9E9;
 $campaignGrayDark: #898989;
+$campaignGreen:#359F00;
 
 section#campaignTitleSection {
   border: 2px solid $campaignGrayLight;
-  height: 220px;
 }
 
 .campaign-info {
@@ -61,6 +61,7 @@ section#campaignTitleSection {
 }
 
 .campaign-form-buttons {
+  min-height: 220px;
   background-color: rgba(255,255,255,1);
   border-right: 2px solid $campaignGrayLight;
 
@@ -98,8 +99,8 @@ section#campaignTitleSection {
 }
 
 .battle-info {
+  min-height: 218px;
   background-color: rgba(255,255,255,1);
-  height: calc(100% - 2px);
   margin-top: 2px;
   .bi-top {
     border-bottom: 2px solid $campaignGrayLight;
@@ -126,7 +127,70 @@ section#campaignTitleSection {
   }
 
   .bi-bottom .bi-num {
-      color: #359F00;
+      color: $campaignGreen;
   }
 
+}
+
+section#pitchSection {
+  .pitch-col {
+    width: 100%;
+    background-color: rgba(255,255,255,1);
+    &.left {
+      width: calc(100% - 15px);
+    }
+
+    &.right {
+      .pt-title {
+        color: $campaignGrayDark;
+      }
+    }
+    textarea {
+      resize: none;
+      width: 100%;
+    }
+  }
+
+  .video-container {
+    width: 100%;
+    position: relative;
+
+    section.video {
+      background-color: $campaignGrayDark;
+      border: none;
+      padding: 0;
+      border-radius: 6px;
+
+      video {
+        margin-bottom: -5px; // Fix for weird gray bottom border
+      }
+    }
+
+    .play-button {
+      display: none;
+    }
+
+    .menu-bar {
+      display: none;
+    }
+
+    .upload-block {
+      color: rgba(255,255,255,0.75);
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      height: 140px;
+      width: 300px;
+      -webkit-transition: all 0.35s ease;
+      -moz-transition: all 0.35s ease;
+      transition: all 0.35s ease;
+
+      &:hover {
+        color: rgba(255,255,255,1);
+      }
+    }
+  }
 }
