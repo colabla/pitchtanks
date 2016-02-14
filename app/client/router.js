@@ -36,10 +36,11 @@ PitchTanks.run(
       url: 'login/accept',
       templateUrl: `${DIR}/login.html`,
       controller: [
-        '$http', '$state', '$scope',
+        '$http', '$state', '$scope', 'LoadingService',
         function (                           // eslint-disable-line func-names
-          $http, $state, $scope
+          $http, $state, $scope, LoadingService
         ) {
+          LoadingService.setLoading(false);
           $http.get('/api/user/').success((data) => {
             $scope.$storage.user = data;
             $state.go('app.home');
@@ -48,11 +49,45 @@ PitchTanks.run(
       ],
     })
 
+    /* *****************
+    ***** CAMPAIGN *****
+    ***************** */
+
     .state('app.campaign', {
-      url: 'campaign',
-      templateUrl: `${DIR}/campaign.html`,
-      controller: campaignController(),
+      abstract: true,
+      url: 'campaign/',
+      template: `<div ui-view></div>`,
+      // resolve: {},
+      // controller: campaignController(),
     })
+
+    .state('app.campaign.create', {
+      url: 'create',
+      templateUrl: `${DIR}/campaign/create.html`,
+      onEnter: ['$state', '$localStorage', '$sessionStorage',
+        function($state, $localStorage, $sessionStorage) { // eslint-disable-line
+          if (!$localStorage.user) {
+            $state.go('app.login');
+          }
+      }],
+      // controller: campaignCreateController(),
+    })
+
+    .state('app.campaign.edit', {
+      url: 'edit',
+      templateUrl: `${DIR}/campaign/edit.html`,
+      // controller: campaignEditController(),
+    })
+
+    .state('app.campaign.view', {
+      url: 'view',
+      templateUrl: `${DIR}/campaign/view.html`,
+      // controller: campaignViewController(),
+    })
+
+    /* *********************
+    ***** END CAMPAIGN *****
+    ********************* */
 
     .state('app.about', {
       url: 'about',
@@ -62,6 +97,11 @@ PitchTanks.run(
     .state('app.login', {
       url: 'login',
       templateUrl: `${DIR}/login.html`,
+      controller: ['LoadingService', '$scope', function(LoadingService, $scope) { // eslint-disable-line
+        $scope.load = () => {
+          LoadingService.setLoading(true);
+        };
+      }],
     })
 
     .state('app.pitches', {

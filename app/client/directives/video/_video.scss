@@ -1,3 +1,11 @@
+.play-button-wrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
 .play-button {
   background-image: url('/public/images/play.png');
   background-repeat: no-repeat;

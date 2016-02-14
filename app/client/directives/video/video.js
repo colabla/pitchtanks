@@ -1,4 +1,5 @@
-const videoPlayer = (app) => {
+const myVideoPlayer = (app) => {
+  console.log('CREATING VIDEOPLAYER');
   app.directive('videoPlayer', ($interval) => {
     return {
       restrict: 'E',

@@ -1,7 +1,7 @@
 const appController = (DIR) => {
-  return ['$scope', '$state', '$localStorage', '$sessionStorage',
+  return ['$scope', '$state', 'LoadingService', '$localStorage', '$sessionStorage',
     function (                             // eslint-disable-line func-names
-      $scope, $state,
+      $scope, $state, LoadingService,
       $localStorage, $sessionStorage
     ) {
       $scope.$storage = $localStorage;
@@ -9,8 +9,12 @@ const appController = (DIR) => {
         header: `${DIR}/shared/header.html`,
         footer: `${DIR}/shared/footer.html`,
       };
+
+      $scope.loading = LoadingService.isLoading;
+
       $scope.logout = () => {
         delete $scope.$storage.user;
+        $state.go('app.home');
       };
 
       $scope.user = () => {
@@ -18,9 +22,8 @@ const appController = (DIR) => {
       };
 
       $scope.header = {
-        getCampaignLinkCopy: () => {
-          return $scope.$storage.user && $scope.$storage.user.campaign ?
-            'My Campaign' : 'Create a Campaign';
+        hasCampaign: () => {
+          return $scope.$storage.user && $scope.$storage.user.campaign;
         },
       };
     },

@@ -1,3 +1,3 @@
 const PTDirectives = [
-  videoPlayer,
+  myVideoPlayer,
 ];
