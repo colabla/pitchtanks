@@ -23,25 +23,7 @@ PitchTanks.run(
       abstract: true,
       url: '/',
       templateUrl: `${DIR}/layout.html`,
-      controller: ['$scope', '$state', '$localStorage', '$sessionStorage',
-        function (                             // eslint-disable-line func-names
-          $scope, $state,
-          $localStorage, $sessionStorage
-        ) {
-          $scope.$storage = $localStorage;
-          $scope.templates = {
-            header: `${DIR}/shared/header.html`,
-            footer: `${DIR}/shared/footer.html`,
-          };
-          $scope.logout = () => {
-            delete $scope.$storage.user;
-          };
-
-          $scope.user = () => {
-            return $scope.$storage.user;
-          };
-        },
-      ],
+      controller: appController(DIR),
     })
 
     .state('app.home', {
@@ -64,6 +46,12 @@ PitchTanks.run(
           });
         },
       ],
+    })
+
+    .state('app.campaign', {
+      url: 'campaign',
+      templateUrl: `${DIR}/campaign.html`,
+      controller: campaignController(),
     })
 
     .state('app.about', {

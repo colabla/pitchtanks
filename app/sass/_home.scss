@@ -4,10 +4,99 @@
   -moz-transition: all 0.35s ease;
   transition: all 0.35s ease;
 
-  &:hover, &:focus {
+  &:hover, &.active {
     @include boxShadowHelper(2);
   }
 }
+/**************************************
+***** DESCRIPTION SWITCHER STYLES *****
+**************************************/
+$descColor0: #22BBA0;
+$descColor1: #2B4E61;
+$descColor2: #4B95CD;
+$descTransition: all 0.65s ease-out;
+
+.description-wrapper {
+    .desc-bg {
+      -webkit-transition: $descTransition;
+      -moz-transition: $descTransition;
+      transition: $descTransition;
+
+      &.bg0 {
+        background-color: $descColor0;
+      }
+
+      &.bg1 {
+        background-color: $descColor1;
+      }
+
+      &.bg2 {
+        background-color: $descColor2;
+      }
+
+      &.start {
+        background-color: #F35C47;
+
+        .desc {
+          color: rgba(255,255,255,0.75);
+        }
+      }
+    }
+
+    .desc {
+      line-height: 1.5;
+      color: rgba(255,255,255,1);
+      display: none;
+      &.active {
+        display: block;
+      }
+
+      a,
+      a:link,
+      a:hover,
+      a:visited,
+      a:hover,
+      a:active,
+      a:focus {
+        color: rgba(255,255,255,1);
+        font-weight: 700;
+        text-decoration: none;
+        border-bottom: 2px dashed rgba(255,255,255,1);
+      }
+    }
+}
+.angle-up-wrapper {
+  -webkit-transition: $descTransition;
+  -moz-transition: $descTransition;
+  transition: $descTransition;
+  .angle-up {
+    margin: 0 auto;
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-radius: 2px;
+    -webkit-transition: $descTransition;
+    -moz-transition: $descTransition;
+    transition: $descTransition;
+
+    &.color0 {
+      border-bottom: 15px solid $descColor0;
+    }
+
+    &.color1 {
+      border-bottom: 15px solid $descColor1;
+    }
+
+    &.color2 {
+      border-bottom: 15px solid $descColor2;
+    }
+  }
+}
+/******************************************
+***** END DESCRIPTION SWITCHER STYLES *****
+******************************************/
 
 .home-heading {
   margin-top: 60px;
