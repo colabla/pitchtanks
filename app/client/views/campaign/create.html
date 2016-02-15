@@ -2,7 +2,15 @@
   <section id="campaignTitleSection" class="br-6 m30-b">
     <div class="row m0 h100">
       <div class="col-md-7 col-sm-8 campaign-info h100 p30">
-        <div class="campaign-logo m15-b"></div>
+        <div class="campaign-logo m15-b">
+          <div class="upload-block text-center clickable" ng-click="triggerUploadOn($event, 'photoUpload')">
+            <input type="file" id="photoUpload"
+              class="hidden" ngf-select="uploadFiles($file, $invalidFiles)"
+              accept="image/*" ngf-max-height="1000" ngf-max-size="1MB"/>
+            <i class="fa fa-2x fa-camera"></i>
+            <h5 class="pt-title">Add A Picture</h5>
+          </div>
+        </div>
         <div class="campaign-titles-form">
           <input type="text" class="name-input" placeholder="Your company's name"></input>
           <input type="text" class="tagline-input" placeholder="Your tagline"></input>
@@ -46,7 +54,7 @@
             <video-player vUrl="" vId="newVid"></video-player>
             <div class="upload-block text-center clickable">
               <i class="fa fa-5x fa-video-camera"></i>
-              <h2 class="pt-title">Upload A Video</dh2>
+              <h2 class="pt-title">Upload A Video</h2>
             </div>
           </div>
         </div>

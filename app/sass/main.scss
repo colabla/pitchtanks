@@ -26,65 +26,68 @@ body {
   height: 100%;
 }
 
+/******************
+***** MARGINS *****
+******************/
 .m0 {
   margin: 0;
 }
+.m60-b {
+  margin-bottom: 60px;
+}
+.m30-b {
+  margin-bottom: 30px;
+}
+.m15-b {
+  margin-bottom: 15px;
+}
+/**********************
+***** END MARGINS *****
+**********************/
 
+/******************
+***** PADDING *****
+******************/
 .p0 {
   padding: 0;
 }
 
-.m60-b {
-  margin-bottom: 60px;
+// p30
+.p30 {
+  padding: 30px;
 }
-
-.m15-b {
-  margin-bottom: 15px;
-}
-
-.m30-b {
-  margin-bottom: 30px;
-}
-
 .p30-l {
   padding-left: 30px;
 }
-
 .p30-r {
   padding-right: 30px;
 }
-
 .p30-t {
   padding-top: 30px;
 }
-
 .p30-b {
   padding-bottom: 30px;
 }
 
+// p15
 .p15 {
   padding: 15px;
 }
-
-.p30 {
-  padding: 30px;
-}
-
 .p15-t {
   padding-top: 15px;
 }
-
 .p15-b {
   padding-bottom: 15px;
 }
-
 .p15-l {
   padding-left: 15px;
 }
-
 .p15-r {
   padding-right: 15px;
 }
+/**********************
+***** END PADDING *****
+**********************/
 
 .pt-title {
   font-weight: 700;
@@ -105,6 +108,10 @@ body {
   cursor: pointer;
   cursor: hand;
 }
+
+/*****************
+***** LEGACY *****
+*****************/
 
 .navbar {
   background-color: #fff;
@@ -216,6 +223,14 @@ section.video video {
   height: 100%;
   object-fit: fill;
 }
+
+/*********************
+***** END LEGACY *****
+*********************/
+
+/*************************
+***** WEB COMPONENTS *****
+*************************/
 
 input[type=range] {
   -webkit-appearance: none;

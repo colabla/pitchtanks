@@ -1,6 +1,7 @@
 const PitchTanks = angular.module('pitchTanks', [
   'ui.router',
   'ngStorage',
+  'ngFileUpload',
 ]);
 
 PitchTanks.run(
@@ -70,7 +71,7 @@ PitchTanks.run(
             $state.go('app.login');
           }
       }],
-      // controller: campaignCreateController(),
+      controller: campaignController(),
     })
 
     .state('app.campaign.edit', {
