@@ -2,14 +2,15 @@
   <section id="campaignTitleSection" class="br-6 m30-b">
     <div class="row m0 h100">
       <div class="col-md-7 col-sm-8 campaign-info h100 p30">
-        <div class="campaign-logo m15-b">
-          <div class="upload-block text-center clickable" ng-click="triggerUploadOn($event, 'photoUpload')">
-            <input type="file" id="photoUpload"
-              class="hidden" ngf-select="uploadFiles($file, $invalidFiles)"
-              accept="image/*" ngf-max-height="1000" ngf-max-size="1MB"/>
+        <div class="campaign-logo m15-b br-6">
+          <img ng-show="picFile" class="campaign-logo-img br-6" ng-src="{{picFile.$ngfBlobUrl}}" />
+          <div ng-show="!picFile" class="upload-block text-center clickable">
             <i class="fa fa-2x fa-camera"></i>
             <h5 class="pt-title">Add A Picture</h5>
           </div>
+          <input  ng-model="picFile" type="file" id="photoUpload"
+                  class="photo-upload-button clickable" ngf-select="uploadFiles($file, $invalidFiles)"
+                  accept="image/*" ngf-max-height="1000" ngf-max-size="1MB" />
         </div>
         <div class="campaign-titles-form">
           <input type="text" class="name-input" placeholder="Your company's name"></input>
