@@ -44,6 +44,7 @@ module.exports = (app, passport, db, directory) => {
   // =====================================
 
   app.get('/api/user', api.user);
+  app.get('/api/aws', api.aws);
 
   // =====================================
   // END - API ROUTES ====================

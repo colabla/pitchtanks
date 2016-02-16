@@ -193,6 +193,12 @@ section#pitchSection {
     }
   }
 
+  .pitch-text {
+    height: 300px;
+    border: 2px solid $campaignGrayLight;
+    padding: 15px;
+  }
+
   .video-container {
     width: 100%;
     position: relative;

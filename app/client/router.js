@@ -2,6 +2,7 @@ const PitchTanks = angular.module('pitchTanks', [
   'ui.router',
   'ngStorage',
   'ngFileUpload',
+  'angular-medium-editor',
 ]);
 
 PitchTanks.run(
@@ -58,6 +59,14 @@ PitchTanks.run(
       abstract: true,
       url: 'campaign/',
       template: `<div ui-view></div>`,
+      resolve: {
+        aws: ['$http', ($http) => {
+          return $http({
+            method: 'GET',
+            url: '/api/aws',
+          });
+        }],
+      },
       // resolve: {},
       // controller: campaignController(),
     })

@@ -13,14 +13,14 @@
                   accept="image/*" ngf-max-height="1000" ngf-max-size="1MB" />
         </div>
         <div class="campaign-titles-form">
-          <input type="text" class="name-input" placeholder="Your company's name"></input>
-          <input type="text" class="tagline-input" placeholder="Your tagline"></input>
-          <input type="text" class="website-input" placeholder="Your website"></input>
+          <input type="text" class="name-input" ng-model="campaign.name" placeholder="Your startup's name"></input>
+          <input type="text" class="tagline-input" ng-model="campaign.tagline" placeholder="Your tagline"></input>
+          <input type="text" class="website-input" ng-model="campaign.url" placeholder="Your website"></input>
         </div>
       </div>
       <div class="col-md-2 col-sm-4 campaign-form-buttons h100 p15">
         <button class="btn btn-cancel">Cancel</button>
-        <button class="btn btn-save">Save Changes</button>
+        <button class="btn btn-save" ng-click="save()">Save Changes</button>
       </div>
       <div class="col-md-3 col-sm-12 battle-info text-center">
         <div class="row bi-top p30-t p30-b">
@@ -50,7 +50,7 @@
         </h5>
         <div class="pitch-col br-6 left p30">
           <div class="p15-b">Pitch</div>
-          <textarea class="m30-b br-6" rows="10"/>
+          <textarea medium-editor bind-options="editorOptions" data-placeholder="Type your pitch. Highlight text to format." class="m30-b br-6 pitch-text" ng-model="campaign.pitchText"/>
           <div class="video-container">
             <video-player vUrl="" vId="newVid"></video-player>
             <div class="upload-block text-center clickable">
