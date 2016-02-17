@@ -1,5 +1,7 @@
 # PitchTanks Node.js
 
+*Note for running locally:* Contact @gwitwer for AWS keys.
+
 ## Reference Front-end Application
 http://www.keywordfoundry.com
 
@@ -73,5 +75,3 @@ NOTE: This page would also be used as the company create page.
   - Name (derived from social)
   - Email (derived from social)
   - Avatar (if none, use sigil)
-
-
