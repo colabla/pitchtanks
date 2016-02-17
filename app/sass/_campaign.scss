@@ -22,9 +22,9 @@ section#campaignTitleSection {
   margin: auto;
   max-height: 140px;
   max-width: 300px;
-  -webkit-transition: all 0.35s ease;
-  -moz-transition: all 0.35s ease;
-  transition: all 0.35s ease;
+  -webkit-transition: color 0.35s ease;
+  -moz-transition: color 0.35s ease;
+  transition: color 0.35s ease;
 
   &:hover {
     color: rgba(255,255,255,1);
@@ -202,20 +202,49 @@ section#pitchSection {
   .video-container {
     width: 100%;
     position: relative;
+  }
 
+  &.vid .video-container {
+    .pitch-text {
+      display: none;
+    }
+
+    .upload-block {
+      top: 0;
+      left: 15px;
+      height: 30px;
+      margin: 0;
+      width: 150px;
+
+      >* {
+        font-size: 14px;
+        display: inline-block;
+      }
+    }
+
+    > input {
+      top: 0;
+      left: 0;
+      height: 40px;
+      margin: 0;
+      width: 120px;
+    }
+  }
+
+  &.no-vid {
     section.video {
       background-color: $campaignGrayDark;
       border: none;
       padding: 0;
       border-radius: 6px;
-
-      video {
-        margin-bottom: -5px; // Fix for weird gray bottom border
-      }
     }
 
     .play-button {
       display: none;
+    }
+
+    video {
+      margin-bottom: -5px; // Fix for weird gray bottom border
     }
 
     .menu-bar {

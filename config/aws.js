@@ -1,5 +1,5 @@
 module.exports = (env) => {
-  if(env === 'development'){
+  if (env === 'development') {
       const secrets = require('./secrets.js');
       return secrets;
   }

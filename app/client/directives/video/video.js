@@ -7,12 +7,20 @@ const myVideoPlayer = (app) => {
         vId: '=',
       },
       link: function($scope, element, attrs, controller, transcludeFn) { // eslint-disable-line
-        if ($scope.vUrl) {
+
+        $scope.$watch('vUrl', (newVal, oldVal) => {
+          if (newVal !== oldVal) {
+            console.log(newVal);
+            $scope.init();
+          }
+        });
+
+        $scope.init = () => {
           $scope.getV = () => {
-            if (!$scope.v) {
-              $scope.v = $(`#${$scope.vId}`)[0];
+            if (!$scope.dirVideo) {
+              $scope.dirVideo = $(`#${$scope.vId}`)[0];
             }
-            return $scope.v;
+            return $scope.dirVideo;
           };
 
           $scope.isStopped = () => {
@@ -42,7 +50,7 @@ const myVideoPlayer = (app) => {
             } else {
                if ($scope.getV().requestFullscreen) $scope.getV().requestFullscreen();
                else if ($scope.getV().mozRequestFullScreen) $scope.getV().mozRequestFullScreen();
-               else if ($scope.getV().webkitRequestFullScreen) $scope.v.webkitRequestFullScreen();
+               else if ($scope.getV().webkitRequestFullScreen) $scope.dirVideo.webkitRequestFullScreen(); // eslint-disable-line
                else if ($scope.getV().msRequestFullscreen) $scope.getV().msRequestFullscreen();
                $scope.setFullscreenData(true);
             }
@@ -120,6 +128,9 @@ const myVideoPlayer = (app) => {
               endVid();
             }
           };
+        };
+        if ($scope.vUrl) {
+          $scope.init();
         }
       },
       templateUrl: '/client/directives/video/video.html',

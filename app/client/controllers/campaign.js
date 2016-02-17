@@ -1,9 +1,16 @@
 const campaignController = () => {
-  return ['$scope', '$state', 'Upload', '$timeout', 'aws',
+  return ['$scope', '$state', 'aws', '$sce',
   function (                             // eslint-disable-line func-names
-    $scope, $state, Upload, $timeout, aws
+    $scope, $state, aws, $sce
   ) {
     $scope.campaign = {};
+    $scope.video = {};
+    $scope.logo = {};
+    $scope.file = {};
+
+    $scope.trustSrc = (src) => {
+      return $sce.trustAsResourceUrl(src);
+    };
 
     $scope.editorOptions = {
       toolbar: {
@@ -21,37 +28,45 @@ const campaignController = () => {
       },
     };
 
-    $scope.uploadFiles = (file, errFiles) => {
-      console.log('here');
-      $scope.f = file;
-      $scope.errFile = errFiles && errFiles[0];
-      if (file) {
-        console.log(file);
-        file.upload = Upload.upload({
-          url: '/api/uploadPhoto',
-          data: { file },
-        });
+    $scope.getVUrl = () => {
+      return $scope.video.data || '';
+    };
 
-        file.upload.then((response) => {
-          console.log(`RES: ${response}`);
-          $timeout(() => {
-            console.log(`RES: ${response}`);
-            file.result = response.data;
-          });
-        }, (response) => {
-          console.log(`RES: ${response}`);
-          if (response.status > 0) {
-            $scope.errorMsg = `${response.status}: ${response.data}`;
-            console.log(`ERROR: ${$scope.errorMsg}`);
-          }
-        }, (evt) => {
-          file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total, 10));
-          console.log(`PROGRESS: ${file.progress}`);
-        });
-      }
+    $scope.myLoaded = (set) => {
+      console.log('loaded');
+      console.log($scope.file);
+      set($scope.trustSrc($scope.file.data), $scope.file.file);
+      $scope.$apply();
+    };
+
+    $scope.setVid = (data, file) => {
+      $scope.video.data = data;
+      $scope.video.file = file;
+      console.log(`Set Vid: ${$scope.video.data !== undefined}`);
+    };
+
+    $scope.setLogo = (data, file) => {
+      $scope.logo.data = data;
+      $scope.logo.file = file;
+      console.log(`Set Logo: ${$scope.logo.data !== undefined}`);
+    };
+
+    $scope.myError = (e) => {
+      console.log(`error: ${e}`);
+    };
+
+    $scope.myProgress = (total, loaded) => {
+      console.log(`total: ${total}`);
+      console.log(`loaded: ${loaded}`);
     };
 
     $scope.save = () => {
+      $scope.upload($scope.logo.file, 'campaignLogos');
+      $scope.upload($scope.video.file, 'campaignVideos');
+    };
+
+    $scope.upload = (file, folder) => {
+      console.log(file);
       // Put this AWS upload code into a service if we need to use it elsewhere.
       console.log('saving...');
       console.log(aws.data.aws_access_key_id);
@@ -63,14 +78,14 @@ const campaignController = () => {
       });
       AWS.config.region = 'us-west-2';
       const bucket = new AWS.S3({
-        params: { Bucket: `${aws.data.s3_bucket}/campaignLogos` },
+        params: { Bucket: `${aws.data.s3_bucket}/${folder}` },
       });
-      if ($scope.f) {
+      if (file) {
         const params = {
           ACL: 'public-read',
-          Key: $scope.f.name,
-          ContentType: $scope.f.type,
-          Body: $scope.f,
+          Key: file.name,
+          ContentType: file.type,
+          Body: file,
           ServerSideEncryption: 'AES256',
         };
 
@@ -83,7 +98,7 @@ const campaignController = () => {
           // else { Success! }
           console.log(data);
           console.log('Upload Done');
-          $scope.campaign.logo = `https://s3-us-west-2.amazonaws.com/campaignLogos/${aws.data.s3_bucket}/${$scope.f.name}`;
+          $scope.campaign.logo = `https://s3-us-west-2.amazonaws.com/campaignLogos/${aws.data.s3_bucket}/${file.name}`;
           console.log($scope.campaignLogo.url);
         })
         .on('httpUploadProgress', (progress) => {

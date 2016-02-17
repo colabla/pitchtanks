@@ -1,7 +1,5 @@
-<section class="video" ng-mouseover="showControls($event)" ng-mouseleave="hideControls($event)">
-  <video preload="auto" data-setup="{}" class="video-js" id="{{vId}}">
-    <source src="{{vUrl}}" type="video/webm"/>
-  </video>
+<section class="video" ng-mouseover="showControls($event);" ng-mouseleave="hideControls($event)">
+  <video preload="auto" data-setup="{}" ng-src="{{vUrl}}" class="video-js" id="{{vId}}"></video>
   <div class="play-button-wrapper clickable" ng-click="playVideo($event)">
     <div class="play-button clickable"></div>
   </div>
@@ -11,5 +9,4 @@
     </div>
   </div>
   <div ng-if="fullScreenEnabled" id="fullscreenButton" ng-click="handleFullscreen($event)" class="fullscreen-button clickable"></div>
-
 </section>

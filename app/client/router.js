@@ -1,8 +1,8 @@
 const PitchTanks = angular.module('pitchTanks', [
   'ui.router',
   'ngStorage',
-  'ngFileUpload',
   'angular-medium-editor',
+  'ngSanitize',
 ]);
 
 PitchTanks.run(

@@ -3,14 +3,15 @@
     <div class="row m0 h100">
       <div class="col-md-7 col-sm-8 campaign-info h100 p30">
         <div class="campaign-logo m15-b br-6">
-          <img ng-show="picFile" class="campaign-logo-img br-6" ng-src="{{picFile.$ngfBlobUrl}}" />
-          <div ng-show="!picFile" class="upload-block text-center clickable">
+          <img ng-show="logo.data" class="campaign-logo-img br-6" ng-src="{{logo.data}}" />
+          <div ng-show="!logo.data" class="upload-block text-center clickable">
             <i class="fa fa-2x fa-camera"></i>
             <h5 class="pt-title">Add A Picture</h5>
           </div>
-          <input  ng-model="picFile" type="file" id="photoUpload"
-                  class="photo-upload-button clickable" ngf-select="uploadFiles($file, $invalidFiles)"
-                  accept="image/*" ngf-max-height="1000" ngf-max-size="1MB" />
+          <input  type="file" id="photoUpload"
+                  class="photo-upload-button clickable" ng-model="file"
+                  file-select="data" file-loaded="myLoaded(setLogo)"
+                  file-error="myError($error)" file-progress="myProgress($total,$loaded)" />
         </div>
         <div class="campaign-titles-form">
           <input type="text" class="name-input" ng-model="campaign.name" placeholder="Your startup's name"></input>
@@ -42,7 +43,7 @@
       </div>
     </div>
   </section>
-  <section id="pitchSection" class="m30-b">
+  <section id="pitchSection" class="m30-b" ng-class="{ 'vid': video.data, 'no-vid': !video.data }">
     <div class="row m0">
       <div class="col-md-9 col-sm-12 p0">
         <h5 class="pt-subtitle m30-b p30-l">
@@ -52,11 +53,15 @@
           <div class="p15-b">Pitch</div>
           <textarea medium-editor bind-options="editorOptions" data-placeholder="Type your pitch. Highlight text to format." class="m30-b br-6 pitch-text" ng-model="campaign.pitchText"/>
           <div class="video-container">
-            <video-player vUrl="" vId="newVid"></video-player>
+            <video-player v-url="getVUrl()" v-id="'newVid'"></video-player>
             <div class="upload-block text-center clickable">
               <i class="fa fa-5x fa-video-camera"></i>
-              <h2 class="pt-title">Upload A Video</h2>
+              <h2 class="pt-title">Choose A Video</h2>
             </div>
+            <input  type="file" id="videoUpload"
+                    class="photo-upload-button clickable"
+                    ng-model="file" file-select="data" file-loaded="myLoaded(setVid)"
+                    file-error="myError($error)" file-progress="myProgress($total,$loaded)" />
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
 require('angular');
 require('angular-ui-router');
 require('ngstorage');
-require('ng-file-upload');
+// require('ng-file-upload');
