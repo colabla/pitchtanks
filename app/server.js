@@ -10,6 +10,8 @@ const myPassport = require('../config/passport')(passport, db);
 const session = require('express-session');
 const routes = require('./server/routes');
 const sassMiddleware = require('node-sass-middleware');
+const morgan = require('morgan');
+
 
 // require local env vars
 require('dotenv').load();
@@ -19,10 +21,14 @@ const reloadify = require('reloadify')([
 	`${__dirname}/public`,
 	`${__dirname}/sass`,
 ]);
+
 const sassSrcPath = `${__dirname}/sass`;
 const sassDestPath = `${__dirname}/public/styles`;
+
 /** MIDDLEWARE */
+
 app.use(reloadify);
+
 app.use(
 	'/public/styles',
 	sassMiddleware({
@@ -32,6 +38,9 @@ app.use(
 		debug: true,
 	})
 );
+
+app.use(morgan('tiny'));
+
 app.use('/public', express.static(`${__dirname}/public`));
 // app.use('/views', express.static(`${__dirname}/client/views`));
 app.use('/client', express.static(`${__dirname}/client`));

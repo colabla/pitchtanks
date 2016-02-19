@@ -26,6 +26,63 @@ body {
   height: 100%;
 }
 
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+/******************
+***** BUTTONS *****
+******************/
+
+button.btn {
+  width: 100%;
+  margin-top: 15px;
+  padding: 20px 15px;
+  -webkit-transition: all 0.35s ease;
+  -moz-transition: all 0.35s ease;
+  transition: all 0.35s ease;
+
+  &.btn-cancel {
+    color: $campaignGrayLight;
+    border: 2px solid $campaignGrayLight;
+    background-color: rgba(255,255,255,1);
+    @include boxShadowHelper(0);
+
+    &:hover {
+      border: 2px solid #fff;
+      color: $campaignGrayDark;
+      @include boxShadowHelper(1);
+    }
+  }
+
+  &.btn-save {
+    color: rgba(255,255,255,1);
+    background-color: $campaignBlue;
+    @include boxShadowHelper(0);
+
+    &:hover {
+      @include boxShadowHelper(1);
+      background-color: #4A90E2;
+    }
+  }
+
+  &.btn-green {
+    background-color: $campaignGreen;
+    color: rgba(255,255,255,1);
+    @include boxShadowHelper(0);
+
+    &:hover {
+      @include boxShadowHelper(1);
+      background-color: darken($campaignGreen, 10%);
+    }
+  }
+}
+
+
 /******************
 ***** MARGINS *****
 ******************/
@@ -50,6 +107,23 @@ body {
 ******************/
 .p0 {
   padding: 0;
+}
+
+// p60
+.p60 {
+  padding: 60px;
+}
+.p60-l {
+  padding-left: 60px;
+}
+.p60-r {
+  padding-right: 60px;
+}
+.p60-t {
+  padding-top: 60px;
+}
+.p60-b {
+  padding-bottom: 60px;
 }
 
 // p30

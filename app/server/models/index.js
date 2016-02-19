@@ -16,6 +16,7 @@ const User = mongoose.model('User', {
 	firstName: { type: String },
 	lastName: { type: String },
 	email: { type: String },
+	campaign: { type: String },
 	facebook: {
 		id: { type: String },
 		token: { type: String },
@@ -29,29 +30,37 @@ const User = mongoose.model('User', {
 	},
 });
 
-const Company = mongoose.model('Company', {
+const Campaign = mongoose.model('Company', {
+	isComplete: { type: Boolean },
 	name: { type: String },
 	tagline: { type: String },
 	joinDate: { type: String },
 	city: { type: String },
 	market: { type: String },
-	numBattles: { type: Number },
+	website: { type: String },
+	battles: { type: Array },
+	battleCount: { type: Number },
 	pitchDescription: { type: String },
 	videoUploadDate: { type: Date },
 	upvotes: { type: Array },
 	upvoteCount: { type: Number },
+	videoUrl: { type: String },
+	logo: { type: String },
 });
 
-const Video = mongoose.model('Video', {
-	updoadDate: { type: Date },
-	upvotes: { type: Array },
-	upvoteCount: { type: Number },
-	thumbnailUrl: { type: String },
-	objectPath: { type: String },
+const Battle = mongoose.model('Battle', {
+	video1: {
+		id: { type: String },
+		votes: { type: String },
+	},
+	video2: {
+		id: { type: String },
+		votes: { type: String },
+	},
 });
 
 module.exports = {
 	User,
-	Company,
-	Video,
+	Campaign,
+	Battle,
 };

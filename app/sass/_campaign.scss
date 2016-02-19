@@ -106,37 +106,6 @@ section#campaignTitleSection {
   background-color: rgba(255,255,255,1);
   border-right: 2px solid $campaignGrayLight;
 
-  button {
-    width: 100%;
-    margin-top: 15px;
-    padding: 15px;
-    -webkit-transition: all 0.35s ease;
-    -moz-transition: all 0.35s ease;
-    transition: all 0.35s ease;
-
-    &.btn-cancel {
-      color: $campaignGrayLight;
-      border: 2px solid $campaignGrayLight;
-      background-color: rgba(255,255,255,1);
-      @include boxShadowHelper(0);
-
-      &:hover {
-        color: $campaignGrayDark;
-        @include boxShadowHelper(1);
-      }
-    }
-
-    &.btn-save {
-      color: rgba(255,255,255,1);
-      background-color: $campaignBlue;
-      @include boxShadowHelper(0);
-
-      &:hover {
-        @include boxShadowHelper(1);
-        background-color: #4A90E2;
-      }
-    }
-  }
 }
 
 .battle-info {

@@ -45,6 +45,22 @@ module.exports = (app, passport, db, directory) => {
 
   app.get('/api/user', api.user);
   app.get('/api/aws', api.aws);
+  app.get('/api/saveCampaign', (req, res) => {
+    console.log('get');
+    res.json({ hi: 'here' });
+  });
+  app.post('/api/saveCampaign', (req, res) => {
+    console.log('HEREEE');
+    console.log(req);
+    const newCampaign = new db.Campaign();
+    res.json(201, {});
+    // newCampaign.save((err, campaign) => {
+    //   if (err) {
+    //     return next(err);
+    //   }
+    //   return res.json(201, campaign);
+    // });
+  });
 
   // =====================================
   // END - API ROUTES ====================

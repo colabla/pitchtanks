@@ -67,7 +67,6 @@ PitchTanks.run(
           });
         }],
       },
-      // resolve: {},
       // controller: campaignController(),
     })
 
