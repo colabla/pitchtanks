@@ -1,5 +1,5 @@
 const myVideoPlayer = (app) => {
-  app.directive('videoPlayer', ($interval) => {
+  app.directive('videoPlayer', ['$interval', '$sce', ($interval, $sce) => {
     return {
       restrict: 'E',
       scope: {
@@ -10,10 +10,15 @@ const myVideoPlayer = (app) => {
 
         $scope.$watch('vUrl', (newVal, oldVal) => {
           if (newVal !== oldVal) {
-            console.log(newVal);
             $scope.init();
           }
         });
+
+        $scope.trustSrc = (src) => {
+          return $sce.trustAsResourceUrl(src);
+        };
+
+        $scope.trustedUrl = $scope.trustSrc($scope.vUrl);
 
         $scope.init = () => {
           $scope.getV = () => {
@@ -135,5 +140,5 @@ const myVideoPlayer = (app) => {
       },
       templateUrl: '/client/directives/video/video.html',
     };
-  });
+  }]);
 };

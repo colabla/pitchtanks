@@ -43,9 +43,19 @@ PitchTanks.run(
           $http, $state, $scope, LoadingService
         ) {
           LoadingService.setLoading(false);
+
+          // Get user & save to localStorage
           $http.get('/api/user/').success((data) => {
-            $scope.$storage.user = data;
-            $state.go('app.home');
+            $scope.PTApp.$storage.user = data;
+
+            // Get campaign and save to localStorage
+            $http.get(`/api/getUserCampaign/${data._id}`).success((campaign) => {
+              console.log(`User campaign: ${campaign}`);
+              $scope.PTApp.$storage.campaign = campaign;
+
+              // Redirect home
+              $state.go('app.home');
+            });
           });
         },
       ],
@@ -59,6 +69,17 @@ PitchTanks.run(
       abstract: true,
       url: 'campaign/',
       template: `<div ui-view></div>`,
+      onEnter: ['$state', '$localStorage', '$sessionStorage',
+        function($state, $localStorage, $sessionStorage) { // eslint-disable-line
+          if (!$localStorage.user) {
+            $state.go('app.login');
+          }
+
+          // NOTE: This should never arise.
+          if (!$localStorage.campaign) {
+            console.log('NO CAMPAIGN');
+          }
+      }],
       resolve: {
         aws: ['$http', ($http) => {
           return $http({
@@ -73,25 +94,65 @@ PitchTanks.run(
     .state('app.campaign.create', {
       url: 'create',
       templateUrl: `${DIR}/campaign/create.html`,
+      controller: campaignController(),
       onEnter: ['$state', '$localStorage', '$sessionStorage',
         function($state, $localStorage, $sessionStorage) { // eslint-disable-line
-          if (!$localStorage.user) {
-            $state.go('app.login');
+          if ($localStorage.campaign.isComplete) {
+            $state.go('app.campaign.edit', { name: $localStorage.campaign.name });
           }
-      }],
-      controller: campaignController(),
+        }],
     })
 
     .state('app.campaign.edit', {
       url: 'edit',
-      templateUrl: `${DIR}/campaign/edit.html`,
-      // controller: campaignEditController(),
+      params: {
+        campaign: undefined,
+      },
+      templateUrl: `${DIR}/campaign/create.html`,
+      controller: campaignController(),
+      onEnter: ['$state', '$localStorage', '$sessionStorage', '$stateParams',
+        function($state, $localStorage, $sessionStorage, $stateParams) { // eslint-disable-line
+          if (!$localStorage.campaign.isComplete) {
+            // If campaign is not complete, redirect to campaign create.
+            $state.go('app.campaign.create');
+          }
+      }],
     })
 
     .state('app.campaign.view', {
-      url: 'view',
-      templateUrl: `${DIR}/campaign/view.html`,
-      // controller: campaignViewController(),
+      url: 'view/:name',
+      params: {
+        campaign: undefined,
+      },
+      templateUrl: `${DIR}/campaign/create.html`,
+      resolve: {
+        foundCampaign: ['$http', '$stateParams',
+          ($http, $stateParams) => {
+            if (!$stateParams.campaign) {
+              return $http({
+                method: 'GET',
+                url: `/api/getCampaignByName/${$stateParams.name}`,
+              });
+            }
+            console.log($stateParams.campaign);
+            return $stateParams.campaign;
+          },
+        ],
+      },
+      controller: [
+        '$http', '$state', '$scope', 'foundCampaign',
+        function ($http, $state, $scope, foundCampaign) { // eslint-disable-line
+          if (!foundCampaign.data.isComplete &&                      // Require complete
+              foundCampaign.data.user !== $scope.PTApp.user()._id) { // allow owner
+            $state.go('app.pitches');
+          }
+          $scope.campaign = foundCampaign.data;
+          $scope.viewing = true;
+          $scope.getVUrl = () => {
+            return $scope.campaign.videoUrl;
+          };
+        },
+      ],
     })
 
     /* *********************

@@ -3,6 +3,26 @@ $campaignGrayLight: #E9E9E9;
 $campaignGrayDark: #898989;
 $campaignGreen:#359F00;
 
+.message-section {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 80px;
+  padding: 8px;
+  z-index: 2;
+  background-color: $campaignGreen;
+  font-weight: 700;
+  @include boxShadowHelper(2);
+
+  &.error {
+    background-color: darken(#FF0000, 10%);
+  }
+  .pt-subtitle {
+    font-size: 15px;
+      color: #fff;
+  }
+}
+
 section#campaignTitleSection {
   border: 2px solid $campaignGrayLight;
   @include boxShadowHelper(1);
@@ -10,6 +30,16 @@ section#campaignTitleSection {
 
 .campaign-info {
   background-color: rgba(255,255,255,1);
+  height: 220px;
+}
+
+.incomplete {
+  border: 3px solid red !important;
+}
+
+.error-wrapper {
+  min-height: 30px;
+  color: red;
 }
 
 .upload-block {
@@ -156,10 +186,6 @@ section#pitchSection {
         color: $campaignGrayDark;
       }
     }
-    textarea {
-      resize: none;
-      width: 100%;
-    }
   }
 
   .pitch-text {
@@ -179,7 +205,7 @@ section#pitchSection {
     }
 
     .upload-block {
-      top: 0;
+      top: 10px;
       left: 15px;
       height: 30px;
       margin: 0;

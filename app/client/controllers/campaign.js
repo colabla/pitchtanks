@@ -1,36 +1,19 @@
 const campaignController = () => {
-  return ['$scope', '$state', 'aws', '$sce', '$http',
+  return ['$scope', '$state', 'aws', '$http', 'LoadingService',
   function (                             // eslint-disable-line func-names
-    $scope, $state, aws, $sce, $http
+    $scope, $state, aws, $http, LoadingService
   ) {
     // Instantiate Campaign.
-    $scope.campaign = {
-      isComplete: false,
-      user: undefined,
-      name: '',
-      tagline: '',
-      website: '',
-      joinDate: undefined,
-      city: '',
-      market: '',
-      battles: [],
-      battleCount: 0,
-      pitchDescription: '',
-      videoUploadDate: undefined,
-      upvotes: [],
-      upvoteCount: 0,
-      videoUrl: undefined,
-      logo: undefined,
-    };
+    $scope.campaign = $scope.PTApp.campaign();
     $scope.video = {};
     $scope.logo = {};
+    $scope.message = '';
+    $scope.editing = $scope.campaign.isComplete && $scope.campaign.user === $scope.PTApp.user()._id;
 
     // Container for most recently uploaded file
     $scope.file = {};
 
-    $scope.trustSrc = (src) => {
-      return $sce.trustAsResourceUrl(src);
-    };
+    $scope.incompleteFields = [];
 
     $scope.editorOptions = {
       toolbar: {
@@ -49,13 +32,13 @@ const campaignController = () => {
     };
 
     $scope.getVUrl = () => {
-      return $scope.video.data || '';
+      return $scope.video.data || $scope.campaign.videoUrl || '';
     };
 
     $scope.myLoaded = (prop) => {
       console.log('loaded');
       console.log($scope.file);
-      $scope.setFile($scope.trustSrc($scope.file.data), $scope.file.file, prop);
+      $scope.setFile($scope.file.data, $scope.file.file, prop);
       $scope.$apply();
     };
 
@@ -76,42 +59,31 @@ const campaignController = () => {
     };
 
     // Uploads files to AWS and saves campaign data.
-    $scope.save = () => {
-      $scope.campaign.user = $scope.user()._id;
-      $scope.campaign.pitchDescription = $scope.escapeHTML($scope.campaign.pitchDescription);
+    $scope.save = (doSubmit) => {
       $scope.upload($scope.logo.file, 'campaignLogos', 'logo', () => {
-        console.log('callback');
         $scope.upload($scope.video.file, 'campaignVideos', 'videoUrl', () => {
           $scope.campaign.videoUploadDate = Date.now();
-          $scope.saveCampaign();
+          $scope.saveCampaign(doSubmit);
         });
       });
     };
 
-    // Michele Bosi, http://stackoverflow.com/questions/5251520
-    $scope.escapeHTML = (s) => {
-      return s.replace(/&/g, '&amp;')
-      .replace(/"/g, '&quot;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
-    };
-
     // Do form validation
     $scope.validateForm = () => {
-      return {
-        isValid: false,
-      };
-    };
-
-    // Submit can only be done if all required fields are completed.
-    $scope.submit = () => {
-      const formValidity = $scope.validateForm();
-      if (formValidity.isValid) {
-        $scope.campaign.isComplete = formValidity.isValid;
-        $scope.save();
-      } else {
-        console.log(formValidity);
-      }
+      [
+        'name',
+        'pitchDescription',
+        'tagline',
+        'website',
+        'videoUrl',
+        'logo',
+      ].forEach((prop) => {
+        if (!($scope.campaign[prop] && $scope.campaign[prop].length)) {
+          $scope.incompleteFields.push(prop);
+        }
+      });
+      console.log($scope.incompleteFields);
+      return !$scope.incompleteFields.length;
     };
 
     $scope.proceed = () => {
@@ -120,16 +92,29 @@ const campaignController = () => {
       $state.go('app.campaign.edit');
     };
 
-    $scope.saveCampaign = () => {
+    $scope.saveCampaign = (doSubmit) => {
+      // Reset errors
+      $scope.incompleteFields = [];
+
       console.log(`Saving: ${JSON.stringify($scope.campaign)}`);
-
-      $http.post('/api/saveCampaign', { data: $scope.campaign })
-        .success((data, status, header, config) => {
-          console.log('success');
-          console.log(data, status, header, config);
-
+      if (doSubmit) {
+        $scope.campaign.isComplete = $scope.validateForm();
+      }
+      $http.post('/api/saveCampaign', $scope.campaign)
+        .success((data) => {
+          $scope.PTApp.$storage.campaign = JSON.parse(JSON.stringify(data));
+          $scope.campaign = $scope.PTApp.$storage.campaign;
+          $scope.message = `Save success!`;
+          $('.message-section')
+            .removeClass('hidden animated fadeOut')
+            .addClass('animated fadeOut')
+            .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+            function () { // eslint-disable-line
+              $(this).removeClass('fadeOut animated');
+              $(this).addClass('hidden');
+            });
           if ($scope.campaign.isComplete) {
-            $state.go('app.campaign.edit');
+            $state.go('app.campaign.edit', { name: $scope.campaign.name });
           }
         })
         .error((data, status, header, config) => {
@@ -140,7 +125,7 @@ const campaignController = () => {
 
     $scope.upload = (file, folder, prop, callback) => {
       console.log(file);
-      // Put this AWS upload code into a service if we need to use it elsewhere.
+      // Put this AWS upload code into a service if we need to use it elsewhere
       console.log('saving...');
       AWS.config.update({
         accessKeyId: aws.data.aws_access_key_id,
@@ -148,9 +133,10 @@ const campaignController = () => {
       });
       AWS.config.region = 'us-west-2';
       const bucket = new AWS.S3({
-        params: { Bucket: `${aws.data.s3_bucket}/${folder}/${$scope.user()._id}` },
+        params: { Bucket: `${aws.data.s3_bucket}/${folder}/${$scope.PTApp.user()._id}` },
       });
       if (file) {
+        LoadingService.setLoading(true);
         const params = {
           ACL: 'public-read',
           Key: file.name,
@@ -167,8 +153,9 @@ const campaignController = () => {
           // else { Success! }
           console.log(data);
           console.log('Upload Done');
-          $scope.campaign[prop] = `https://s3-us-west-2.amazonaws.com/${folder}/${aws.data.s3_bucket}/${$scope.user()._id}/${file.name}`;
+          $scope.campaign[prop] = `https://s3-us-west-2.amazonaws.com/${aws.data.s3_bucket}/${folder}/${$scope.PTApp.user()._id}/${file.name}`;
           console.log($scope.campaign[prop]);
+          LoadingService.setLoading(false);
           callback();
         })
         .on('httpUploadProgress', (progress) => {

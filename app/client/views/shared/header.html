@@ -17,14 +17,14 @@
         <!-- <li><a ui-sref=".home">Home</a></li> -->
         <li><a ui-sref=".pitches">Pitch Gallery</a></li>
         <li><a ui-sref=".about">About</a></li>
-        <li ng-if="!user()"><a ui-sref=".login" class="signup">Sign up</a></li>
+        <li ng-if="!PTApp.user()"><a ui-sref=".login" class="signup">Sign up</a></li>
         <!-- <li><a ui-sref=".login">Register</a></li> -->
-        <li ng-if="user()">
+        <li ng-if="PTApp.user()">
           <a ui-sref=".profile" class="nav-profile-img">
             <div class="profile-img br-circle"></div>
           </a>
         </li>
-        <li ng-if="user()">
+        <li ng-if="PTApp.user()">
           <a id="navDropdown" data-toggle="dropdown" class="clickable" aria-haspopup="true" aria-expanded="true">
             <i class="fa fa-angle-down"></i>
           </a>

@@ -4,7 +4,22 @@ const appController = (DIR) => {
       $scope, $state, LoadingService,
       $localStorage, $sessionStorage
     ) {
-      $scope.$storage = $localStorage;
+      // Vars to be accessed throughout the app.
+      $scope.PTApp = {
+        storedVals: [
+          'user',
+          'campaign',
+        ],
+        $storage: $localStorage,
+        user: () => {
+          return $scope.PTApp.$storage.user;
+        },
+        campaign: () => {
+          console.log('here');
+          console.log($scope.PTApp.$storage.campaign);
+          return $scope.PTApp.$storage.campaign;
+        },
+      };
       $scope.templates = {
         header: `${DIR}/shared/header.html`,
         footer: `${DIR}/shared/footer.html`,
@@ -13,17 +28,15 @@ const appController = (DIR) => {
       $scope.loading = LoadingService.isLoading;
 
       $scope.logout = () => {
-        delete $scope.$storage.user;
+        $scope.PTApp.storedVals.forEach((val) => {
+          delete $scope.PTApp.$storage[val];
+        });
         $state.go('app.home');
-      };
-
-      $scope.user = () => {
-        return $scope.$storage.user;
       };
 
       $scope.header = {
         hasCampaign: () => {
-          return $scope.$storage.user && $scope.$storage.user.campaign;
+          return $scope.PTApp.$storage.user && $scope.PTApp.$storage.user.campaign;
         },
       };
     },

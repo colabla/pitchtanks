@@ -45,22 +45,9 @@ module.exports = (app, passport, db, directory) => {
 
   app.get('/api/user', api.user);
   app.get('/api/aws', api.aws);
-  app.get('/api/saveCampaign', (req, res) => {
-    console.log('get');
-    res.json({ hi: 'here' });
-  });
-  app.post('/api/saveCampaign', (req, res) => {
-    console.log('HEREEE');
-    console.log(req);
-    const newCampaign = new db.Campaign();
-    res.json(201, {});
-    // newCampaign.save((err, campaign) => {
-    //   if (err) {
-    //     return next(err);
-    //   }
-    //   return res.json(201, campaign);
-    // });
-  });
+  app.get('/api/getUserCampaign/:user', api.getUserCampaign(db));
+  app.get('/api/getCampaignByName/:name', api.getCampaignByName(db));
+  app.post('/api/saveCampaign', api.saveCampaign(db));
 
   // =====================================
   // END - API ROUTES ====================
@@ -72,7 +59,9 @@ module.exports = (app, passport, db, directory) => {
 
   app.get('/admin/reset', (req, res) => {
     db.User.remove({}, (err, user) => {
-      return res.redirect('/admin/users');
+      db.Campaign.remove({}, (err, campaign) => {
+        return res.redirect('/');
+      });
     });
   });
 
@@ -83,6 +72,16 @@ module.exports = (app, passport, db, directory) => {
       console.log('users', users);
 
       return res.status(200).send(users);
+    });
+  });
+
+  app.get('/admin/campaigns', (req, res) => {
+    db.Campaign.find({}, (err, campaigns) => {
+      if (err) { return res.status(400).send('err', err.message); }
+
+      console.log('campaigns', campaigns);
+
+      return res.status(200).send(campaigns);
     });
   });
 

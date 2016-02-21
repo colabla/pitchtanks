@@ -1,4 +1,5 @@
-/*global MediumEditor */
+/* global MediumEditor */
+/* eslint-disable */
 'use strict';
 
 angular.module('angular-medium-editor', [])
@@ -18,7 +19,6 @@ angular.module('angular-medium-editor', [])
       restrict: 'AE',
       scope: { bindOptions: '=' },
       link: function(scope, iElement, iAttrs, ngModel) {
-
         angular.element(iElement).addClass('angular-medium-editor');
 
         // Global MediumEditor
