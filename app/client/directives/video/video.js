@@ -10,6 +10,7 @@ const myVideoPlayer = (app) => {
 
         $scope.$watch('vUrl', (newVal, oldVal) => {
           if (newVal !== oldVal) {
+            $scope.trustedUrl = $scope.trustSrc(newVal);
             $scope.init();
           }
         });
@@ -45,7 +46,6 @@ const myVideoPlayer = (app) => {
           };
 
           $scope.handleFullscreen = (e) => {
-            console.log(document);
             if ($scope.isFullScreen()) {
                if (document.exitFullscreen) document.exitFullscreen();
                else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
@@ -90,9 +90,7 @@ const myVideoPlayer = (app) => {
           };
 
           $scope.getCurrentTime = () => {
-            console.log($scope.vId);
             const vid = element.find(`#${$scope.vId}`);
-            console.log($(vid)[0].currentTime);
             if (vid) {
                 return $(vid)[0].currentTime;
             }

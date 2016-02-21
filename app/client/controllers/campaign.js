@@ -32,12 +32,10 @@ const campaignController = () => {
     };
 
     $scope.getVUrl = () => {
-      return $scope.video.data || $scope.campaign.videoUrl || '';
+      return $scope.video.data || $scope.campaign.videoUrl;
     };
 
     $scope.myLoaded = (prop) => {
-      console.log('loaded');
-      console.log($scope.file);
       $scope.setFile($scope.file.data, $scope.file.file, prop);
       $scope.$apply();
     };
@@ -45,7 +43,6 @@ const campaignController = () => {
     $scope.setFile = (data, file, prop) => {
       $scope[prop].data = data;
       $scope[prop].file = file;
-      console.log(`Set ${prop}: ${$scope.video.data !== undefined}`);
     };
 
     $scope.myError = (e) => {
@@ -82,7 +79,6 @@ const campaignController = () => {
           $scope.incompleteFields.push(prop);
         }
       });
-      console.log($scope.incompleteFields);
       return !$scope.incompleteFields.length;
     };
 
@@ -96,7 +92,6 @@ const campaignController = () => {
       // Reset errors
       $scope.incompleteFields = [];
 
-      console.log(`Saving: ${JSON.stringify($scope.campaign)}`);
       if (doSubmit) {
         $scope.campaign.isComplete = $scope.validateForm();
       }
@@ -119,7 +114,7 @@ const campaignController = () => {
         })
         .error((data, status, header, config) => {
           console.log('error');
-          console.log(data, status, header, config);
+          console.log(data);
         });
     };
 
@@ -154,7 +149,6 @@ const campaignController = () => {
           console.log(data);
           console.log('Upload Done');
           $scope.campaign[prop] = `https://s3-us-west-2.amazonaws.com/${aws.data.s3_bucket}/${folder}/${$scope.PTApp.user()._id}/${file.name}`;
-          console.log($scope.campaign[prop]);
           LoadingService.setLoading(false);
           callback();
         })

@@ -96,13 +96,15 @@ section#campaignTitleSection {
   vertical-align: top;
   width: calc(100% - 140px);
 
+  > * {
+    margin-bottom: 15px;
+    padding: 5px 10px;
+  }
   > input {
     border-radius: 6px;
     border: 2px solid $campaignGrayLight;
     box-shadow: 0;
     display: block;
-    margin-bottom: 15px;
-    padding: 5px 10px;
   }
 
   .name-input {

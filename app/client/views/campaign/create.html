@@ -8,24 +8,29 @@
         <div class="campaign-logo m15-b br-6">
           <img ng-show="logo.data || campaign.logo" class="campaign-logo-img br-6" ng-src="{{logo.data || campaign.logo}}" />
           <!-- TODO: Abstract upload block into a directive?? -->
-          <div ng-show="!(logo.data || campaign.logo)" class="upload-block text-center clickable">
+          <div ng-if="!viewing" ng-show="!(logo.data || campaign.logo)" class="upload-block text-center clickable">
             <i class="fa fa-2x fa-camera"></i>
             <h5 class="pt-title">Add A Picture</h5>
           </div>
-          <input  type="file" id="photoUpload" accept="image/*" ng-class="{'incomplete': incompleteFields.includes('logo')}"
+          <input  ng-if="!viewing" type="file" id="photoUpload" accept="image/*" ng-class="{'incomplete': incompleteFields.includes('logo')}"
                   class="photo-upload-button clickable" ng-model="file"
                   file-select="data" file-loaded="myLoaded('logo')"
                   file-error="myError($error)" file-progress="myProgress($total,$loaded)" />
         </div>
-        <div class="campaign-titles-form">
-          <input type="text" class="name-input" ng-model="campaign.name" ng-class="{'incomplete': incompleteFields.includes('name')}" placeholder="Your startup's name"></input>
-          <input type="text" class="tagline-input" ng-model="campaign.tagline" ng-class="{'incomplete': incompleteFields.includes('tagline')}" placeholder="Your tagline"></input>
-          <input type="text" class="website-input" ng-model="campaign.website" ng-class="{'incomplete': incompleteFields.includes('website')}" placeholder="Your website"></input>
+        <div  class="campaign-titles-form">
+          <input ng-if="!viewing" type="text" class="name-input" ng-model="campaign.name" ng-class="{'incomplete': incompleteFields.includes('name')}" placeholder="Your startup's name"></input>
+          <input ng-if="!viewing" type="text" class="tagline-input" ng-model="campaign.tagline" ng-class="{'incomplete': incompleteFields.includes('tagline')}" placeholder="Your tagline"></input>
+          <input ng-if="!viewing" type="text" class="website-input" ng-model="campaign.website" ng-class="{'incomplete': incompleteFields.includes('website')}" placeholder="Your website"></input>
+
+          <div ng-if="viewing" class="name-input">{{campaign.name}}</div>
+          <div ng-if="viewing" class="tagline-input">"{{campaign.tagline}}"</div>
+          <a ng-if="viewing" ng-href="{{campaign.website}}" target="_blank" class="website-input">{{campaign.website}}</a>
         </div>
       </div>
       <div class="col-md-2 col-sm-4 campaign-form-buttons h100 p15">
-        <button class="btn btn-cancel">Cancel</button>
-        <button class="btn btn-save" ng-click="save(false)">Save Changes</button>
+        <button ng-if="!viewing" class="btn btn-cancel">Cancel</button>
+        <button ng-if="!viewing" class="btn btn-save" ng-click="save(false)">Save Changes</button>
+        <button ng-if="viewing && ownCampaign" ui-sref="app.campaign.edit" class="btn btn-cancel">Edit</button>
       </div>
       <div class="col-md-3 col-sm-12 battle-info text-center">
         <div class="row bi-top p30-t p30-b">
@@ -49,20 +54,39 @@
   </section>
   <section id="pitchSection" class="m30-b" ng-class="{ 'vid': getVUrl().length, 'no-vid': !getVUrl().length }">
     <div class="row m0">
-      <div class="col-md-9 col-sm-12 p0">
+      <div class="col-md-3 col-sm-12 p0 col-md-push-9">
+        <h5 class="pt-subtitle m30-b p30-l">
+          {{campaign.isComplete ? 'Related Pitches' : 'Tips'}}
+        </h5>
+        <div class="pitch-col right br-6 p30">
+          <div ng-if="!viewing">
+            <h5 class="pt-subtitle">Step 1</h5>
+            <h4 class="pt-title p30-b">Fill out your campaign info.</h4>
+            <h5 class="pt-subtitle">Step 2</h5>
+            <h4 class="pt-title p30-b">Write a little bit about your pitch and your mission.</h4>
+            <h5 class="pt-subtitle">Step 3</h5>
+            <h4 class="pt-title p30-b">Upload your pitch video and save your work!</h4>
+          </div>
+          <div ng-if="viewing">
+            <h4 class="pt-title">Add pitches here</h4>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-9 col-sm-12 p0 col-md-pull-3">
         <h5 class="pt-subtitle m30-b p30-l">
           Product pitch
         </h5>
-        <div class="pitch-col br-6 left p30">
+        <div class="pitch-col br-6 left p30 m30-b">
           <div class="p15-b">Pitch</div>
-          <div medium-editor bind-options="editorOptions" data-placeholder="Type your pitch. Highlight text to format." class="m30-b br-6 pitch-text" ng-model="campaign.pitchDescription"></div>
+          <div ng-if="!viewing" medium-editor bind-options="editorOptions" data-placeholder="Type your pitch. Highlight text to format." class="m30-b br-6 pitch-text" ng-model="campaign.pitchDescription"></div>
+          <div ng-if="viewing" class="m30-b" ng-bind-html="campaign.pitchDescription"></div>
           <div class="video-container br-6" ng-class="{'incomplete': incompleteFields.includes('videoUrl')}">
             <video-player v-url="getVUrl()" v-id="'newVid'"></video-player>
             <div ng-if="!viewing" class="upload-block text-center clickable">
               <i class="fa fa-5x fa-video-camera"></i>
               <h2 class="pt-title">Choose A Video</h2>
             </div>
-            <input  type="file" id="videoUpload" accept="video/*"
+            <input  ng-if="!viewing" type="file" id="videoUpload" accept="video/*"
                     class="photo-upload-button clickable"
                     ng-model="file" file-select="data" file-loaded="myLoaded('video')"
                     file-error="myError($error)" file-progress="myProgress($total,$loaded)" />
@@ -70,7 +94,7 @@
         </div>
         <div class="row m30-b">
           <div class="col-xs-12 p30-r m15-b" ng-if="!campaign.isComplete">
-            <button class="btn btn-green btn-tall" ng-click="save(true)">Submit</button>
+            <button class="btn btn-save btn-tall" ng-click="save(true)">Submit</button>
           </div>
           <!-- <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-0">
             <button class="btn btn-green" ng-click="">Preview</button>
@@ -80,19 +104,6 @@
           <div ng-class="{'hidden': !incompleteFields.length}">
             Please complete all fields before submitting.
           </div>
-        </div>
-      </div>
-      <div class="col-md-3 col-sm-12 p0">
-        <h5 class="pt-subtitle m30-b p30-l">
-          Tips <!-- This will be "top/related pitches" in edit/view -->
-        </h5>
-        <div class="pitch-col right br-6 p30">
-          <h5 class="pt-subtitle">Step 1</h5>
-          <h4 class="pt-title p30-b">Fill out your campaign info.</h4>
-          <h5 class="pt-subtitle">Step 2</h5>
-          <h4 class="pt-title p30-b">Write a little bit about your pitch and your mission.</h4>
-          <h5 class="pt-subtitle">Step 3</h5>
-          <h4 class="pt-title p30-b">Upload your pitch video and save your work!</h4>
         </div>
       </div>
     </div>
