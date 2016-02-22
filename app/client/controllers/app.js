@@ -15,8 +15,6 @@ const appController = (DIR) => {
           return $scope.PTApp.$storage.user;
         },
         campaign: () => {
-          console.log('here');
-          console.log($scope.PTApp.$storage.campaign);
           return $scope.PTApp.$storage.campaign;
         },
       };

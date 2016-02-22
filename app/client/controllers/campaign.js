@@ -4,7 +4,7 @@ const campaignController = () => {
     $scope, $state, aws, $http, LoadingService
   ) {
     // Instantiate Campaign.
-    $scope.campaign = $scope.PTApp.campaign();
+    $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.campaign()));
     $scope.video = {};
     $scope.logo = {};
     $scope.message = '';
@@ -31,18 +31,23 @@ const campaignController = () => {
       },
     };
 
+    $scope.resetCampaign = () => {
+      $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.campaign()));
+    };
+
     $scope.getVUrl = () => {
       return $scope.video.data || $scope.campaign.videoUrl;
     };
 
     $scope.myLoaded = (prop) => {
+      console.log($scope.file);
       $scope.setFile($scope.file.data, $scope.file.file, prop);
-      $scope.$apply();
     };
 
     $scope.setFile = (data, file, prop) => {
       $scope[prop].data = data;
       $scope[prop].file = file;
+      $scope.$apply();
     };
 
     $scope.myError = (e) => {
@@ -109,7 +114,7 @@ const campaignController = () => {
               $(this).addClass('hidden');
             });
           if ($scope.campaign.isComplete) {
-            $state.go('app.campaign.edit', { name: $scope.campaign.name });
+            $state.go('app.campaign.edit');
           }
         })
         .error((data, status, header, config) => {

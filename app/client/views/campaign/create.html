@@ -12,7 +12,7 @@
             <i class="fa fa-2x fa-camera"></i>
             <h5 class="pt-title">Add A Picture</h5>
           </div>
-          <input  ng-if="!viewing" type="file" id="photoUpload" accept="image/*" ng-class="{'incomplete': incompleteFields.includes('logo')}"
+          <input  type="file" ng-show="!viewing" id="photoUpload" accept="image/*" ng-class="{'incomplete': incompleteFields.includes('logo')}"
                   class="photo-upload-button clickable" ng-model="file"
                   file-select="data" file-loaded="myLoaded('logo')"
                   file-error="myError($error)" file-progress="myProgress($total,$loaded)" />
@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="col-md-2 col-sm-4 campaign-form-buttons h100 p15">
-        <button ng-if="!viewing" class="btn btn-cancel">Cancel</button>
+        <button ng-if="!viewing" class="btn btn-cancel" ng-click="resetCampaign()">Cancel</button>
         <button ng-if="!viewing" class="btn btn-save" ng-click="save(false)">Save Changes</button>
         <button ng-if="viewing && ownCampaign" ui-sref="app.campaign.edit" class="btn btn-cancel">Edit</button>
       </div>
@@ -86,7 +86,7 @@
               <i class="fa fa-5x fa-video-camera"></i>
               <h2 class="pt-title">Choose A Video</h2>
             </div>
-            <input  ng-if="!viewing" type="file" id="videoUpload" accept="video/*"
+            <input  ng-show="!viewing" type="file" id="videoUpload" accept="video/*"
                     class="photo-upload-button clickable"
                     ng-model="file" file-select="data" file-loaded="myLoaded('video')"
                     file-error="myError($error)" file-progress="myProgress($total,$loaded)" />

@@ -132,7 +132,7 @@ PitchTanks.run(
               return $http({
                 method: 'GET',
                 url: `/api/getCampaignByName/${$stateParams.name}`,
-              });
+              }).data;
             }
             console.log($stateParams.campaign);
             return $stateParams.campaign;
@@ -141,13 +141,16 @@ PitchTanks.run(
       },
       controller: [
         '$http', '$state', '$scope', 'foundCampaign',
-        function ($http, $state, $scope, foundCampaign) { // eslint-disable-line
-          if (!foundCampaign.data.isComplete &&                      // Require complete
-              foundCampaign.data.user !== $scope.PTApp.user()._id) { // allow owner
+        function ($http, $state, $scope, foundCampaign) {       // eslint-disable-line
+          if (!foundCampaign.isComplete &&                      // Require complete
+              foundCampaign.user !== $scope.PTApp.user()._id) { // allow owner
             $state.go('app.pitches');
+          } else if (!foundCampaign.isComplete && foundCampaign.user === $scope.PTApp.user()._id) {
+            $state.go('app.campaign.create');
           }
-          $scope.campaign = foundCampaign.data;
+          $scope.campaign = foundCampaign;
           $scope.viewing = true;
+          $scope.ownCampaign = $scope.PTApp.campaign().user === $scope.campaign.user;
           $scope.getVUrl = () => {
             return $scope.campaign.videoUrl;
           };
