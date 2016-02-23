@@ -163,6 +163,27 @@ PitchTanks.run(
           $scope.getVUrl = () => {
             return $scope.campaign.videoUrl;
           };
+
+          // TODO: Figure out a better way to manage the campaign controllers.
+
+          // Upvote handling
+          $scope.userCanUpvote = () => {
+            return !$scope.PTApp.user().upvotes.includes($scope.campaign._id);
+          };
+
+          $scope.userHasUpvoted = !$scope.userCanUpvote();
+
+          $scope.voteUp = () => {
+            $http.post(`/api/upvote/${$scope.campaign._id}/${$scope.PTApp.user()._id}`)
+              .success((data) => {
+                console.log(data);
+                $scope.userHasUpvoted = true;
+                $scope.PTApp.$storage.user = data.user;
+                $scope.PTApp.$storage.campaign = data.campaign;
+                $scope.campaign = $scope.PTApp.campaign();
+                $scope.user = $scope.PTApp.user();
+              });
+          };
         },
       ],
     })
@@ -204,11 +225,6 @@ PitchTanks.run(
       controller: ['$state', '$scope', 'campaigns',
         function($state, $scope, campaigns) { // eslint-disable-line
           $scope.campaigns = campaigns;
-
-          $scope.getPrettyDate = (date) => {
-            const d = new Date(date);
-            return [(d.getMonth() + 1), d.getDate(), (d.getFullYear() % 100)].join('/');
-          };
       }],
     });
   },

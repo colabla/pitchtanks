@@ -7,16 +7,39 @@ const campaignController = () => {
     $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.campaign()));
     $scope.video = {};
     $scope.logo = {};
+    $scope.thumbnail = {};
+
+    // Upvote handling
+    $scope.userCanUpvote = () => {
+      return !$scope.PTApp.user().upvotes.includes($scope.campaign._id);
+    };
+
+    $scope.userHasUpvoted = !$scope.userCanUpvote();
+
+    $scope.voteUp = () => {
+      $http.post(`/api/upvote/${$scope.campaign._id}/${$scope.PTApp.user()._id}`)
+        .success((data) => {
+          console.log(data);
+          $scope.userHasUpvoted = true;
+          $scope.PTApp.$storage.user = data.user;
+          $scope.PTApp.$storage.campaign = data.campaign;
+          $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.campaign()));
+        });
+    };
+
+    // Are we editing?
+    $scope.editing = $scope.campaign.isComplete && $scope.campaign.user === $scope.PTApp.user()._id;
+
+    // Container for most recently uploaded file
+    $scope.file = {};
+
+    // Message handling
     $scope.messages = {
       success: {
         message: 'Save success!',
         class: 'success',
       },
     };
-    $scope.editing = $scope.campaign.isComplete && $scope.campaign.user === $scope.PTApp.user()._id;
-
-    // Container for most recently uploaded file
-    $scope.file = {};
 
     $scope.showMessage = (m) => {
       $scope.message = m.message;
@@ -89,9 +112,11 @@ const campaignController = () => {
         return;
       }
       $scope.upload($scope.logo.file, 'campaignLogos', 'logo', () => {
-        $scope.upload($scope.video.file, 'campaignVideos', 'videoUrl', () => {
-          $scope.campaign.videoUploadDate = Date.now();
-          $scope.saveCampaign(doSubmit);
+        $scope.upload($scope.thumbnail.file, 'campaignThumbnails', 'thumbnail', () => {
+          $scope.upload($scope.video.file, 'campaignVideos', 'videoUrl', () => {
+            $scope.campaign.videoUploadDate = Date.now();
+            $scope.saveCampaign(doSubmit);
+          });
         });
       });
     };
@@ -105,6 +130,7 @@ const campaignController = () => {
         'website',
         'videoUrl',
         'logo',
+        'thumbnail',
       ].forEach((prop) => {
         if (!($scope.campaign[prop] && $scope.campaign[prop].length)) {
           $scope.incompleteFields.push(prop);
@@ -125,11 +151,13 @@ const campaignController = () => {
 
       if (doSubmit) {
         $scope.campaign.isComplete = $scope.validateForm();
+        console.log($scope.campaign.videoUploadDate);
       }
       $http.post('/api/saveCampaign', $scope.campaign)
         .success((data) => {
           $scope.PTApp.$storage.campaign = JSON.parse(JSON.stringify(data));
-          $scope.campaign = $scope.PTApp.$storage.campaign;
+          $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.$storage.campaign));
+          console.log($scope.campaign.videoUploadDate);
 
           if (!$scope.incompleteFields.length) {
             $scope.showMessage($scope.messages.success);

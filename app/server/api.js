@@ -127,5 +127,31 @@ module.exports = (db) => {
         return res.status(200).send(campaigns);
       });
     },
+
+    upvote: (req, res) => {
+      db.Campaign.findOne({ _id: req.params.campaign }, (err, campaign) => {
+        if (err) {
+          console.log(err);
+          return done(err);
+        }
+
+        campaign.upvotes.push(req.params.user);
+        campaign.save((err) => {
+          if (err) {
+            throw err;
+          }
+          db.User.findOne({ _id: req.params.user }, (err, user) => {
+            user.upvotes.push(req.params.campaign);
+            console.log(user.upvotes);
+            user.save((err) => {
+              if (err) {
+                throw err;
+              }
+              res.status(200).send({ user, campaign });
+            });
+          });
+        });
+      });
+    },
   };
 };

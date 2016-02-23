@@ -62,6 +62,10 @@ section#campaignTitleSection {
   &:hover {
     color: rgba(255,255,255,1);
   }
+
+  .pt-title {
+    color: rgba(255,255,255,1) !important;
+  }
 }
 
 .photo-upload-button {
@@ -177,21 +181,22 @@ section#campaignTitleSection {
 
 }
 
-section#pitchSection {
-  .pitch-col {
-    width: 100%;
-    background-color: rgba(255,255,255,1);
-    @include boxShadowHelper(1);
-    &.left {
-      width: calc(100% - 15px);
-    }
+.pitch-col {
+  width: 100%;
+  background-color: rgba(255,255,255,1);
+  @include boxShadowHelper(1);
+  &.left {
+    width: calc(100% - 15px);
+  }
 
-    &.right {
-      .pt-title {
-        color: $campaignGrayDark;
-      }
+  &.right {
+    .pt-title {
+      color: $campaignGrayDark;
     }
   }
+}
+
+section#pitchSection {
 
   .pitch-text {
     height: 300px;

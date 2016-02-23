@@ -17,6 +17,7 @@ const User = mongoose.model('User', {
 	lastName: { type: String },
 	email: { type: String },
 	campaign: { type: String },
+	upvotes: { type: Array },
 	facebook: {
 		id: { type: String },
 		token: { type: String },
