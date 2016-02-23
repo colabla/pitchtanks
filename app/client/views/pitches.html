@@ -8,7 +8,7 @@
   <div ng-repeat="campaign in campaigns | orderBy: 'upvotes.length' track by $index">
     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 vs-panel">
       <div class="panel panel-default">
-        <div class="panel-body"><a ui-sref="app.campaign.view({name: campaign.name})"><img ng-src="{{campaign.thumbnail}}" class="img-responsive"/></a><img src="{{campaign.logo}}" class="company-logo img-responsive"/>
+        <div class="panel-body"><a ui-sref="app.campaign.view({name: campaign.name})"><img ng-src="{{campaign.thumbnail || '/public/images/pt-2-square.png'}}" class="img-responsive"/></a><img src="{{campaign.logo}}" class="company-logo img-responsive"/>
           <h4><a ui-sref="app.campaign.view({name: campaign.name})">{{campaign.name}}</a></h4>
           <div>"{{campaign.tagline}}"</div>
           <div class="metadata"><span class="thumbsup pull-right"><i class="fa fa-thumbs-o-up"></i> {{campaign.upvotes.length}}</span><span class="clock pull-left"><i class="fa fa-clock-o"></i> {{PTApp.getPrettyDate(campaign.joinDate)}}</span><span class="clearfix"></span></div>
