@@ -68,6 +68,9 @@ PitchTanks.run(
     .state('app.campaign', {
       abstract: true,
       url: 'campaign/',
+      params: {
+        showMessage: false,
+      },
       template: `<div ui-view></div>`,
       onEnter: ['$state', '$localStorage', '$sessionStorage',
         function($state, $localStorage, $sessionStorage) { // eslint-disable-line
@@ -81,6 +84,9 @@ PitchTanks.run(
           }
       }],
       resolve: {
+        showMessage: ['$stateParams', ($stateParams) => {
+          return $stateParams.showMessage;
+        }],
         aws: ['$http', ($http) => {
           return $http({
             method: 'GET',
@@ -100,7 +106,7 @@ PitchTanks.run(
       onEnter: ['$state', '$localStorage', '$sessionStorage',
         function($state, $localStorage, $sessionStorage) { // eslint-disable-line
           if ($localStorage.campaign.isComplete) {
-            $state.go('app.campaign.edit', { name: $localStorage.campaign.name });
+            $state.go('app.campaign.edit');
           }
         }],
     })

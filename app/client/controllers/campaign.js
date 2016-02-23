@@ -1,17 +1,38 @@
 const campaignController = () => {
-  return ['$scope', '$state', 'aws', '$http', 'LoadingService',
+  return ['$scope', '$state', 'aws', '$http', 'LoadingService', 'showMessage',
   function (                             // eslint-disable-line func-names
-    $scope, $state, aws, $http, LoadingService
+    $scope, $state, aws, $http, LoadingService, showMessage
   ) {
     // Instantiate Campaign.
     $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.campaign()));
     $scope.video = {};
     $scope.logo = {};
-    $scope.message = '';
+    $scope.messages = {
+      success: {
+        message: 'Save success!',
+        class: 'success',
+      },
+    };
     $scope.editing = $scope.campaign.isComplete && $scope.campaign.user === $scope.PTApp.user()._id;
 
     // Container for most recently uploaded file
     $scope.file = {};
+
+    $scope.showMessage = (m) => {
+      $scope.message = m.message;
+      $('.message-section')
+        .removeClass('hidden animated fadeOut')
+        .addClass(`animated fadeOut ${m.class}`)
+        .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+        function () { // eslint-disable-line
+          $(this).removeClass('fadeOut animated');
+          $(this).addClass('hidden');
+        });
+    };
+
+    if (showMessage) {
+      $scope.showMessage($scope.messages.success);
+    }
 
     $scope.incompleteFields = [];
 
@@ -33,6 +54,7 @@ const campaignController = () => {
 
     $scope.resetCampaign = () => {
       $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.campaign()));
+      $state.go('app.campaign.view', { name: $scope.campaign.name, campaign: $scope.campaign });
     };
 
     $scope.getVUrl = () => {
@@ -108,17 +130,12 @@ const campaignController = () => {
         .success((data) => {
           $scope.PTApp.$storage.campaign = JSON.parse(JSON.stringify(data));
           $scope.campaign = $scope.PTApp.$storage.campaign;
-          $scope.message = `Save success!`;
-          $('.message-section')
-            .removeClass('hidden animated fadeOut')
-            .addClass('animated fadeOut')
-            .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
-            function () { // eslint-disable-line
-              $(this).removeClass('fadeOut animated');
-              $(this).addClass('hidden');
-            });
+
+          if (!$scope.incompleteFields.length) {
+            $scope.showMessage($scope.messages.success);
+          }
           if ($scope.campaign.isComplete) {
-            $state.go('app.campaign.edit');
+            $state.go('app.campaign.edit', { showMessage: true });
           }
         })
         .error((data, status, header, config) => {

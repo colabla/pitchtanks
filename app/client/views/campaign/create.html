@@ -28,8 +28,8 @@
         </div>
       </div>
       <div class="col-md-2 col-sm-4 campaign-form-buttons h100 p15">
-        <button ng-if="!viewing" class="btn btn-cancel" ng-click="resetCampaign()">Cancel</button>
-        <button ng-if="!viewing" class="btn btn-save" ng-click="save(false)">Save Changes</button>
+        <button ng-if="!viewing && campaign.isComplete" class="btn btn-cancel" ng-click="resetCampaign()">Cancel</button>
+        <button ng-if="!viewing && campaign.isComplete" class="btn btn-save" ng-click="save(false)">Save Changes</button>
         <button ng-if="viewing && ownCampaign" ui-sref="app.campaign.edit" class="btn btn-cancel">Edit</button>
       </div>
       <div class="col-md-3 col-sm-12 battle-info text-center">
@@ -59,7 +59,7 @@
           {{campaign.isComplete ? 'Related Pitches' : 'Tips'}}
         </h5>
         <div class="pitch-col right br-6 p30">
-          <div ng-if="!viewing">
+          <div ng-if="!campaign.isComplete">
             <h5 class="pt-subtitle">Step 1</h5>
             <h4 class="pt-title p30-b">Fill out your campaign info.</h4>
             <h5 class="pt-subtitle">Step 2</h5>
@@ -67,7 +67,7 @@
             <h5 class="pt-subtitle">Step 3</h5>
             <h4 class="pt-title p30-b">Upload your pitch video and save your work!</h4>
           </div>
-          <div ng-if="viewing">
+          <div ng-if="campaign.isComplete">
             <h4 class="pt-title">Add pitches here</h4>
           </div>
         </div>
@@ -93,12 +93,12 @@
           </div>
         </div>
         <div class="row m30-b">
-          <div class="col-xs-12 p30-r m15-b" ng-if="!campaign.isComplete">
-            <button class="btn btn-save btn-tall" ng-click="save(true)">Submit</button>
+          <div class="col-xs-6 m15-b" ng-if="!campaign.isComplete">
+            <button class="btn btn-save btn-tall" ng-click="save(false)">Save Changes</button>
           </div>
-          <!-- <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-0">
-            <button class="btn btn-green" ng-click="">Preview</button>
-          </div> -->
+          <div class="col-xs-6 p30-r m15-b" ng-if="!campaign.isComplete">
+            <button class="btn btn-green btn-tall" ng-click="save(true)">Submit</button>
+          </div>
         </div>
         <div class="col-xs-12 error-wrapper text-center">
           <div ng-class="{'hidden': !incompleteFields.length}">

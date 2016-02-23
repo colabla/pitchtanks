@@ -10,9 +10,12 @@ $campaignGreen:#359F00;
   top: 80px;
   padding: 8px;
   z-index: 2;
-  background-color: $campaignGreen;
   font-weight: 700;
   @include boxShadowHelper(2);
+
+  &.success {
+    background-color: $campaignGreen;
+  }
 
   &.error {
     background-color: darken(#FF0000, 10%);
