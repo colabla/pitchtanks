@@ -62,6 +62,10 @@ const campaignController = () => {
 
     // Uploads files to AWS and saves campaign data.
     $scope.save = (doSubmit) => {
+      // Prevent unauthorized saving
+      if ($scope.campaign.user !== $scope.PTApp.campaign().user) {
+        return;
+      }
       $scope.upload($scope.logo.file, 'campaignLogos', 'logo', () => {
         $scope.upload($scope.video.file, 'campaignVideos', 'videoUrl', () => {
           $scope.campaign.videoUploadDate = Date.now();

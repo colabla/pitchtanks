@@ -1,6 +1,5 @@
-const api = require('./api');
-
 module.exports = (app, passport, db, directory) => {
+  const api = (require('./api'))(db);
   // =====================================
   // FACEBOOK ROUTES =====================
   // =====================================
@@ -45,9 +44,10 @@ module.exports = (app, passport, db, directory) => {
 
   app.get('/api/user', api.user);
   app.get('/api/aws', api.aws);
-  app.get('/api/getUserCampaign/:user', api.getUserCampaign(db));
-  app.get('/api/getCampaignByName/:name', api.getCampaignByName(db));
-  app.post('/api/saveCampaign', api.saveCampaign(db));
+  app.get('/api/getUserCampaign/:user', api.getUserCampaign);
+  app.get('/api/getCampaignByName/:name', api.getCampaignByName);
+  app.get('/api/getCampaigns', api.getCampaigns);
+  app.post('/api/saveCampaign', api.saveCampaign);
 
   // =====================================
   // END - API ROUTES ====================

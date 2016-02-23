@@ -85,6 +85,8 @@ PitchTanks.run(
           return $http({
             method: 'GET',
             url: '/api/aws',
+          }).then((data) => {
+            return data;
           });
         }],
       },
@@ -132,16 +134,17 @@ PitchTanks.run(
               return $http({
                 method: 'GET',
                 url: `/api/getCampaignByName/${$stateParams.name}`,
-              }).data;
+              }).then((data) => {
+                return data.data;
+              });
             }
-            console.log($stateParams.campaign);
             return $stateParams.campaign;
           },
         ],
       },
       controller: [
-        '$http', '$state', '$scope', 'foundCampaign',
-        function ($http, $state, $scope, foundCampaign) {       // eslint-disable-line
+        '$http', '$state', '$scope', 'foundCampaign', '$stateParams',
+        function ($http, $state, $scope, foundCampaign, $stateParams) {       // eslint-disable-line
           if (!foundCampaign.isComplete &&                      // Require complete
               foundCampaign.user !== $scope.PTApp.user()._id) { // allow owner
             $state.go('app.pitches');
@@ -179,7 +182,28 @@ PitchTanks.run(
 
     .state('app.pitches', {
       url: 'pitches',
+      resolve: {
+        campaigns: ['$http', ($http) => {
+          return $http({
+            method: 'GET',
+            url: '/api/getCampaigns',
+          }).then((data) => {
+            console.log(data);
+            console.log(JSON.stringify(data));
+            return data.data;
+          });
+        }],
+      },
       templateUrl: `${DIR}/pitches.html`,
+      controller: ['$state', '$scope', 'campaigns',
+        function($state, $scope, campaigns) { // eslint-disable-line
+          $scope.campaigns = campaigns;
+
+          $scope.getPrettyDate = (date) => {
+            const d = new Date(date);
+            return [(d.getMonth() + 1), d.getDate(), (d.getFullYear() % 100)].join('/');
+          };
+      }],
     });
   },
 ]);

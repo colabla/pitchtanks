@@ -35,7 +35,7 @@ const Campaign = mongoose.model('Company', {
 	isComplete: { type: Boolean }, 				// If the campaign has been completed
 	name: { type: String },								// Name of the startup
 	tagline: { type: String },						// Tagline of startup
-	joinDate: { type: String },						// Date campaign was completed
+	joinDate: { type: Date },							// Date campaign was completed
 	city: { type: String },								// City in which startup is based.
 	market: { type: String },							// Startup's market
 	website: { type: String },						// Startup's website
