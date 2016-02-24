@@ -98,15 +98,31 @@ section#campaignTitleSection {
   }
 }
 
+.pt-select {
+  border: 2px solid $campaignGrayLight;
+  width: 40%;
+  background-color: #fff;
+}
+
 .campaign-titles-form {
   display: inline-block;
   vertical-align: top;
   width: calc(100% - 140px);
 
-  > * {
-    margin-bottom: 15px;
-    padding: 5px 10px;
+
+  &.editing {
+    margin-top: -15px;
+    > * {
+      margin-bottom: 15px;
+      padding: 5px 10px;
+    }
   }
+
+  &.viewing > * {
+    margin-bottom: 5px;
+    padding: 0px 10px 5px 10px;
+  }
+
   > input {
     border-radius: 6px;
     border: 2px solid $campaignGrayLight;
@@ -131,12 +147,18 @@ section#campaignTitleSection {
     font-size: 16px;
   }
 
+  .market-input {
+    font-size: 13px;
+    color: $campaignGrayLight;
+  }
+
   .website-input {
     @include placeholder {
       color: $campaignBlue;
     }
-    font-size: 12px;
+    font-size: 14px;
     color: $campaignBlue;
+    width: 60%;
   }
 }
 
@@ -199,6 +221,7 @@ section#campaignTitleSection {
 section#pitchSection {
 
   .pitch-text {
+    border: 2px solid transparent;
     height: 300px;
     border: 2px solid $campaignGrayLight;
     padding: 15px;

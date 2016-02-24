@@ -21,6 +21,9 @@ const appController = (DIR) => {
           const d = new Date(date);
           return [(d.getMonth() + 1), d.getDate(), (d.getFullYear() % 100)].join('/');
         },
+        marketOptions: [
+          'SaaS',
+        ],
       };
       $scope.templates = {
         header: `${DIR}/shared/header.html`,

@@ -1,3 +1,4 @@
+'use strict';
 const campaignController = () => {
   return ['$scope', '$state', 'aws', '$http', 'LoadingService', 'showMessage',
   function (                             // eslint-disable-line func-names
@@ -8,6 +9,8 @@ const campaignController = () => {
     $scope.video = {};
     $scope.logo = {};
     $scope.thumbnail = {};
+
+    console.log($scope.PTApp.marketOptions);
 
     // Upvote handling
     $scope.userCanUpvote = () => {
@@ -86,6 +89,7 @@ const campaignController = () => {
 
     $scope.myLoaded = (prop) => {
       console.log($scope.file);
+      console.log(prop);
       $scope.setFile($scope.file.data, $scope.file.file, prop);
     };
 
@@ -125,51 +129,53 @@ const campaignController = () => {
     $scope.validateForm = () => {
       [
         'name',
-        'pitchDescription',
         'tagline',
         'website',
         'videoUrl',
         'logo',
         'thumbnail',
+        'market',
       ].forEach((prop) => {
         if (!($scope.campaign[prop] && $scope.campaign[prop].length)) {
           $scope.incompleteFields.push(prop);
         }
       });
+      // Special case for html
+      if ($scope.campaign.pitchDescription.replace(/<br>/, '').length <= 7) {
+        console.log($scope.campaign.pitchDescription);
+        $scope.incompleteFields.push('pitchDescription');
+      }
       return !$scope.incompleteFields.length;
-    };
-
-    $scope.proceed = () => {
-      // When profile is complete go to next state.
-      // When this is abstracted, we can send user from create -> edit, edit -> view
-      $state.go('app.campaign.edit');
     };
 
     $scope.saveCampaign = (doSubmit) => {
       // Reset errors
+      let formIsValid;
       $scope.incompleteFields = [];
 
-      if (doSubmit) {
-        $scope.campaign.isComplete = $scope.validateForm();
-        console.log($scope.campaign.videoUploadDate);
+      if (doSubmit || $scope.campaign.isComplete) {
+        formIsValid = $scope.validateForm();
+        $scope.campaign.isComplete = $scope.campaign.isComplete || formIsValid;
       }
-      $http.post('/api/saveCampaign', $scope.campaign)
-        .success((data) => {
-          $scope.PTApp.$storage.campaign = JSON.parse(JSON.stringify(data));
-          $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.$storage.campaign));
-          console.log($scope.campaign.videoUploadDate);
+      if (formIsValid) {
+        $http.post('/api/saveCampaign', $scope.campaign)
+          .success((data) => {
+            $scope.PTApp.$storage.campaign = JSON.parse(JSON.stringify(data));
+            $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.$storage.campaign));
+            console.log($scope.campaign.videoUploadDate);
 
-          if (!$scope.incompleteFields.length) {
-            $scope.showMessage($scope.messages.success);
-          }
-          if ($scope.campaign.isComplete) {
-            $state.go('app.campaign.edit', { showMessage: true });
-          }
-        })
-        .error((data, status, header, config) => {
-          console.log('error');
-          console.log(data);
-        });
+            if (!$scope.incompleteFields.length) {
+              $scope.showMessage($scope.messages.success);
+            }
+            if ($scope.campaign.isComplete) {
+              $state.go('app.campaign.edit', { showMessage: true });
+            }
+          })
+          .error((data, status, header, config) => {
+            console.log('error');
+            console.log(data);
+          });
+      }
     };
 
     $scope.upload = (file, folder, prop, callback) => {
