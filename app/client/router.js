@@ -62,6 +62,30 @@ PitchTanks.run(
     })
 
     /* *****************
+    ***** SETTINGS *****
+    ***************** */
+
+    .state('app.settings', {
+      url: 'settings',
+      templateUrl: `${DIR}/settings.html`,
+      resolve: {
+        aws: ['$http', ($http) => {
+          return $http({
+            method: 'GET',
+            url: '/api/aws',
+          }).then((data) => {
+            return data;
+          });
+        }],
+      },
+      controller: settingsController(),
+    })
+
+    /* *********************
+    ***** END SETTINGS *****
+    ********************* */
+
+    /* *****************
     ***** CAMPAIGN *****
     ***************** */
 

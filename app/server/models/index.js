@@ -13,6 +13,7 @@ if (process.env.NODE_ENV === 'development') {
 mongoose.connect(uri);
 
 const User = mongoose.model('User', {
+	profileImage: { type: String },
 	firstName: { type: String },
 	lastName: { type: String },
 	email: { type: String },

@@ -48,6 +48,7 @@ module.exports = (app, passport, db, directory) => {
   app.get('/api/getCampaignByName/:name', api.getCampaignByName);
   app.get('/api/getCampaigns', api.getCampaigns);
   app.post('/api/saveCampaign', api.saveCampaign);
+  app.post('/api/saveUser', api.saveUser);
   app.post('/api/upvote/:campaign/:user', api.upvote);
 
   // =====================================

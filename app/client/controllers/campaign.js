@@ -37,6 +37,7 @@ const campaignController = () => {
     $scope.file = {};
 
     // Message handling
+    // TODO: Make into a service!
     $scope.messages = {
       success: {
         message: 'Save success!',

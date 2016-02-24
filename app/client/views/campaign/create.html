@@ -12,6 +12,7 @@
             <i class="fa fa-2x fa-camera"></i>
             <h5 class="pt-title">Add A Picture</h5>
           </div>
+          <!-- TODO: Make this a directive! -->
           <input  type="file" ng-show="!viewing" id="photoUpload" accept="image/*"
                   class="photo-upload-button clickable" ng-model="file"
                   file-select="data" file-loaded="myLoaded('logo')"

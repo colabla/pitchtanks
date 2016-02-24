@@ -1,0 +1,43 @@
+<div style="margin-top:30px;" class="row">
+  <div class="message-section text-center animated hidden">
+    <h5 class="pt-subtitle">{{message}}</h5>
+  </div>
+  <div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 signup-box br-6">
+    <div class="row m0">
+      <div class="col-xs-10 col-xs-offset 1 signup-box-inner">
+        <h2 class="pt-title m15-b text-center">Settings</h2>
+        <h5 class="pt-subtitle m30-b text-center">Update Your profile</h5>
+        <div class="row">
+          <div class="col-xs-12 col-sm-4 m30-b text-center">
+            <img ng-show="file.data || user.profileImage" class="profile-image br-circle" ng-src="{{file.data || user.profileImage}}" />
+            <div ng-show="!(file.data || user.profileImage)" ng-class="{'incomplete': incompleteFields.includes('file')}" class="settings-upload br-circle clickable">
+              <i class="fa fa-2x fa-camera"></i>
+              <h5 class="pt-title">Choose a Profile Image</h5>
+            </div>
+            <input  type="file" id="profileUpload" accept="image/*"
+                    class="photo-upload-button clickable br-circle" ng-model="file"
+                    file-select="data" file-loaded="myLoaded()"
+                    file-error="myError($error)" file-progress="myProgress($total,$loaded)" />
+            <div class="small-text">100 x 100 px recommended</div>
+          </div>
+          <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-0 m15-b">
+            <div class="settings-label">Name</div>
+            <input type="text" class="settings-input br-6 m15-b" ng-model="username" ng-class="{'incomplete': incompleteFields.includes('name')}" placeholder="Your name"></input>
+            <div class="settings-label">Email</div>
+            <input type="email" class="settings-input br-6 m15-b" ng-model="user.email" ng-class="{'incomplete': incompleteFields.includes('email')}" placeholder="Your email"></input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 m15-b">
+            <button class="btn btn-green br-rounded" ng-click="save()">Save Changes</button>
+          </div>
+          <div class="col-xs-12 error-wrapper text-center">
+            <div ng-class="{'hidden': !incompleteFields.length}">
+              Please complete all fields before saving.
+            </div>
+          </div>
+        </dv>
+      </div>
+    </div>
+  </div>
+</div>

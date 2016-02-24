@@ -12,6 +12,38 @@ module.exports = (db) => {
       res.json(aws(process.env.NODE_ENV));
     },
 
+    saveUser: (req, res) => {
+      db.User.findOne({ _id: req.body._id }, (err, user) => {
+        // if there is an error, stop everything and return that
+        // ie an error connecting to the database
+        if (err) {
+          return done(err);
+        }
+        // if the user is found, then log them in
+        if (user) {
+          console.log(`FOUND: ${JSON.stringify(user)}`);
+
+          user.profileImage = req.body.profileImage;
+          user.firstName = req.body.firstName;
+          user.lastName = req.body.lastName;
+          user.email = req.body.email;
+        } else {
+          console.log('Did NOT find user.');
+        }
+
+        // save our user to the database
+        user.save((err) => {
+          if (err) {
+            throw err;
+          }
+
+          // if successful, return the new campaign
+          console.log('Server Save Success');
+          res.status(201).json(user);
+        });
+      });
+    },
+
     saveCampaign: (req, res) => {
       console.log(JSON.stringify(req.body));
       let someCampaign;

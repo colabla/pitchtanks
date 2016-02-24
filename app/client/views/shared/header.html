@@ -20,9 +20,7 @@
         <li ng-if="!PTApp.user()"><a ui-sref=".login" class="signup">Sign up</a></li>
         <!-- <li><a ui-sref=".login">Register</a></li> -->
         <li ng-if="PTApp.user()">
-          <a ui-sref=".profile" class="nav-profile-img">
-            <div class="profile-img br-circle"></div>
-          </a>
+          <img ng-src="{{PTApp.user().profileImage || '/public/images/pt-2-square.png'}}" class="img-responsive nav-profile-img br-circle"/>
         </li>
         <li ng-if="PTApp.user()">
           <a id="navDropdown" data-toggle="dropdown" class="clickable" aria-haspopup="true" aria-expanded="true">
@@ -35,7 +33,7 @@
             </li>
             <li role="separator" class="divider"></li>
             <li><a class="clickable" ng-click="logout()">Logout</a></li>
-            <li><a href="#">Settings</a></li>
+            <li><a ui-sref=".settings">Settings</a></li>
           </ul>
         </li>
       </ul>

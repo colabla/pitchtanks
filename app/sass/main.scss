@@ -1,3 +1,4 @@
+@import 'variables';
 @import 'mixins';
 @import 'bootstrap';
 @import 'header';
@@ -5,6 +6,7 @@
 @import 'home';
 @import 'campaign';
 @import 'directives';
+@import 'settings';
 
 body {
   padding-top: 100px;
@@ -16,6 +18,10 @@ body {
 
 .br-circle {
   border-radius: 50%;
+}
+
+.br-rounded {
+    border-radius: 40px;
 }
 
 .br-6 {

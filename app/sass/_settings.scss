@@ -1,0 +1,36 @@
+.settings-upload {
+  width: 100px;
+  height: 100px;
+  background-color: $campaignGrayDark;
+  color: #fff;
+  position: relative;
+  padding-top: 10px;
+  margin: 0 auto;
+  h5 {
+    font-size: 12px;
+  }
+}
+
+.profile-image {
+  width: 100px;
+  height: 100px;
+}
+
+.settings-label {
+  font-size: 12px;
+  color: $campaignGrayMedium;
+}
+
+.settings-input {
+  margin: 5px 0;
+  border: 2px solid $campaignGrayLight;
+  width: 100%;
+  box-shadow: none;
+  padding: 5px 10px;
+}
+
+.small-text {
+  padding-top: 5px;
+  font-size: 10px;
+  color: $campaignGrayMedium;
+}
