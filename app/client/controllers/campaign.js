@@ -30,10 +30,9 @@ const campaignController = () => {
     $scope.userHasUpvoted = !$scope.userCanUpvote();
 
     $scope.voteUp = () => {
+      $scope.userHasUpvoted = true;
       $http.post(`/api/upvote/${$scope.campaign._id}/${$scope.PTApp.user()._id}`)
         .success((data) => {
-          console.log(data);
-          $scope.userHasUpvoted = true;
           $scope.PTApp.$session.user = data.user;
           $scope.PTApp.$storage.campaign = data.campaign;
           $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.campaign()));
