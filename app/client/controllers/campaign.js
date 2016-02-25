@@ -37,6 +37,11 @@ const campaignController = () => {
           $scope.PTApp.$session.user = data.user;
           $scope.PTApp.$storage.campaign = data.campaign;
           $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.campaign()));
+          for (let i = 0; i < $scope.topCampaigns.length; i++) {
+            if ($scope.topCampaigns[i].user === $scope.campaign.user) {
+              $scope.indexInTop = i;
+            }
+          }
         });
     };
 
