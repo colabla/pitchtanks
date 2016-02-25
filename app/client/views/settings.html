@@ -9,8 +9,8 @@
         <h5 class="pt-subtitle m30-b text-center">Update Your profile</h5>
         <div class="row">
           <div class="col-xs-12 col-sm-4 m30-b text-center">
-            <img ng-show="file.data || user.profileImage" class="profile-image br-circle" ng-src="{{file.data || user.profileImage}}" />
-            <div ng-show="!(file.data || user.profileImage)" ng-class="{'incomplete': incompleteFields.includes('file')}" class="settings-upload br-circle clickable">
+            <img ng-show="file.data || userSettings.profileImage" class="profile-image br-circle" ng-src="{{file.data || userSettings.profileImage}}" />
+            <div ng-show="!(file.data || userSettings.profileImage)" ng-class="{'incomplete': incompleteFields.includes('file')}" class="settings-upload br-circle clickable">
               <i class="fa fa-2x fa-camera"></i>
               <h5 class="pt-title">Choose a Profile Image</h5>
             </div>
@@ -24,7 +24,7 @@
             <div class="settings-label">Name</div>
             <input type="text" class="settings-input br-6 m15-b" ng-model="username" ng-class="{'incomplete': incompleteFields.includes('name')}" placeholder="Your name"></input>
             <div class="settings-label">Email</div>
-            <input type="email" class="settings-input br-6 m15-b" ng-model="user.email" ng-class="{'incomplete': incompleteFields.includes('email')}" placeholder="Your email"></input>
+            <input type="email" class="settings-input br-6 m15-b" ng-model="userSettings.email" ng-class="{'incomplete': incompleteFields.includes('email')}" placeholder="Your email"></input>
           </div>
         </div>
         <div class="row">

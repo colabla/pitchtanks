@@ -1,21 +1,31 @@
 'use strict';
 const campaignController = () => {
-  return ['$scope', '$state', 'aws', '$http', 'LoadingService', 'showMessage',
+  return ['$scope', '$state', 'aws', '$http', 'LoadingService', 'showMessage', 'topCampaigns', 'TopCampaigns', // eslint-disable-line
   function (                             // eslint-disable-line func-names
-    $scope, $state, aws, $http, LoadingService, showMessage
+    $scope, $state, aws, $http, LoadingService, showMessage, topCampaigns, TopCampaigns
   ) {
     // Instantiate Campaign.
     $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.campaign()));
+    $scope.topCampaigns = topCampaigns;
+    console.log(topCampaigns);
     $scope.video = {};
     $scope.logo = {};
     $scope.thumbnail = {};
-
-    console.log($scope.PTApp.marketOptions);
 
     // Upvote handling
     $scope.userCanUpvote = () => {
       return !$scope.PTApp.user().upvotes.includes($scope.campaign._id);
     };
+
+    $scope.indexInTop = -1;
+
+    $scope.$watch('indexInTop', (newVal, oldVal) => {
+      if (newVal !== oldVal && $scope.indexInTop >= 0) {
+        $scope.topCampaigns = TopCampaigns.setTopCampaign($scope.campaign, $scope.indexInTop);
+        console.log($scope.topCampaigns);
+        $scope.indexInTop = -1;
+      }
+    });
 
     $scope.userHasUpvoted = !$scope.userCanUpvote();
 
@@ -24,7 +34,7 @@ const campaignController = () => {
         .success((data) => {
           console.log(data);
           $scope.userHasUpvoted = true;
-          $scope.PTApp.$storage.user = data.user;
+          $scope.PTApp.$session.user = data.user;
           $scope.PTApp.$storage.campaign = data.campaign;
           $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.campaign()));
         });
@@ -159,16 +169,29 @@ const campaignController = () => {
         $scope.campaign.isComplete = $scope.campaign.isComplete || formIsValid;
       }
       if (formIsValid) {
+        if (!$scope.campaign.upvoteCount) {
+          $scope.campaign.upvoteCount = $scope.campaign.upvotes.length;
+        }
+        if (!$scope.campaign.battleCount) {
+          $scope.campaign.upvoteCount = $scope.campaign.battles.length;
+        }
         $http.post('/api/saveCampaign', $scope.campaign)
           .success((data) => {
             $scope.PTApp.$storage.campaign = JSON.parse(JSON.stringify(data));
             $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.$storage.campaign));
-            console.log($scope.campaign.videoUploadDate);
 
             if (!$scope.incompleteFields.length) {
               $scope.showMessage($scope.messages.success);
+
+              if ($scope.campaign.isComplete) {
+                for (let i = 0; i < $scope.topCampaigns.length; i++) {
+                  if ($scope.topCampaigns[i].user === $scope.campaign.user) {
+                    $scope.indexInTop = i;
+                  }
+                }
+              }
             }
-            if ($scope.campaign.isComplete) {
+            if ($scope.campaign.isComplete && doSubmit) {
               $state.go('app.campaign.edit', { showMessage: true });
             }
           })

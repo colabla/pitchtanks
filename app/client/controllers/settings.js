@@ -1,8 +1,9 @@
 'use strict';
 const settingsController = () => {
   return ['$scope', '$state', 'aws', '$http', 'LoadingService', function($scope, $state, aws, $http, LoadingService) { // eslint-disable-line
-    $scope.user = JSON.parse(JSON.stringify($scope.PTApp.user()));
-    $scope.username = `${$scope.user.firstName} ${$scope.user.lastName}`;
+    $scope.userSettings = JSON.parse(JSON.stringify($scope.PTApp.user()));
+    console.log($scope.userSettings);
+    $scope.username = `${$scope.userSettings.firstName} ${$scope.userSettings.lastName}`;
     $scope.names = '';
     $scope.incompleteFields = [];
     $scope.file = {};
@@ -21,15 +22,14 @@ const settingsController = () => {
     };
 
     $scope.validateForm = () => {
-      console.log('here');
       $scope.incompleteFields = [];
-      if (!($scope.file.file || $scope.user.profileImage)) {
+      if (!($scope.file.file || $scope.userSettings.profileImage)) {
         $scope.incompleteFields.push('file');
       }
       if (!$scope.username.length) {
         $scope.incompleteFields.push('name');
       }
-      if (!$scope.user.email.length) {
+      if (!$scope.userSettings.email || !$scope.userSettings.email.length) {
         $scope.incompleteFields.push('email');
       }
       return !($scope.incompleteFields.length);
@@ -90,7 +90,7 @@ const settingsController = () => {
           }
           // else { Success! }
           console.log('Upload Done');
-          $scope.user[prop] = `https://s3-us-west-2.amazonaws.com/${aws.data.s3_bucket}/${folder}/${$scope.PTApp.user()._id}/${file.name}`;
+          $scope.userSettings[prop] = `https://s3-us-west-2.amazonaws.com/${aws.data.s3_bucket}/${folder}/${$scope.PTApp.user()._id}/${file.name}`;
           LoadingService.setLoading(false);
           callback();
         })
@@ -115,12 +115,12 @@ const settingsController = () => {
     $scope.saveUser = () => {
       $scope.names = $scope.getNames();
       if ($scope.validateForm()) {
-        $scope.user.firstName = $scope.names.first;
-        $scope.user.lastName = $scope.names.last;
-        $http.post('/api/saveUser', $scope.user)
+        $scope.userSettings.firstName = $scope.names.first;
+        $scope.userSettings.lastName = $scope.names.last;
+        $http.post('/api/saveUser', $scope.userSettings)
           .success((data) => {
-            $scope.PTApp.$storage.user = JSON.parse(JSON.stringify(data));
-            $scope.user = JSON.parse(JSON.stringify(data));
+            $scope.PTApp.$session.user = JSON.parse(JSON.stringify(data));
+            $scope.userSettings = JSON.parse(JSON.stringify(data));
 
             if (!$scope.incompleteFields.length) {
               $scope.showMessage($scope.messages.success);
@@ -130,6 +130,10 @@ const settingsController = () => {
             console.log('error');
             console.log(data);
           });
+      } else {
+        console.log('FAIL');
+        LoadingService.setLoading(false);
+        return;
       }
     };
   }];

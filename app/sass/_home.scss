@@ -8,6 +8,26 @@
     @include boxShadowHelper(2);
   }
 }
+
+.home-coming-soon-wrapper {
+  position: relative;
+  border: 6px dashed $campaignGrayMedium;
+  height: 400px;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.home-coming-soon {
+  color: $campaignGrayMedium;
+  font-size: 22px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  line-height: 390px;
+}
 /**************************************
 ***** DESCRIPTION SWITCHER STYLES *****
 **************************************/

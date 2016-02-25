@@ -8,16 +8,16 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a ui-sref=".home" class="navbar-brand navbar-brand-img">
-        <div class="navbar-img"/>
+      <a ui-sref="app.home" class="navbar-brand navbar-brand-img">
+        <div class="navbar-img"></div>
       </a>
     </div>
     <div class="collapse navbar-collapse" id="mainNav">
       <ul class="nav navbar-nav pull-right">
         <!-- <li><a ui-sref=".home">Home</a></li> -->
-        <li><a ui-sref=".pitches">Pitch Gallery</a></li>
-        <li><a ui-sref=".about">About</a></li>
-        <li ng-if="!PTApp.user()"><a ui-sref=".login" class="signup">Sign up</a></li>
+        <li><a ui-sref="app.pitches">Pitch Gallery</a></li>
+        <li><a ui-sref="app.about">About</a></li>
+        <li ng-if="!PTApp.user()"><a ui-sref="app.login" class="signup">Sign up</a></li>
         <!-- <li><a ui-sref=".login">Register</a></li> -->
         <li ng-if="PTApp.user()">
           <img ng-src="{{PTApp.user().profileImage || '/public/images/pt-2-square.png'}}" class="img-responsive nav-profile-img br-circle"/>
@@ -28,12 +28,12 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navDropdown">
             <li>
-              <a ng-if="header.hasCampaign()" class="clickable" ui-sref=".campaign.edit">My Campaign</a>
-              <a ng-if="!header.hasCampaign()" class="clickable" ui-sref=".campaign.view({name: PTApp.campaign().name, campaign: PTApp.campaign()})">{{PTApp.campaign().isComplete? 'View' : 'Create'}} Campaign</a>
+              <a ng-if="header.hasCampaign()" class="clickable" ui-sref="app.campaign.edit">My Campaign</a>
+              <a ng-if="!header.hasCampaign()" class="clickable" ui-sref="app.campaign.create">{{PTApp.campaign().isComplete? 'View' : 'Create'}} Campaign</a>
             </li>
             <li role="separator" class="divider"></li>
             <li><a class="clickable" ng-click="logout()">Logout</a></li>
-            <li><a ui-sref=".settings">Settings</a></li>
+            <li><a ui-sref="app.settings">Settings</a></li>
           </ul>
         </li>
       </ul>

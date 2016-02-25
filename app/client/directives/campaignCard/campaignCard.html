@@ -1,0 +1,23 @@
+<div class="pt-campaign-card clickable br-6" ui-sref="app.campaign.view({name: name})" ng-class="[{'big': big}]">
+  <div class="pt-thumbnail-wrapper">
+    <img ng-src="{{trustedThumbnail || '/public/images/pt-2-square.png'}}" class="pt-thumbnail"></img>
+  </div>
+  <div class="company-logo-wrapper">
+    <img ng-src="{{trustedLogo}}" class="company-logo br-circle"></img>
+  </div>
+  <div class="pt-card-lower">
+    <h4 class="pt-title pt-card-name text-center">{{name}}</h4>
+    <div class="pt-card-tagline">"{{tagline}}"</div>
+    <div class="">
+      <span class="thumbsup pull-right pt-card-upvotes">
+        <i class="fa fa-thumbs-o-up"></i>
+        {{upvoteCount}}
+      </span>
+      <span class="clock pull-left pt-card-join-date">
+        <i class="fa fa-clock-o"></i>
+        {{getPrettyDate(joinDate)}}
+      </span>
+      <span class="clearfix"></span>
+    </div>
+  </div>
+</div>

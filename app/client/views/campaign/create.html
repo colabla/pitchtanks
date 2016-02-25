@@ -10,7 +10,7 @@
           <!-- TODO: Abstract upload block into a directive?? -->
           <div ng-if="!viewing" ng-show="!(logo.data || campaign.logo)" class="upload-block text-center clickable">
             <i class="fa fa-2x fa-camera"></i>
-            <h5 class="pt-title">Add A Picture</h5>
+            <h5 class="pt-title">Add A Logo</h5>
           </div>
           <!-- TODO: Make this a directive! -->
           <input  type="file" ng-show="!viewing" id="photoUpload" accept="image/*"
@@ -65,17 +65,32 @@
           {{campaign.isComplete ? 'Related Pitches' : 'Tips'}}
         </h5>
         <div class="row m0 m30-b">
-          <div class="col-xs-12 pitch-col right br-6 p30" style="min-height: 320px">
+          <div class="col-xs-12 pitch-col right br-6 p15" style="min-height: 320px">
             <div ng-if="!campaign.isComplete">
               <h5 class="pt-subtitle">Step 1</h5>
-              <h4 class="pt-title p30-b">Fill out your campaign info.</h4>
+              <h4 class="pt-title p30-b">Fill out your campaign info and describe your pitch.</h4>
               <h5 class="pt-subtitle">Step 2</h5>
-              <h4 class="pt-title p30-b">Write a little bit about your pitch and your mission.</h4>
+              <h4 class="pt-title p30-b">Upload your pitch video and choose a thumbnail for it.</h4>
               <h5 class="pt-subtitle">Step 3</h5>
-              <h4 class="pt-title p30-b">Upload your pitch video and save your work!</h4>
+              <h4 class="pt-title p30-b">Submit your campaign and start battling!</h4>
             </div>
             <div ng-if="campaign.isComplete">
-              <h4 class="pt-title">Add pitches here</h4>
+              <div class="row">
+                <div class="col-xs-12" ng-repeat="campaign in topCampaigns | limitTo:2">
+                  <campaign-card
+                    name="campaign.name"
+                    tagline="campaign.tagline",
+                    upvote-count="campaign.upvoteCount",
+                    join-date="campaign.joinDate",
+                    logo="campaign.logo",
+                    thumbnail="campaign.thumbnail",
+                    big="false"
+                  ></campaign-card>
+                </div>
+                <div class="col-xs-12 text-center">
+                  <h5 ui-sref="app.pitches" class="clickable pt-subtitle"><a>Go to Pitch Gallery</a></h5>
+                </div>
+              </div>
             </div>
           </div>
         </div>

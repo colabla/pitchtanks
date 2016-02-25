@@ -31,6 +31,13 @@ PitchTanks.run(
     .state('app.home', {
       url: '',
       templateUrl: `${DIR}/home.html`,
+      resolve: {
+        topCampaigns: ['TopCampaigns', function(TopCampaigns) { // eslint-disable-line
+            return TopCampaigns.getTopCampaigns().then((data) => {
+              return data.data;
+            });
+        }],
+      },
       controller: homeController(),
     })
 
@@ -42,11 +49,9 @@ PitchTanks.run(
         function (                           // eslint-disable-line func-names
           $http, $state, $scope, LoadingService
         ) {
-          LoadingService.setLoading(false);
-
           // Get user & save to localStorage
           $http.get('/api/user/').success((data) => {
-            $scope.PTApp.$storage.user = data;
+            $scope.PTApp.$session.user = data;
 
             // Get campaign and save to localStorage
             $http.get(`/api/getUserCampaign/${data._id}`).success((campaign) => {
@@ -54,6 +59,7 @@ PitchTanks.run(
               $scope.PTApp.$storage.campaign = campaign;
 
               // Redirect home
+              LoadingService.setLoading(false);
               $state.go('app.home');
             });
           });
@@ -108,6 +114,12 @@ PitchTanks.run(
           }
       }],
       resolve: {
+        topCampaigns: ['TopCampaigns', (TopCampaigns) => {
+          return TopCampaigns.getTopCampaigns().then((data) => {
+            console.log(data.data);
+            return data.data;
+          });
+        }],
         showMessage: ['$stateParams', ($stateParams) => {
           return $stateParams.showMessage;
         }],
@@ -173,17 +185,20 @@ PitchTanks.run(
         ],
       },
       controller: [
-        '$http', '$state', '$scope', 'foundCampaign', '$stateParams',
-        function ($http, $state, $scope, foundCampaign, $stateParams) {       // eslint-disable-line
-          if (!foundCampaign.isComplete &&                      // Require complete
-              foundCampaign.user !== $scope.PTApp.user()._id) { // allow owner
-            $state.go('app.pitches');
-          } else if (!foundCampaign.isComplete && foundCampaign.user === $scope.PTApp.user()._id) {
-            $state.go('app.campaign.create');
+        '$http', '$state', '$scope', 'foundCampaign', '$stateParams', 'topCampaigns',
+        function ($http, $state, $scope, foundCampaign, $stateParams, topCampaigns) {       // eslint-disable-line
+          if ($scope.PTApp.user()) {
+            if (!foundCampaign.isComplete &&                      // Require complete
+                foundCampaign.user !== $scope.PTApp.user()._id) { // allow owner
+              $state.go('app.pitches');
+            } else if (!foundCampaign.isComplete && foundCampaign.user === $scope.PTApp.user()._id) { // eslint-disable-line
+              $state.go('app.campaign.create');
+            }
           }
           $scope.campaign = foundCampaign;
+          $scope.topCampaigns = topCampaigns;
           $scope.viewing = true;
-          $scope.ownCampaign = $scope.PTApp.campaign().user === $scope.campaign.user;
+          $scope.ownCampaign = $scope.PTApp.user() && $scope.PTApp.campaign().user === $scope.campaign.user; // eslint-disable-line
           $scope.getVUrl = () => {
             return $scope.campaign.videoUrl;
           };
@@ -192,17 +207,20 @@ PitchTanks.run(
 
           // Upvote handling
           $scope.userCanUpvote = () => {
-            return !$scope.PTApp.user().upvotes.includes($scope.campaign._id);
+            return !$scope.PTApp.user() || !$scope.PTApp.user().upvotes.includes($scope.campaign._id); // eslint-disable-line
           };
 
           $scope.userHasUpvoted = !$scope.userCanUpvote();
 
           $scope.voteUp = () => {
+            if (!$scope.PTApp.user()) {
+              $state.go('app.login');
+            }
             $http.post(`/api/upvote/${$scope.campaign._id}/${$scope.PTApp.user()._id}`)
               .success((data) => {
                 console.log(data);
                 $scope.userHasUpvoted = true;
-                $scope.PTApp.$storage.user = data.user;
+                $scope.PTApp.$session.user = data.user;
                 $scope.PTApp.$storage.campaign = data.campaign;
                 $scope.campaign = $scope.PTApp.campaign();
                 $scope.user = $scope.PTApp.user();

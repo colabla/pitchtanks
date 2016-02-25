@@ -83,6 +83,7 @@ module.exports = (passport, db) => {
         // look at the passport user profile to see how names are returned
         newUser.firstName = names.first;
         newUser.lastName = names.last;
+        newUser.email = '';
         // facebook can return multiple emails so we'll take the first
         if (profile.emails && profile.emails.length) {
           newUser.facebook.email = profile.emails[0].value;

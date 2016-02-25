@@ -21,8 +21,6 @@ module.exports = (db) => {
         }
         // if the user is found, then log them in
         if (user) {
-          console.log(`FOUND: ${JSON.stringify(user)}`);
-
           user.profileImage = req.body.profileImage;
           user.firstName = req.body.firstName;
           user.lastName = req.body.lastName;
@@ -78,7 +76,7 @@ module.exports = (db) => {
           someCampaign.pitchDescription = req.body.pitchDescription;
           someCampaign.videoUploadDate = req.body.videoUploadDate;
           someCampaign.upvotes = req.body.upvotes;
-          someCampaign.upvoteCount = req.body.upvoteCount;
+          someCampaign.upvoteCount = req.body.upvoteCount || 0;
           someCampaign.videoUrl = req.body.videoUrl;
           someCampaign.isHtml5 = req.body.isHtml5;
           someCampaign.logo = req.body.logo;
@@ -160,6 +158,15 @@ module.exports = (db) => {
       });
     },
 
+    getTopCampaigns: (req, res) => {
+      db.Campaign.find({ isComplete: true })
+        .sort({ upvoteCount: 1 })
+        .limit(9).exec((err, campaigns) => {
+        if (err) { return res.status(400).send('err', err.message); }
+        return res.status(200).send(campaigns);
+      });
+    },
+
     upvote: (req, res) => {
       db.Campaign.findOne({ _id: req.params.campaign }, (err, campaign) => {
         if (err) {
@@ -168,6 +175,7 @@ module.exports = (db) => {
         }
 
         campaign.upvotes.push(req.params.user);
+        campaign.upvoteCount = campaign.upvotes.length;
         campaign.save((err) => {
           if (err) {
             throw err;

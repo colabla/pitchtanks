@@ -20,7 +20,7 @@
       <div class="panel panel-default">
         <div class="panel-body">
           <video-player v-url="battle.video2" v-id="'video2'"></video-player>
-          <img src="/public/images/company_logos/company-logo-2.png" class="company-logo"/>
+          <img src="/public/images/company_logos/company-logo-2.png" class="company-logo"></img>
           <h4>Concur</h4>
           <p>"Sed posuere consectetur est at lobortis."</p><a href="" class="btn btn-primary btn-lg">Vote<span class="badge">302</span></a>
         </div>
@@ -81,32 +81,21 @@
     </div>
   </div>
   <div class="row text-center m60-b">
-    <div class="col-xs-12 col-sm-4 vs-panel">
-      <div class="panel panel-default">
-        <div class="panel-body"><img src="http://lorempixel.com/640/480/sports/5" class="img-responsive"/><img src="/public/images/company_logos/company-logo-1.png" class="company-logo img-responsive"/>
-          <h4>Moeo, LLC</h4>
-          <p>"Duis mollis, est non commodo luctus, nisi erat."</p>
-          <div class="metadata"><span class="thumbsup pull-right"><i class="fa fa-thumbs-o-up"></i> 102</span><span class="clock pull-left"><i class="fa fa-clock-o"></i> 11/23/2015</span><span class="clearfix"></span></div>
-        </div>
+    <div ng-if="!topCampaigns.length" class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 home-coming-soon-wrapper br-6">
+      <div class="home-coming-soon clickable" ui-sref="app.login">
+        Pitches coming soon - <a class="clickable" ui-sref="app.login">Sign up now!</a>
       </div>
     </div>
-    <div class="col-xs-12 col-sm-4 vs-panel">
-      <div class="panel panel-default">
-        <div class="panel-body"><img src="http://lorempixel.com/640/480/sports/2" class="img-responsive"/><img src="/public/images/company_logos/company-logo-2.png" class="company-logo img-responsive"/>
-          <h4>Concur</h4>
-          <p>"Sed posuere consectetur est at lobortis."</p>
-          <div class="metadata"><span class="thumbsup pull-right"><i class="fa fa-thumbs-o-up"></i> 102</span><span class="clock pull-left"><i class="fa fa-clock-o"></i> 11/23/2015</span><span class="clearfix"></span></div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xs-12 col-sm-4 vs-panel">
-      <div class="panel panel-default">
-        <div class="panel-body"><img src="http://lorempixel.com/640/480/sports/2" class="img-responsive"/><img src="/public/images/company_logos/company-logo-2.png" class="company-logo img-responsive"/>
-          <h4>Concur</h4>
-          <p>"Sed posuere consectetur est at lobortis."</p>
-          <div class="metadata"><span class="thumbsup pull-right"><i class="fa fa-thumbs-o-up"></i> 102</span><span class="clock pull-left"><i class="fa fa-clock-o"></i> 11/23/2015</span><span class="clearfix"></span></div>
-        </div>
-      </div>
+    <div class="col-xs-12 col-sm-4" ng-repeat="campaign in topCampaigns | limitTo:3">
+      <campaign-card
+        name="campaign.name"
+        tagline="campaign.tagline",
+        upvote-count="campaign.upvoteCount",
+        join-date="campaign.joinDate",
+        logo="campaign.logo",
+        thumbnail="campaign.thumbnail",
+        big="true"
+      ></campaign-card>
     </div>
   </div>
   <div class="row description-wrapper">

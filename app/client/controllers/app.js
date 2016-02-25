@@ -1,28 +1,33 @@
 const appController = (DIR) => {
-  return ['$scope', '$state', 'LoadingService', '$localStorage', '$sessionStorage',
+  return ['$scope', '$state', '$http', 'LoadingService', '$localStorage', '$sessionStorage',
     function (                             // eslint-disable-line func-names
-      $scope, $state, LoadingService,
+      $scope, $state, $http, LoadingService,
       $localStorage, $sessionStorage
     ) {
       // Vars to be accessed throughout the app.
       $scope.PTApp = {
         storedVals: [
-          'user',
+          'topCampaigns',
+          'topCampaignsTimestamp',
           'campaign',
         ],
         $storage: $localStorage,
+        $session: $sessionStorage,
         user: () => {
-          return $scope.PTApp.$storage.user;
+          return $scope.PTApp.$session.user;
         },
         campaign: () => {
           return $scope.PTApp.$storage.campaign;
         },
+
+        // TODO: Make this a filter
         getPrettyDate: (date) => {
           const d = new Date(date);
           return [(d.getMonth() + 1), d.getDate(), (d.getFullYear() % 100)].join('/');
         },
         marketOptions: [
           'SaaS',
+          'Other',
         ],
       };
       $scope.templates = {
@@ -36,12 +41,13 @@ const appController = (DIR) => {
         $scope.PTApp.storedVals.forEach((val) => {
           delete $scope.PTApp.$storage[val];
         });
+        delete $scope.PTApp.$session.user;
         $state.go('app.home');
       };
 
       $scope.header = {
         hasCampaign: () => {
-          return $scope.PTApp.$storage.user && $scope.PTApp.$storage.user.campaign;
+          return !!($scope.PTApp.$session.user && $scope.PTApp.$session.user.campaign);
         },
       };
     },
