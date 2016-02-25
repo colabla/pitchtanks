@@ -174,18 +174,14 @@ module.exports = (db) => {
           return done(err);
         }
 
-        if (!campaign.upvotes.includes(req.params.user)) {
-          campaign.upvotes.push(req.params.user);
-        }
+        campaign.upvotes.push(req.params.user);
         campaign.upvoteCount = campaign.upvotes.length;
         campaign.save((err) => {
           if (err) {
             throw err;
           }
           db.User.findOne({ _id: req.params.user }, (err, user) => {
-            if (!user.upvotes.includes(req.params.campaign)) {
-              user.upvotes.push(req.params.campaign);
-            }
+            user.upvotes.push(req.params.campaign);
             user.save((err) => {
               if (err) {
                 throw err;
