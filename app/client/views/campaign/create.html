@@ -142,7 +142,7 @@
               {{PTApp.getPrettyDate(campaign.videoUploadDate)}}
             </div>
             <div class="col-xs-6 col-sm-6 col-md-3">
-              <button ng-click="voteUp()" class="btn btn-small btn-green" ng-class="[{ 'disabled': !userCanUpvote() }];">
+              <button ng-click="voteUp()" class="btn btn-small btn-green" ng-class="[{ 'disabled': userHasUpvoted }];">
                 <i class="fa fa-thumbs-up"></i>
                 Upvote{{userCanUpvote()? '' : 'd!'}} ({{campaign.upvotes.length}})
               </button>
