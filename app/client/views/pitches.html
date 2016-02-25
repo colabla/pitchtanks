@@ -6,7 +6,7 @@
 </div>
 <div ng-if="campaigns.length" class="row text-center">
   <div class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-4 col-md-2 col-md-offset-5">
-    <select class="pt-select br-6" name="sortBy" ng-model="sortBy" style="width: 100%;" ng-options="option.value as option.name for option in sortOptions"></select>
+    <select class="pt-select br-6" ng-model="pitchSort.sortBy" ng-change="log()" style="width: 100%;" ng-options="option.value as option.name for option in sortOptions"></select>
   </div>
 </div>
 <div class="row text-center">
@@ -15,7 +15,7 @@
       Pitches coming soon - <a>Get started now!</a>
     </div>
   </div>
-  <div dir-paginate="campaign in campaigns | orderBy: sortBy.value | itemsPerPage: 10 track by $index">
+  <div dir-paginate="campaign in campaigns | orderBy: pitchSort.sortBy | itemsPerPage: 10 track by $index">
     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 vs-panel text-center" style="margin: 0 auto;">
       <campaign-card
         name="campaign.name"

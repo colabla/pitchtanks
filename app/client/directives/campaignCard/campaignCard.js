@@ -22,10 +22,10 @@ const campaignCard = (app) => {
               }
             }
             if (newValues[3] !== oldValues[3]) {
-              $scope.trustedLogo = $scope.trustSrc(newValues[4]);
+              $scope.trustedLogo = $scope.trustSrc(newValues[3]);
             }
             if (newValues[4] !== oldValues[4]) {
-              $scope.trustedThumbnail = $scope.trustSrc(newValues.thumbnail);
+              $scope.trustedThumbnail = $scope.trustSrc(newValues[4]);
             }
           }
         );

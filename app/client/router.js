@@ -104,17 +104,6 @@ PitchTanks.run(
         showMessage: false,
       },
       template: `<div ui-view></div>`,
-      onEnter: ['$state', '$localStorage', '$sessionStorage',
-        function($state, $localStorage, $sessionStorage) { // eslint-disable-line
-          if (!$sessionStorage.user) {
-            $state.go('app.login');
-          }
-
-          // NOTE: This should never arise.
-          if (!$localStorage.campaign) {
-            console.log('NO CAMPAIGN');
-          }
-      }],
       resolve: {
         topCampaigns: ['TopCampaigns', (TopCampaigns) => {
           return TopCampaigns.getTopCampaigns().then((data) => {
@@ -143,6 +132,14 @@ PitchTanks.run(
       controller: campaignController(),
       onEnter: ['$state', '$localStorage', '$sessionStorage',
         function($state, $localStorage, $sessionStorage) { // eslint-disable-line
+          if (!$sessionStorage.user) {
+            $state.go('app.login');
+          }
+
+          if (!$localStorage.campaign) {
+            console.log('NO CAMPAIGN');
+          }
+
           if ($localStorage.campaign.isComplete) {
             $state.go('app.campaign.edit');
           }
@@ -158,6 +155,14 @@ PitchTanks.run(
       controller: campaignController(),
       onEnter: ['$state', '$localStorage', '$sessionStorage', '$stateParams',
         function($state, $localStorage, $sessionStorage, $stateParams) { // eslint-disable-line
+          if (!$sessionStorage.user) {
+            $state.go('app.login');
+          }
+
+          if (!$localStorage.campaign) {
+            console.log('NO CAMPAIGN');
+          }
+
           if (!$localStorage.campaign.isComplete) {
             // If campaign is not complete, redirect to campaign create.
             $state.go('app.campaign.create');
@@ -187,8 +192,8 @@ PitchTanks.run(
         ],
       },
       controller: [
-        '$http', '$state', '$scope', 'foundCampaign', '$stateParams', 'topCampaigns',
-        function ($http, $state, $scope, foundCampaign, $stateParams, topCampaigns) {       // eslint-disable-line
+        '$http', '$state', '$scope', 'foundCampaign', '$stateParams', 'topCampaigns', 'TopCampaigns',
+        function ($http, $state, $scope, foundCampaign, $stateParams, topCampaigns, TopCampaigns) {       // eslint-disable-line
           if ($scope.PTApp.user()) {
             if (!foundCampaign.isComplete &&                      // Require complete
                 foundCampaign.user !== $scope.PTApp.user()._id) { // allow owner
@@ -227,19 +232,36 @@ PitchTanks.run(
 
           $scope.userHasUpvoted = !$scope.userCanUpvote();
 
+          $scope.indexInTop = -1;
+
+          $scope.$watch('indexInTop', (newVal, oldVal) => {
+            if (newVal !== oldVal && $scope.indexInTop >= 0) {
+              $scope.topCampaigns = TopCampaigns.setTopCampaign($scope.campaign, $scope.indexInTop);
+              console.log($scope.topCampaigns);
+              $scope.indexInTop = -1;
+            }
+          });
+
           $scope.voteUp = () => {
             if (!$scope.PTApp.user()) {
               $state.go('app.login');
+            } else {
+              $scope.userHasUpvoted = true;
+              $http.post(`/api/upvote/${$scope.campaign._id}/${$scope.PTApp.user()._id}`)
+                .success((data) => {
+                  console.log(data);
+                  $scope.userHasUpvoted = true;
+                  $scope.PTApp.$session.user = data.user;
+                  $scope.PTApp.$storage.campaign = data.campaign;
+                  $scope.campaign = $scope.PTApp.campaign();
+                  $scope.user = $scope.PTApp.user();
+                  for (let i = 0; i < $scope.topCampaigns.length; i++) {
+                    if ($scope.topCampaigns[i].user === $scope.campaign.user) {
+                      $scope.indexInTop = i;
+                    }
+                  }
+                });
             }
-            $http.post(`/api/upvote/${$scope.campaign._id}/${$scope.PTApp.user()._id}`)
-              .success((data) => {
-                console.log(data);
-                $scope.userHasUpvoted = true;
-                $scope.PTApp.$session.user = data.user;
-                $scope.PTApp.$storage.campaign = data.campaign;
-                $scope.campaign = $scope.PTApp.campaign();
-                $scope.user = $scope.PTApp.user();
-              });
           };
         },
       ],
@@ -280,6 +302,10 @@ PitchTanks.run(
       controller: ['$state', '$scope', 'campaigns',
         function($state, $scope, campaigns) { // eslint-disable-line
           $scope.campaigns = campaigns;
+          $scope.log = () => {
+            console.log($scope.pitchSort.sortBy);
+          };
+
           $scope.sortOptions = [
             {
               name: 'Popularity',
@@ -287,11 +313,13 @@ PitchTanks.run(
             },
             {
               name: 'Recent',
-              value: 'joinDate',
+              value: '-joinDate',
             },
           ];
 
-          $scope.sortBy = $scope.sortOptions[0].value;
+          $scope.pitchSort = {
+            sortBy: $scope.sortOptions[0].value,
+          };
       }],
     });
   },
