@@ -1,8 +1,10 @@
+'use strict';
 const PitchTanks = angular.module('pitchTanks', [
   'ui.router',
   'ngStorage',
   'angular-medium-editor',
   'ngSanitize',
+  'angularUtils.directives.dirPagination',
 ]);
 
 PitchTanks.run(
@@ -104,7 +106,7 @@ PitchTanks.run(
       template: `<div ui-view></div>`,
       onEnter: ['$state', '$localStorage', '$sessionStorage',
         function($state, $localStorage, $sessionStorage) { // eslint-disable-line
-          if (!$localStorage.user) {
+          if (!$sessionStorage.user) {
             $state.go('app.login');
           }
 
@@ -197,6 +199,19 @@ PitchTanks.run(
           }
           $scope.campaign = foundCampaign;
           $scope.topCampaigns = topCampaigns;
+
+          // Check for small numbers of campaigns
+          if ($scope.topCampaigns.length < 2) {
+            let add = true;
+            for (let i = 0; i < $scope.topCampaigns.length; i++) {
+              if ($scope.topCampaigns[i].user === $scope.campaign.user) {
+                add = false;
+              }
+            }
+            if (add) {
+              $scope.topCampaigns.push($scope.campaign);
+            }
+          }
           $scope.viewing = true;
           $scope.ownCampaign = $scope.PTApp.user() && $scope.PTApp.campaign().user === $scope.campaign.user; // eslint-disable-line
           $scope.getVUrl = () => {
@@ -257,8 +272,6 @@ PitchTanks.run(
             method: 'GET',
             url: '/api/getCampaigns',
           }).then((data) => {
-            console.log(data);
-            console.log(JSON.stringify(data));
             return data.data;
           });
         }],
@@ -267,6 +280,18 @@ PitchTanks.run(
       controller: ['$state', '$scope', 'campaigns',
         function($state, $scope, campaigns) { // eslint-disable-line
           $scope.campaigns = campaigns;
+          $scope.sortOptions = [
+            {
+              name: 'Popularity',
+              value: '-upvoteCount',
+            },
+            {
+              name: 'Recent',
+              value: 'joinDate',
+            },
+          ];
+
+          $scope.sortBy = $scope.sortOptions[0].value;
       }],
     });
   },

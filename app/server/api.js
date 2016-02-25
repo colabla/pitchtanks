@@ -160,7 +160,7 @@ module.exports = (db) => {
 
     getTopCampaigns: (req, res) => {
       db.Campaign.find({ isComplete: true })
-        .sort({ upvoteCount: 1 })
+        .sort({ upvoteCount: -1 })
         .limit(9).exec((err, campaigns) => {
         if (err) { return res.status(400).send('err', err.message); }
         return res.status(200).send(campaigns);

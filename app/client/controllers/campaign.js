@@ -7,6 +7,20 @@ const campaignController = () => {
     // Instantiate Campaign.
     $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.campaign()));
     $scope.topCampaigns = topCampaigns;
+
+    // Check for small numbers of campaigns
+    if ($scope.topCampaigns.length < 2) {
+      let add = true;
+      for (let i = 0; i < $scope.topCampaigns.length; i++) {
+        if ($scope.topCampaigns[i].user === $scope.campaign.user) {
+          add = false;
+        }
+      }
+      if (add) {
+        $scope.topCampaigns.push($scope.campaign);
+      }
+    }
+    
     console.log(topCampaigns);
     $scope.video = {};
     $scope.logo = {};
