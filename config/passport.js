@@ -84,6 +84,8 @@ module.exports = (passport, db) => {
         newUser.firstName = names.first;
         newUser.lastName = names.last;
         newUser.email = '';
+        newUser.battleVotes = [];
+        newUser.upvotes = [];
         // facebook can return multiple emails so we'll take the first
         if (profile.emails && profile.emails.length) {
           newUser.facebook.email = profile.emails[0].value;
@@ -141,6 +143,9 @@ module.exports = (passport, db) => {
         newUser.twitter.id = profile.id;
         newUser.firstName = names.first;
         newUser.lastName = names.last;
+        newUser.email = '';
+        newUser.battleVotes = [];
+        newUser.upvotes = [];
 
         // save our user into the database
         newUser.save((err) => {
@@ -192,6 +197,9 @@ module.exports = (passport, db) => {
         newUser.linkedIn.id = profile.id;
         newUser.firstName = profile.name.givenName;
         newUser.lastName = profile.name.familyName;
+        newUser.email = '';
+        newUser.battleVotes = [];
+        newUser.upvotes = [];
 
         // save our user into the database
         newUser.save((err) => {

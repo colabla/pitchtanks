@@ -51,6 +51,8 @@ module.exports = (app, passport, db, directory) => {
   app.post('/api/saveCampaign', api.saveCampaign);
   app.post('/api/saveUser', api.saveUser);
   app.post('/api/upvote/:campaign/:user', api.upvote);
+  app.post('/api/voteForBattle/:battle/:video/:user', api.voteForBattle);
+  app.get('/api/getActiveBattle', api.getActiveBattle);
 
   // =====================================
   // END - API ROUTES ====================
@@ -63,8 +65,16 @@ module.exports = (app, passport, db, directory) => {
   app.get('/admin/reset', (req, res) => {
     db.User.remove({}, (err, user) => {
       db.Campaign.remove({}, (err, campaign) => {
-        return res.redirect('/');
+        db.Battle.remove({}, (err, battle) => {
+          return res.redirect('/');
+        });
       });
+    });
+  });
+
+  app.get('/admin/resetBattles', (req, res) => {
+    db.Battle.remove({}, (err, battle) => {
+      return res.redirect('/');
     });
   });
 

@@ -1,30 +1,43 @@
 <section id="battle" class="m30-b">
-  <div class="row text-center">
+  <div class="row text-center m30-b">
     <div class="col-xs-12">
       <h1 class="pt-title m30-b">Vote for the startup with the strongest pitch</h1>
-      <h4 class="pt-subtitle m30-b">Today's head-to-head matchup</h4>
+      <h5 class="pt-subtitle m30-b">Today's head-to-head matchup</h5>
     </div>
   </div>
+  <!-- TODO: Fix height mismatch by using the fixVideoHeight directive! -->
   <div style="position:relative;" class="row text-center">
-    <div class="col-xs-12 col-sm-6 vs-panel">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <video-player v-url="battle.video1" v-id="'video1'"></video-player>
-          <img src="/public/images/company_logos/company-logo-1.png" class="company-logo"/>
-          <h4>Moeo, LLC</h4>
-          <p>"Duis mollis, est non commodo luctus, nisi erat porttitor ligula."</p><a href="" class="btn btn-primary btn-lg">Vote<span class="badge">124</span></a>
+    <div class="col-xs-12 col-sm-6">
+      <div class="vs-panel">
+        <div class="battle-video-wrapper">
+          <video-player v-url="battleData.campaign1.videoUrl" v-id="'video1'"></video-player>
         </div>
-      </div>
-    </div><img src="/public/images/vs.png" class="vs-icon-side-by-side hidden-xs visible-sm visible-md visible-lg"/><img src="/public/images/vs.png" class="vs-icon-stacked visible-xs hidden-sm hidden-md hidden-lg"/>
-    <div class="col-xs-12 col-sm-6 vs-panel">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <video-player v-url="battle.video2" v-id="'video2'"></video-player>
-          <img src="/public/images/company_logos/company-logo-2.png" class="company-logo"></img>
-          <h4>Concur</h4>
-          <p>"Sed posuere consectetur est at lobortis."</p><a href="" class="btn btn-primary btn-lg">Vote<span class="badge">302</span></a>
+        <div class="battle-lower-wrapper m30-b clickable" ui-sref="app.campaign.view({ name: battleData.campaign1.name, campaign: battleData.campaign1 })">
+          <img ng-src="{{battleData.campaign1.logo}}" class="battle-logo br-circle"/>
+          <h3 class="pt-title m15-b">{{battleData.campaign1.name}}</h3>
+          <h5>"{{battleData.campaign1.tagline}}"</h5>
         </div>
+        <a href="" class="btn btn-success m30-b battle-vote br-6" ng-click="voteForBattle(battleData.battle.video1.id)" ng-class="[{disabled: userHasVoted}]">
+          Vote ({{battleData.battle.video1.votes}})
+        </a>
       </div>
+    </div>
+    <img src="/public/images/vs.png" class="vs-icon-side-by-side hidden-xs visible-sm visible-md visible-lg"></img>
+    <img src="/public/images/vs.png" class="vs-icon-stacked visible-xs hidden-sm hidden-md hidden-lg"></img>
+    <div class="col-xs-12 col-sm-6">
+      <div class="vs-panel">
+        <div class="battle-video-wrapper">
+          <video-player v-url="battleData.campaign2.videoUrl" v-id="'video2'"></video-player>
+        </div>
+        <div class="battle-lower-wrapper m30-b clickable" ui-sref="app.campaign.view({ name: battleData.campaign2.name, campaign: battleData.campaign2 })">
+          <img ng-src="{{battleData.campaign2.logo}}" class="battle-logo br-circle"></img>
+          <h3 class="pt-title m15-b">{{battleData.campaign2.name}}</h3>
+          <h5>"{{battleData.campaign2.tagline}}"</h5>
+        </div>
+        <a href="" class="btn btn-success battle-vote m30-b br-6" ng-click="voteForBattle(battleData.battle.video2.id)" ng-class="[{disabled: userHasVoted}]">
+          Vote ({{battleData.battle.video2.votes}})
+        </a>
+    </div>
     </div>
   </div>
 </section>
@@ -34,7 +47,7 @@
       <h1 class="pt-title">How it works</h1>
     </div>
     <div class="col-md-8 col-md-offset-2 col-sm-12 p15-l p15-r">
-      <h4 style="color:#ccc;" class="pt-subtitle">Pitchtanks was created by the <a href="http://businessrockstars.com/" target="_blank">Business Rockstars</a> team to inspire entrepreneurs to perfect their pitches and gain national exposure.</h4>
+      <h5 style="line-height: 1.5" class="pt-subtitle">Pitchtanks was created by the <a href="http://businessrockstars.com/" target="_blank">Business Rockstars</a> team to inspire entrepreneurs to perfect their pitches and gain national exposure.</h5>
     </div>
   </div>
   <div style="margin-top:60px;" class="m30-b row text-center home-steps">
@@ -77,7 +90,7 @@
       <h1 class="pt-title">Leaderboard</h1>
     </div>
     <div class="col-md-8 col-md-offset-2 col-sm-12 p15-l p15-r">
-      <h4 style="color:#ccc;" class="pt-subtitle">Upvote your favorite pitches, view all the pitches <a class="clickable" ui-sref="app.pitches">here</a>.</h4>
+      <h5 style="color:#ccc;" class="pt-subtitle">Upvote your favorite pitches, view all the pitches <a class="clickable" ui-sref="app.pitches">here</a>.</h5>
     </div>
   </div>
   <div class="row text-center m60-b">

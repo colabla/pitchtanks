@@ -154,6 +154,10 @@ const campaignController = () => {
       });
     };
 
+    $scope.hasMadeChanges = () => {
+      return JSON.stringify($scope.campaign) !== JSON.stringify($scope.PTApp.campaign());
+    };
+
     // Do form validation
     $scope.validateForm = () => {
       [
@@ -163,6 +167,7 @@ const campaignController = () => {
         'videoUrl',
         'logo',
         'thumbnail',
+        'city',
         'market',
       ].forEach((prop) => {
         if (!($scope.campaign[prop] && $scope.campaign[prop].length)) {
@@ -191,12 +196,13 @@ const campaignController = () => {
           $scope.campaign.upvoteCount = $scope.campaign.upvotes.length;
         }
         if (!$scope.campaign.battleCount) {
-          $scope.campaign.upvoteCount = $scope.campaign.battles.length;
+          $scope.campaign.battleCount = $scope.campaign.battles.length;
         }
         $http.post('/api/saveCampaign', $scope.campaign)
           .success((data) => {
             $scope.PTApp.$storage.campaign = JSON.parse(JSON.stringify(data));
             $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.$storage.campaign));
+            console.log(JSON.stringify($scope.campaign) !== JSON.stringify($scope.PTApp.campaign()));
 
             if (!$scope.incompleteFields.length) {
               $scope.showMessage($scope.messages.success);

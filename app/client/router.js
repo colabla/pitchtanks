@@ -39,6 +39,15 @@ PitchTanks.run(
               return data.data;
             });
         }],
+        battle: ['$http', ($http) => {
+          return $http({
+            method: 'GET',
+            url: '/api/getActiveBattle',
+          }).then((data) => {
+            console.log(data);
+            return data.data;
+          });
+        }],
       },
       controller: homeController(),
     })
@@ -192,7 +201,7 @@ PitchTanks.run(
         ],
       },
       controller: [
-        '$http', '$state', '$scope', 'foundCampaign', '$stateParams', 'topCampaigns', 'TopCampaigns',
+        '$http', '$state', '$scope', 'foundCampaign', '$stateParams', 'topCampaigns', 'TopCampaigns', // eslint-disable-line
         function ($http, $state, $scope, foundCampaign, $stateParams, topCampaigns, TopCampaigns) {       // eslint-disable-line
           if ($scope.PTApp.user()) {
             if (!foundCampaign.isComplete &&                      // Require complete

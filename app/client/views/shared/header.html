@@ -29,7 +29,7 @@
           <ul class="dropdown-menu" aria-labelledby="navDropdown">
             <li>
               <a ng-if="header.hasCampaign()" class="clickable" ui-sref="app.campaign.edit">My Campaign</a>
-              <a ng-if="!header.hasCampaign()" class="clickable" ui-sref="app.campaign.create">{{PTApp.campaign().isComplete? 'View' : 'Create'}} Campaign</a>
+              <a ng-if="!header.hasCampaign()" class="clickable" ui-sref="app.campaign.create">{{PTApp.campaign().isComplete? 'My' : 'Create'}} Campaign</a>
             </li>
             <li role="separator" class="divider"></li>
             <li><a class="clickable" ng-click="logout()">Logout</a></li>

@@ -72,11 +72,12 @@ module.exports = (db) => {
           someCampaign.city = req.body.city;
           someCampaign.market = req.body.market;
           someCampaign.battles = req.body.battles;
-          someCampaign.battleCount = req.body.battleCount;
+          someCampaign.battleCount = req.body.battles.length;
           someCampaign.pitchDescription = req.body.pitchDescription;
           someCampaign.videoUploadDate = req.body.videoUploadDate;
           someCampaign.upvotes = req.body.upvotes;
-          someCampaign.upvoteCount = req.body.upvoteCount || 0;
+          someCampaign.battleVotes = req.body.battleVotes;
+          someCampaign.upvoteCount = req.body.upvotes.length;
           someCampaign.videoUrl = req.body.videoUrl;
           someCampaign.isHtml5 = req.body.isHtml5;
           someCampaign.logo = req.body.logo;
@@ -190,6 +191,189 @@ module.exports = (db) => {
             });
           });
         });
+      });
+    },
+
+    voteForBattle: (req, res) => {
+      db.Battle.findOne({ _id: req.params.battle }, (err, battle) => {
+        if (err) {
+          console.log(err);
+          return done(err);
+        }
+
+        if (battle.video1.id === req.params.video) {
+          battle.video1.votes += 1;
+        } else if (battle.video2.id === req.params.video) {
+          battle.video2.votes += 1;
+        } else {
+          console.log('VIDEO NOT FOUND');
+          console.log(battle);
+        }
+
+        battle.save((err) => {
+          if (err) {
+            console.log(`Battle save error: ${err}`);
+          }
+
+          db.User.findOne({ _id: req.params.user }, (err, user) => {
+            if (err) {
+              console.log(err);
+              return done(err);
+            }
+
+            user.battleVotes.push(req.params.battle);
+            user.save((err) => {
+              if (err) {
+                console.log(`User save error: ${err}`);
+              }
+              res.status(200).send({
+                battle,
+                user,
+              });
+            });
+          });
+        });
+      });
+    },
+
+    getActiveBattle: (req, res) => {
+      db.Battle.findOne({ isActive: true }, (err, battle) => {
+        if (err) {
+          console.log(err);
+          return done(err);
+        }
+
+        // If there is an active battle, return it.
+        if (battle) {
+          console.log(battle);
+          db.Campaign.findOne({ _id: battle.video1.id }, (err, campaign1) => {
+            if (err) {
+              console.log(`campaign1 error: ${err}`);
+              throw err;
+            }
+            db.Campaign.findOne({ _id: battle.video2.id }, (err, campaign2) => {
+              if (err) {
+                console.log(`campaign2 error: ${err}`);
+                throw err;
+              }
+              res.status(200).send({
+                campaign1,
+                campaign2,
+                battle,
+              });
+            });
+          });
+        } else { // Otherwise, create a new battle.
+          db.Campaign.find({ isComplete: true }).count((e, count) => {
+            if (count > 1) {
+              db.Campaign.find().sort({ battleCount: 1 }).exec((err, campaigns) => {
+                // Choose the campaign with the fewest number of battles.
+                const campaign1 = campaigns[0];
+                let campaign2;
+                // Look through the rest of the campaigns to find its opponent.
+                for (let i = 1; i < campaigns.length; i++) {
+                  let foundIt = true;
+                  // Look through each campaign's battles
+                  for (let j = 0; j < campaigns[i].battles.length; j++) {
+                    // If there is already a battle between these two, we don't want to do it again.
+                    if (campaigns[i].battles[j].video1.id === campaign1._id) {
+                      foundIt = false;
+                      break;
+                    } else if (campaigns[i].battles[j].video2.id === campaign1._id) {
+                      foundIt = false;
+                      break;
+                    }
+                  }
+                  if (foundIt) {
+                    campaign2 = campaigns[i];
+                    break;
+                  }
+                }
+                // If we found it, create a new battle,
+                // add it to each of the campaigns, save all of it, and return.
+                // If we did not find it, set second campaign to campaigns[1] and do the same.
+                if (!campaign2) {
+                  console.log('Every campaign has battled every other campaign.');
+                  campaign2 = campaigns[1];
+                }
+                console.log(`${campaign1.name} vs ${campaign2.name}`);
+                const battleData = {
+                  video1: {
+                    id: campaign1._id,
+                    votes: 0,
+                  },
+                  video2: {
+                    id: campaign2._id,
+                    votes: 0,
+                  },
+                  isActive: true,
+                  dateCreated: new Date(),
+                };
+                const newBattle = new db.Battle(battleData);
+                console.log(newBattle);
+
+                // Set campaigns
+                campaign1.battles.push(newBattle);
+                campaign1.battleCount = campaign1.battles.length;
+                campaign2.battles.push(newBattle);
+                campaign2.battleCount = campaign2.battles.length;
+
+                console.log(`campaign1 battles: ${campaign1.battles}`);
+                console.log(`campaign2 battles: ${campaign2.battles}`);
+
+                // Save data
+                campaign1.save((err) => {
+                  if (err) {
+                    console.log(`campaign1 error: ${err}`);
+                    throw err;
+                  }
+                  campaign2.save((err) => {
+                    if (err) {
+                      console.log(`campaign2 error: ${err}`);
+                      throw err;
+                    }
+                    newBattle.save((err) => {
+                      if (err) {
+                        console.log(`newBattle error: ${err}`);
+                        throw err;
+                      }
+                      res.status(200).send({
+                        campaign1,
+                        campaign2,
+                        battle: newBattle,
+                      });
+                    });
+                  });
+                });
+              });
+            } else {
+              // return placeholder battle & campaigns.
+              console.log('Not enough campaigns!');
+              res.status(200).send({
+                campaign1: {
+                  name: 'Moeo, LLC',
+                  tagline: 'Duis mollis, est non commodo luctus, nisi erat porttitor ligula.',
+                  videoUrl: '/public/videos/big_buck_bunny.mp4',
+                  logo: '/public/images/company_logos/company-logo-1.png',
+                },
+                campaign2: {
+                  name: 'Concur',
+                  tagline: 'Sed posuere consectetur est at lobortis.',
+                  videoUrl: '/public/videos/small.webm',
+                  logo: '/public/images/company_logos/company-logo-2.png',
+                },
+                battle: {
+                  video1: {
+                    votes: 320,
+                  },
+                  video2: {
+                    votes: 124,
+                  },
+                },
+              });
+            }
+          });
+        }
       });
     },
   };

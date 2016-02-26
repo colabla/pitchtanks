@@ -28,6 +28,29 @@
   margin: auto;
   line-height: 390px;
 }
+
+.battle-logo {
+  width: 100px;
+  height: 100px;
+  margin: 15px auto;
+}
+
+.battle-vote {
+  padding: 10px 40px;
+}
+
+.vs-panel {
+  background-color: rgba(255,255,255,0.25);
+  @include boxShadowHelper(2);
+  -moz-transition: all 0.35s ease;
+  -webkit-transition: all 0.35s ease;
+  transition: all 0.35s ease;
+
+  &:hover {
+    background-color: rgba(255,255,255,1);
+    // @include boxShadowHelper(2);
+  }
+}
 /**************************************
 ***** DESCRIPTION SWITCHER STYLES *****
 **************************************/
@@ -134,32 +157,32 @@ $descTransition: all 0.65s ease-out;
   height: 100px;
   margin: 20px auto 0;
 }
-
-.panel-body .badge {
-  margin-left: 5px;
-}
-
-.vs-panel .metadata {
-  margin-top: 40px;
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.vs-panel .metadata .clock {
-  color: #ccc;
-}
-
-.vs-panel .metadata .thumbsup {
-  color: green;
-}
-
-.vs-panel .metadata .thumbsup i {
-  font-size: 21px;
-}
-
-.vs-panel .btn {
-  margin-top: 20px;
-}
+//
+// .panel-body .badge {
+//   margin-left: 5px;
+// }
+//
+// .vs-panel .metadata {
+//   margin-top: 40px;
+//   font-weight: bold;
+//   font-size: 16px;
+// }
+//
+// .vs-panel .metadata .clock {
+//   color: #ccc;
+// }
+//
+// .vs-panel .metadata .thumbsup {
+//   color: green;
+// }
+//
+// .vs-panel .metadata .thumbsup i {
+//   font-size: 21px;
+// }
+//
+// .vs-panel .btn {
+//   margin-top: 20px;
+// }
 
 .vs-icon-side-by-side {
   position: absolute;

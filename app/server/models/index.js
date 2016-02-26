@@ -19,6 +19,7 @@ const User = mongoose.model('User', {
 	email: { type: String },
 	campaign: { type: String },
 	upvotes: { type: Array },
+	battleVotes: { type: Array },
 	facebook: {
 		id: { type: String },
 		token: { type: String },
@@ -57,12 +58,14 @@ const Campaign = mongoose.model('Company', {
 const Battle = mongoose.model('Battle', {
 	video1: {
 		id: { type: String },
-		votes: { type: String },
+		votes: { type: Number },
 	},
 	video2: {
 		id: { type: String },
-		votes: { type: String },
+		votes: { type: Number },
 	},
+	isActive: { type: Boolean },
+	dateCreated: { type: Date },
 });
 
 module.exports = {

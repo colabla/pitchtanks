@@ -21,20 +21,23 @@
         <div  class="campaign-titles-form" ng-class="viewing? 'viewing' : 'editing'">
           <input ng-if="!viewing" type="text" class="name-input" ng-model="campaign.name" ng-class="{'incomplete': incompleteFields.includes('name')}" placeholder="Your startup's name"></input>
           <input ng-if="!viewing" type="text" class="tagline-input" ng-model="campaign.tagline" ng-class="{'incomplete': incompleteFields.includes('tagline')}" placeholder="Your tagline"></input>
-          <select ng-if="!viewing" class="pt-select br-6" name="market" ng-model="campaign.market" ng-class="{'incomplete': incompleteFields.includes('market')}">
-            <option value="" selected>Your Market</option>
-            <option ng-repeat="option in PTApp.marketOptions" value="{{option}}">{{option}}</option>
-          </select>
+          <div class="inline-input-wrapper">
+            <select ng-if="!viewing" class="pt-select br-6" name="market" ng-model="campaign.market" ng-class="{'incomplete': incompleteFields.includes('market')}">
+              <option value="" selected>Your Market</option>
+              <option ng-repeat="option in PTApp.marketOptions" value="{{option}}">{{option}}</option>
+            </select>
+            <input ng-if="!viewing" type="text" class="city-input" ng-model="campaign.city" ng-class="{'incomplete': incompleteFields.includes('city')}" placeholder="Your city"></input>
+          </div>
           <input ng-if="!viewing" type="text" class="website-input" ng-model="campaign.website" ng-class="{'incomplete': incompleteFields.includes('website')}" placeholder="Your website"></input>
 
           <div ng-if="viewing" class="name-input">{{campaign.name}}</div>
           <div ng-if="viewing" class="tagline-input">"{{campaign.tagline}}"</div>
-          <div ng-if="viewing" class="market-input">Member since {{PTApp.getPrettyDate(campaign.joinDate)}} - {{campaign.market}}</div>
+          <div ng-if="viewing" class="market-input">Member since {{PTApp.getPrettyDate(campaign.joinDate)}} - {{campaign.city}} - {{campaign.market}}</div>
           <a ng-if="viewing" ng-href="{{campaign.website}}" target="_blank" class="website-input">{{campaign.website}}</a>
         </div>
       </div>
       <div class="col-md-2 col-sm-4 campaign-form-buttons h100 p15">
-        <button ng-if="!viewing && campaign.isComplete" class="btn btn-cancel" ng-click="resetCampaign()">Cancel</button>
+        <button ng-if="!viewing && campaign.isComplete" class="btn btn-cancel" ng-click="resetCampaign()">{{hasMadeChanges()? 'Cancel' : 'View'}}</button>
         <button ng-if="!viewing && campaign.isComplete" class="btn btn-save" ng-click="save(false)">Save Changes</button>
         <button ng-if="viewing && ownCampaign" ui-sref="app.campaign.edit" class="btn btn-cancel">Edit</button>
       </div>
@@ -121,7 +124,7 @@
           Product pitch
         </h5>
         <div class="pitch-col br-6 left p30 m30-b">
-          <div class="p15-b">Pitch</div>
+          <h5 class="p15-b"><span class="pt-title">{{campaign.name}}{{campaign.name.length? "'s " : ''}}</span>Pitch</h5>
           <div ng-if="!viewing" medium-editor bind-options="editorOptions" data-placeholder="Type your pitch. Highlight text to format." class="m30-b br-6 pitch-text" ng-class="{'incomplete': incompleteFields.includes('pitchDescription')}" ng-model="campaign.pitchDescription"></div>
           <div ng-if="viewing" class="m30-b" ng-bind-html="campaign.pitchDescription"></div>
           <div class="video-container br-6" ng-class="{'incomplete': incompleteFields.includes('videoUrl')}">
