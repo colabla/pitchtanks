@@ -1,23 +1,23 @@
 'use strict';
 
-angular.module('pitchTanks').factory('TopCampaigns', ['$http', '$localStorage', ($http, $localStorage) => {
-  let promise;
-  const refreshPeriod = 3600000;
+angular.module('pitchTanks').factory('TopCampaigns', ['$http', '$localStorage', function ($http, $localStorage) {
+  var promise = undefined;
+  var refreshPeriod = 3600000;
 
-  const setTopCampaign = (campaign, i) => {
+  var setTopCampaign = function setTopCampaign(campaign, i) {
     $localStorage.topCampaigns.data[i] = campaign;
     console.log($localStorage.topCampaigns.data);
     return $localStorage.topCampaigns.data;
   };
 
-  const getTopCampaigns = () => {
+  var getTopCampaigns = function getTopCampaigns() {
     // Function for refreshing campaign data.
-    const refreshTopCampaigns = () => {
+    var refreshTopCampaigns = function refreshTopCampaigns() {
       if (!promise) {
         promise = $http({
           method: 'GET',
           url: '/api/getTopCampaigns'
-        }).then(data => {
+        }).then(function (data) {
           $localStorage.topCampaigns = data;
           $localStorage.topCampaignsTimestamp = Date.now();
           return data;
@@ -37,7 +37,7 @@ angular.module('pitchTanks').factory('TopCampaigns', ['$http', '$localStorage', 
       return refreshTopCampaigns();
     } else if (Date.now() - $localStorage.topCampaignsTimestamp < refreshPeriod) {
       // eslint-disable-line
-      console.log(`Refreshing from timestamp: ${ Date.now() - $localStorage.topCampaignsTimestamp }`); // eslint-disable-line
+      console.log('Refreshing from timestamp: ' + (Date.now() - $localStorage.topCampaignsTimestamp)); // eslint-disable-line
       // Expired, refresh.
       return refreshTopCampaigns();
     }
@@ -46,7 +46,7 @@ angular.module('pitchTanks').factory('TopCampaigns', ['$http', '$localStorage', 
     return $localStorage.topCampaigns;
   };
   return {
-    getTopCampaigns,
-    setTopCampaign
+    getTopCampaigns: getTopCampaigns,
+    setTopCampaign: setTopCampaign
   };
 }]);

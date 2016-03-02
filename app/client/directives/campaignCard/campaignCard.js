@@ -1,7 +1,7 @@
 'use strict';
 
-const campaignCard = app => {
-  app.directive('campaignCard', ['$sce', $sce => {
+var campaignCard = function campaignCard(app) {
+  app.directive('campaignCard', ['$sce', function ($sce) {
     return {
       restrict: 'E',
       scope: {
@@ -13,11 +13,11 @@ const campaignCard = app => {
         thumbnail: '=',
         big: '='
       },
-      link: function ($scope, element, attrs, controller, transcludeFn) {
+      link: function link($scope, element, attrs, controller, transcludeFn) {
         // eslint-disable-line
-        $scope.$watchGroup(['name', 'tagline', 'upvoteCount', 'logo', 'thumbnail'], (newValues, oldValues) => {
-          const props = ['name', 'tagline', 'upvoteCount'];
-          for (let i; i < props.length; i++) {
+        $scope.$watchGroup(['name', 'tagline', 'upvoteCount', 'logo', 'thumbnail'], function (newValues, oldValues) {
+          var props = ['name', 'tagline', 'upvoteCount'];
+          for (var i; i < props.length; i++) {
             if (newValues[i] !== oldValues[i]) {
               $scope[props[i]] = newValues[i];
             }
@@ -30,12 +30,12 @@ const campaignCard = app => {
           }
         });
 
-        $scope.getPrettyDate = date => {
-          const d = new Date(date);
+        $scope.getPrettyDate = function (date) {
+          var d = new Date(date);
           return [d.getMonth() + 1, d.getDate(), d.getFullYear() % 100].join('/');
         };
 
-        $scope.trustSrc = src => {
+        $scope.trustSrc = function (src) {
           return $sce.trustAsResourceUrl(src);
         };
 

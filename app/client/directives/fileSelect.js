@@ -1,15 +1,17 @@
-const fileSelect = app => {
+'use strict';
+
+var fileSelect = function fileSelect(app) {
   app.directive('fileSelect', ['$window', function ($window) {
     // eslint-disable-line
     return {
       restrict: 'A',
       require: 'ngModel',
-      link: function (scope, el, attr, ctrl) {
+      link: function link(scope, el, attr, ctrl) {
         // eslint-disable-line
         scope.fileName = '';
-        const fileReader = new $window.FileReader();
+        var fileReader = new $window.FileReader();
 
-        fileReader.onload = () => {
+        fileReader.onload = function () {
           console.log(scope.fileName);
           ctrl.$setViewValue({
             data: fileReader.result,
@@ -21,21 +23,21 @@ const fileSelect = app => {
           }
         };
 
-        fileReader.onprogress = event => {
+        fileReader.onprogress = function (event) {
           if ('fileProgress' in attr) {
             scope.$eval(attr.fileProgress, { $total: event.total, $loaded: event.loaded });
           }
         };
 
-        fileReader.onerror = () => {
+        fileReader.onerror = function () {
           if ('fileError' in attr) {
             scope.$eval(attr.fileError, { $error: fileReader.error });
           }
         };
 
-        const fileType = attr.fileSelect;
+        var fileType = attr.fileSelect;
 
-        el.bind('change', e => {
+        el.bind('change', function (e) {
           scope.fileName = e.target.files[0];
           console.log(scope.fileName);
 

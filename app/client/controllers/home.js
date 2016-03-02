@@ -1,18 +1,18 @@
 'use strict';
 
-const homeController = () => {
+var homeController = function homeController() {
   return ['$scope', '$state', 'topCampaigns', 'battle', '$http', function ( // eslint-disable-line func-names
   $scope, $state, topCampaigns, battle, $http) {
     $scope.topCampaigns = topCampaigns;
 
     $scope.battleData = battle;
 
-    $scope.hasUserVoted = () => {
-      let hasVoted = false;
+    $scope.hasUserVoted = function () {
+      var hasVoted = false;
       if (!$scope.PTApp.user()) {
         return false;
       }
-      $scope.PTApp.user().battleVotes.forEach(b => {
+      $scope.PTApp.user().battleVotes.forEach(function (b) {
         if (b === $scope.battleData.battle._id) {
           hasVoted = true;
         }
@@ -22,14 +22,14 @@ const homeController = () => {
 
     $scope.userHasVoted = $scope.hasUserVoted();
 
-    $scope.voteForBattle = vId => {
+    $scope.voteForBattle = function (vId) {
       if ($scope.userHasVoted || !$scope.battleData.battle._id || !vId) {
         return;
       }
       $scope.userHasVoted = true;
       if ($scope.PTApp.user()) {
-        $http.post(`/api/voteForBattle/${ $scope.battleData.battle._id }/${ vId }/${ $scope.PTApp.user()._id }`) // eslint-disable-line
-        .success(data => {
+        $http.post('/api/voteForBattle/' + $scope.battleData.battle._id + '/' + vId + '/' + $scope.PTApp.user()._id) // eslint-disable-line
+        .success(function (data) {
           console.log(data);
           $scope.PTApp.$session.user = data.user;
           $scope.battleData.battle = data.battle;
@@ -40,24 +40,24 @@ const homeController = () => {
     };
 
     $scope.howItWorks = {
-      isActive: i => {
+      isActive: function isActive(i) {
         return i === $scope.howItWorks.active;
       },
       active: 2,
-      anglePos: () => {
-        return `${ 100 * ($scope.howItWorks.active / 3) }%`;
+      anglePos: function anglePos() {
+        return 100 * ($scope.howItWorks.active / 3) + '%';
       },
-      angleColor: () => {
-        return `color${ $scope.howItWorks.active }`;
+      angleColor: function angleColor() {
+        return 'color' + $scope.howItWorks.active;
       },
-      descBg: () => {
-        return `bg${ $scope.howItWorks.active }`;
+      descBg: function descBg() {
+        return 'bg' + $scope.howItWorks.active;
       },
-      setActive: i => {
+      setActive: function setActive(i) {
         $scope.howItWorks.active = i;
       }
     };
-    $scope.changeImg = (e, i) => {
+    $scope.changeImg = function (e, i) {
       $scope.howItWorks.active = i;
     };
 

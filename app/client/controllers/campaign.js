@@ -1,6 +1,6 @@
 'use strict';
 
-const campaignController = () => {
+var campaignController = function campaignController() {
   return ['$scope', '$state', 'aws', '$http', 'LoadingService', 'showMessage', 'topCampaigns', 'TopCampaigns', // eslint-disable-line
   function ( // eslint-disable-line func-names
   $scope, $state, aws, $http, LoadingService, showMessage, topCampaigns, TopCampaigns) {
@@ -10,8 +10,8 @@ const campaignController = () => {
 
     // Check for small numbers of campaigns
     if ($scope.topCampaigns.length < 2 && $scope.campaign.isComplete) {
-      let add = true;
-      for (let i = 0; i < $scope.topCampaigns.length; i++) {
+      var add = true;
+      for (var i = 0; i < $scope.topCampaigns.length; i++) {
         if ($scope.topCampaigns[i].user === $scope.campaign.user) {
           add = false;
         }
@@ -27,13 +27,13 @@ const campaignController = () => {
     $scope.thumbnail = {};
 
     // Upvote handling
-    $scope.userCanUpvote = () => {
+    $scope.userCanUpvote = function () {
       return !$scope.PTApp.user().upvotes.includes($scope.campaign._id);
     };
 
     $scope.indexInTop = -1;
 
-    $scope.$watch('indexInTop', (newVal, oldVal) => {
+    $scope.$watch('indexInTop', function (newVal, oldVal) {
       if (newVal !== oldVal && $scope.indexInTop >= 0) {
         $scope.topCampaigns = TopCampaigns.setTopCampaign($scope.campaign, $scope.indexInTop);
         console.log($scope.topCampaigns);
@@ -43,13 +43,13 @@ const campaignController = () => {
 
     $scope.userHasUpvoted = !$scope.userCanUpvote();
 
-    $scope.voteUp = () => {
+    $scope.voteUp = function () {
       $scope.userHasUpvoted = true;
-      $http.post(`/api/upvote/${ $scope.campaign._id }/${ $scope.PTApp.user()._id }`).success(data => {
+      $http.post('/api/upvote/' + $scope.campaign._id + '/' + $scope.PTApp.user()._id).success(function (data) {
         $scope.PTApp.$session.user = data.user;
         $scope.PTApp.$storage.campaign = data.campaign;
         $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.campaign()));
-        for (let i = 0; i < $scope.topCampaigns.length; i++) {
+        for (var i = 0; i < $scope.topCampaigns.length; i++) {
           if ($scope.topCampaigns[i].user === $scope.campaign.user) {
             $scope.indexInTop = i;
           }
@@ -72,9 +72,9 @@ const campaignController = () => {
       }
     };
 
-    $scope.showMessage = m => {
+    $scope.showMessage = function (m) {
       $scope.message = m.message;
-      $('.message-section').removeClass('hidden animated fadeOut').addClass(`animated fadeOut ${ m.class }`).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+      $('.message-section').removeClass('hidden animated fadeOut').addClass('animated fadeOut ' + m.class).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
         // eslint-disable-line
         $(this).removeClass('fadeOut animated');
         $(this).addClass('hidden');
@@ -93,46 +93,46 @@ const campaignController = () => {
       }
     };
 
-    $scope.resetCampaign = () => {
+    $scope.resetCampaign = function () {
       $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.campaign()));
       $state.go('app.campaign.view', { name: $scope.campaign.name, campaign: $scope.campaign });
     };
 
-    $scope.getVUrl = () => {
+    $scope.getVUrl = function () {
       return $scope.video.data || $scope.campaign.videoUrl;
     };
 
-    $scope.myLoaded = prop => {
+    $scope.myLoaded = function (prop) {
       console.log($scope.file);
       console.log(prop);
       $scope.setFile($scope.file.data, $scope.file.file, prop);
     };
 
-    $scope.setFile = (data, file, prop) => {
+    $scope.setFile = function (data, file, prop) {
       $scope[prop].data = data;
       $scope[prop].file = file;
       $scope.$apply();
     };
 
-    $scope.myError = e => {
-      console.log(`error: ${ e }`);
+    $scope.myError = function (e) {
+      console.log('error: ' + e);
     };
 
     // TODO: Create loading bar.
-    $scope.myProgress = (total, loaded) => {
-      console.log(`total: ${ total }`);
-      console.log(`loaded: ${ loaded }`);
+    $scope.myProgress = function (total, loaded) {
+      console.log('total: ' + total);
+      console.log('loaded: ' + loaded);
     };
 
     // Uploads files to AWS and saves campaign data.
-    $scope.save = doSubmit => {
+    $scope.save = function (doSubmit) {
       // Prevent unauthorized saving
       if ($scope.campaign.user !== $scope.PTApp.campaign().user) {
         return;
       }
-      $scope.upload($scope.logo.file, 'campaignLogos', 'logo', () => {
-        $scope.upload($scope.thumbnail.file, 'campaignThumbnails', 'thumbnail', () => {
-          $scope.upload($scope.video.file, 'campaignVideos', 'videoUrl', () => {
+      $scope.upload($scope.logo.file, 'campaignLogos', 'logo', function () {
+        $scope.upload($scope.thumbnail.file, 'campaignThumbnails', 'thumbnail', function () {
+          $scope.upload($scope.video.file, 'campaignVideos', 'videoUrl', function () {
             $scope.campaign.videoUploadDate = Date.now();
             $scope.saveCampaign(doSubmit);
           });
@@ -140,13 +140,13 @@ const campaignController = () => {
       });
     };
 
-    $scope.hasMadeChanges = () => {
+    $scope.hasMadeChanges = function () {
       return JSON.stringify($scope.campaign) !== JSON.stringify($scope.PTApp.campaign());
     };
 
     // Do form validation
-    $scope.validateForm = () => {
-      ['name', 'tagline', 'website', 'videoUrl', 'logo', 'thumbnail', 'city', 'market'].forEach(prop => {
+    $scope.validateForm = function () {
+      ['name', 'tagline', 'website', 'videoUrl', 'logo', 'thumbnail', 'city', 'market'].forEach(function (prop) {
         if (!($scope.campaign[prop] && $scope.campaign[prop].length)) {
           $scope.incompleteFields.push(prop);
         }
@@ -159,9 +159,9 @@ const campaignController = () => {
       return !$scope.incompleteFields.length;
     };
 
-    $scope.saveCampaign = doSubmit => {
+    $scope.saveCampaign = function (doSubmit) {
       // Reset errors
-      let formIsValid;
+      var formIsValid = undefined;
       $scope.incompleteFields = [];
 
       if (doSubmit || $scope.campaign.isComplete) {
@@ -175,7 +175,7 @@ const campaignController = () => {
         if (!$scope.campaign.battleCount) {
           $scope.campaign.battleCount = $scope.campaign.battles.length;
         }
-        $http.post('/api/saveCampaign', $scope.campaign).success(data => {
+        $http.post('/api/saveCampaign', $scope.campaign).success(function (data) {
           $scope.PTApp.$storage.campaign = JSON.parse(JSON.stringify(data));
           $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.$storage.campaign));
           console.log(JSON.stringify($scope.campaign) !== JSON.stringify($scope.PTApp.campaign()));
@@ -184,7 +184,7 @@ const campaignController = () => {
             $scope.showMessage($scope.messages.success);
 
             if ($scope.campaign.isComplete) {
-              for (let i = 0; i < $scope.topCampaigns.length; i++) {
+              for (var i = 0; i < $scope.topCampaigns.length; i++) {
                 if ($scope.topCampaigns[i].user === $scope.campaign.user) {
                   $scope.indexInTop = i;
                 }
@@ -194,14 +194,14 @@ const campaignController = () => {
           if ($scope.campaign.isComplete && doSubmit) {
             $state.go('app.campaign.edit', { showMessage: true });
           }
-        }).error((data, status, header, config) => {
+        }).error(function (data, status, header, config) {
           console.log('error');
           console.log(data);
         });
       }
     };
 
-    $scope.upload = (file, folder, prop, callback) => {
+    $scope.upload = function (file, folder, prop, callback) {
       console.log(file);
       // Put this AWS upload code into a service if we need to use it elsewhere
       console.log('saving...');
@@ -210,12 +210,12 @@ const campaignController = () => {
         secretAccessKey: aws.data.aws_secret_access_key
       });
       AWS.config.region = 'us-west-2';
-      const bucket = new AWS.S3({
-        params: { Bucket: `${ aws.data.s3_bucket }/${ folder }/${ $scope.PTApp.user()._id }` }
+      var bucket = new AWS.S3({
+        params: { Bucket: aws.data.s3_bucket + '/' + folder + '/' + $scope.PTApp.user()._id }
       });
       if (file) {
         LoadingService.setLoading(true);
-        const params = {
+        var params = {
           ACL: 'public-read',
           Key: file.name,
           ContentType: file.type,
@@ -223,7 +223,7 @@ const campaignController = () => {
           ServerSideEncryption: 'AES256'
         };
 
-        bucket.putObject(params, (err, data) => {
+        bucket.putObject(params, function (err, data) {
           if (err) {
             console.log(err.message);
             return false;
@@ -231,13 +231,13 @@ const campaignController = () => {
           // else { Success! }
           console.log(data);
           console.log('Upload Done');
-          $scope.campaign[prop] = `https://s3-us-west-2.amazonaws.com/${ aws.data.s3_bucket }/${ folder }/${ $scope.PTApp.user()._id }/${ file.name }`;
+          $scope.campaign[prop] = 'https://s3-us-west-2.amazonaws.com/' + aws.data.s3_bucket + '/' + folder + '/' + $scope.PTApp.user()._id + '/' + file.name;
           LoadingService.setLoading(false);
           callback();
-        }).on('httpUploadProgress', progress => {
+        }).on('httpUploadProgress', function (progress) {
           // Log Progress Information
           // TODO: create a loading bar.
-          console.log(`${ Math.round(progress.loaded / progress.total * 100) }% done`);
+          console.log(Math.round(progress.loaded / progress.total * 100) + '% done');
         });
       } else {
         callback();

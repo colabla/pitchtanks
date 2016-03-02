@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * dirPagination - AngularJS module for paginating (almost) anything.
  *
@@ -210,7 +212,7 @@
 
         return {
             restrict: 'AE',
-            templateUrl: function (elem, attrs) {
+            templateUrl: function templateUrl(elem, attrs) {
                 return attrs.templateUrl || paginationTemplate.getPath();
             },
             scope: {
@@ -575,7 +577,7 @@
 
         this.$get = function () {
             return {
-                getPath: function () {
+                getPath: function getPath() {
                     return templatePath;
                 }
             };

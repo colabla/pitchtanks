@@ -1,1 +1,3 @@
-const PTDirectives = [myVideoPlayer, fileSelect, campaignCard];
+"use strict";
+
+var PTDirectives = [myVideoPlayer, fileSelect, campaignCard];

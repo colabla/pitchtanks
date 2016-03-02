@@ -1,34 +1,34 @@
 'use strict';
 
-const PitchTanks = angular.module('pitchTanks', ['ui.router', 'ngStorage', 'angular-medium-editor', 'ngSanitize', 'angularUtils.directives.dirPagination']);
+var PitchTanks = angular.module('pitchTanks', ['ui.router', 'ngStorage', 'angular-medium-editor', 'ngSanitize', 'angularUtils.directives.dirPagination']);
 
-PitchTanks.run(['$rootScope', '$state', '$stateParams', ($rootScope, $state, $stateParams) => {
+PitchTanks.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
   $rootScope.$state = $state;
   $rootScope.$stateParams = $stateParams;
-}]).config(['$stateProvider', '$urlRouterProvider', ($stateProvider, $urlRouterProvider) => {
-  const DIR = './client/views';
+}]).config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+  var DIR = './client/views';
   $urlRouterProvider.otherwise('/');
 
   $stateProvider.state('app', {
     abstract: true,
     url: '/',
-    templateUrl: `${ DIR }/layout.html`,
+    templateUrl: DIR + '/layout.html',
     controller: appController(DIR)
   }).state('app.home', {
     url: '',
-    templateUrl: `${ DIR }/home.html`,
+    templateUrl: DIR + '/home.html',
     resolve: {
       topCampaigns: ['TopCampaigns', function (TopCampaigns) {
         // eslint-disable-line
-        return TopCampaigns.getTopCampaigns().then(data => {
+        return TopCampaigns.getTopCampaigns().then(function (data) {
           return data.data;
         });
       }],
-      battle: ['$http', $http => {
+      battle: ['$http', function ($http) {
         return $http({
           method: 'GET',
           url: '/api/getActiveBattle'
-        }).then(data => {
+        }).then(function (data) {
           console.log(data);
           return data.data;
         });
@@ -37,16 +37,16 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', ($rootScope, $state, $st
     controller: homeController()
   }).state('app.loggedIn', {
     url: 'login/accept',
-    templateUrl: `${ DIR }/login.html`,
+    templateUrl: DIR + '/login.html',
     controller: ['$http', '$state', '$scope', 'LoadingService', function ( // eslint-disable-line func-names
     $http, $state, $scope, LoadingService) {
       // Get user & save to localStorage
-      $http.get('/api/user/').success(data => {
+      $http.get('/api/user/').success(function (data) {
         $scope.PTApp.$session.user = data;
 
         // Get campaign and save to localStorage
-        $http.get(`/api/getUserCampaign/${ data._id }`).success(campaign => {
-          console.log(`User campaign: ${ campaign }`);
+        $http.get('/api/getUserCampaign/' + data._id).success(function (campaign) {
+          console.log('User campaign: ' + campaign);
           $scope.PTApp.$storage.campaign = campaign;
 
           // Redirect home
@@ -63,13 +63,13 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', ($rootScope, $state, $st
 
   .state('app.settings', {
     url: 'settings',
-    templateUrl: `${ DIR }/settings.html`,
+    templateUrl: DIR + '/settings.html',
     resolve: {
-      aws: ['$http', $http => {
+      aws: ['$http', function ($http) {
         return $http({
           method: 'GET',
           url: '/api/aws'
-        }).then(data => {
+        }).then(function (data) {
           return data;
         });
       }]
@@ -91,22 +91,22 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', ($rootScope, $state, $st
     params: {
       showMessage: false
     },
-    template: `<div ui-view></div>`,
+    template: '<div ui-view></div>',
     resolve: {
-      topCampaigns: ['TopCampaigns', TopCampaigns => {
-        return TopCampaigns.getTopCampaigns().then(data => {
+      topCampaigns: ['TopCampaigns', function (TopCampaigns) {
+        return TopCampaigns.getTopCampaigns().then(function (data) {
           console.log(data.data);
           return data.data;
         });
       }],
-      showMessage: ['$stateParams', $stateParams => {
+      showMessage: ['$stateParams', function ($stateParams) {
         return $stateParams.showMessage;
       }],
-      aws: ['$http', $http => {
+      aws: ['$http', function ($http) {
         return $http({
           method: 'GET',
           url: '/api/aws'
-        }).then(data => {
+        }).then(function (data) {
           return data;
         });
       }]
@@ -114,7 +114,7 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', ($rootScope, $state, $st
   }). // controller: campaignController(),
   state('app.campaign.create', {
     url: 'create',
-    templateUrl: `${ DIR }/campaign/create.html`,
+    templateUrl: DIR + '/campaign/create.html',
     controller: campaignController(),
     onEnter: ['$state', '$localStorage', '$sessionStorage', function ($state, $localStorage, $sessionStorage) {
       // eslint-disable-line
@@ -135,7 +135,7 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', ($rootScope, $state, $st
     params: {
       campaign: undefined
     },
-    templateUrl: `${ DIR }/campaign/create.html`,
+    templateUrl: DIR + '/campaign/create.html',
     controller: campaignController(),
     onEnter: ['$state', '$localStorage', '$sessionStorage', '$stateParams', function ($state, $localStorage, $sessionStorage, $stateParams) {
       // eslint-disable-line
@@ -157,14 +157,14 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', ($rootScope, $state, $st
     params: {
       campaign: undefined
     },
-    templateUrl: `${ DIR }/campaign/create.html`,
+    templateUrl: DIR + '/campaign/create.html',
     resolve: {
-      foundCampaign: ['$http', '$stateParams', ($http, $stateParams) => {
+      foundCampaign: ['$http', '$stateParams', function ($http, $stateParams) {
         if (!$stateParams.campaign) {
           return $http({
             method: 'GET',
-            url: `/api/getCampaignByName/${ $stateParams.name }`
-          }).then(data => {
+            url: '/api/getCampaignByName/' + $stateParams.name
+          }).then(function (data) {
             return data.data;
           });
         }
@@ -189,8 +189,8 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', ($rootScope, $state, $st
 
       // Check for small numbers of campaigns
       if ($scope.topCampaigns.length < 2) {
-        let add = true;
-        for (let i = 0; i < $scope.topCampaigns.length; i++) {
+        var add = true;
+        for (var i = 0; i < $scope.topCampaigns.length; i++) {
           if ($scope.topCampaigns[i].user === $scope.campaign.user) {
             add = false;
           }
@@ -201,14 +201,14 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', ($rootScope, $state, $st
       }
       $scope.viewing = true;
       $scope.ownCampaign = $scope.PTApp.user() && $scope.PTApp.campaign().user === $scope.campaign.user; // eslint-disable-line
-      $scope.getVUrl = () => {
+      $scope.getVUrl = function () {
         return $scope.campaign.videoUrl;
       };
 
       // TODO: Figure out a better way to manage the campaign controllers.
 
       // Upvote handling
-      $scope.userCanUpvote = () => {
+      $scope.userCanUpvote = function () {
         return !$scope.PTApp.user() || !$scope.PTApp.user().upvotes.includes($scope.campaign._id); // eslint-disable-line
       };
 
@@ -216,7 +216,7 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', ($rootScope, $state, $st
 
       $scope.indexInTop = -1;
 
-      $scope.$watch('indexInTop', (newVal, oldVal) => {
+      $scope.$watch('indexInTop', function (newVal, oldVal) {
         if (newVal !== oldVal && $scope.indexInTop >= 0) {
           $scope.topCampaigns = TopCampaigns.setTopCampaign($scope.campaign, $scope.indexInTop);
           console.log($scope.topCampaigns);
@@ -224,19 +224,19 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', ($rootScope, $state, $st
         }
       });
 
-      $scope.voteUp = () => {
+      $scope.voteUp = function () {
         if (!$scope.PTApp.user()) {
           $state.go('app.login');
         } else {
           $scope.userHasUpvoted = true;
-          $http.post(`/api/upvote/${ $scope.campaign._id }/${ $scope.PTApp.user()._id }`).success(data => {
+          $http.post('/api/upvote/' + $scope.campaign._id + '/' + $scope.PTApp.user()._id).success(function (data) {
             console.log(data);
             $scope.userHasUpvoted = true;
             $scope.PTApp.$session.user = data.user;
             $scope.PTApp.$storage.campaign = data.campaign;
             $scope.campaign = $scope.PTApp.campaign();
             $scope.user = $scope.PTApp.user();
-            for (let i = 0; i < $scope.topCampaigns.length; i++) {
+            for (var i = 0; i < $scope.topCampaigns.length; i++) {
               if ($scope.topCampaigns[i].user === $scope.campaign.user) {
                 $scope.indexInTop = i;
               }
@@ -253,33 +253,33 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', ($rootScope, $state, $st
 
   .state('app.about', {
     url: 'about',
-    templateUrl: `${ DIR }/about.html`
+    templateUrl: DIR + '/about.html'
   }).state('app.login', {
     url: 'login',
-    templateUrl: `${ DIR }/login.html`,
+    templateUrl: DIR + '/login.html',
     controller: ['LoadingService', '$scope', function (LoadingService, $scope) {
       // eslint-disable-line
-      $scope.load = () => {
+      $scope.load = function () {
         LoadingService.setLoading(true);
       };
     }]
   }).state('app.pitches', {
     url: 'pitches',
     resolve: {
-      campaigns: ['$http', $http => {
+      campaigns: ['$http', function ($http) {
         return $http({
           method: 'GET',
           url: '/api/getCampaigns'
-        }).then(data => {
+        }).then(function (data) {
           return data.data;
         });
       }]
     },
-    templateUrl: `${ DIR }/pitches.html`,
+    templateUrl: DIR + '/pitches.html',
     controller: ['$state', '$scope', 'campaigns', function ($state, $scope, campaigns) {
       // eslint-disable-line
       $scope.campaigns = campaigns;
-      $scope.log = () => {
+      $scope.log = function () {
         console.log($scope.pitchSort.sortBy);
       };
 
@@ -298,6 +298,6 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', ($rootScope, $state, $st
   });
 }]);
 
-PTDirectives.forEach(directive => {
+PTDirectives.forEach(function (directive) {
   directive(PitchTanks);
 });
