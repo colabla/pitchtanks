@@ -1,0 +1,12 @@
+<section class="video" ng-mouseover="showControls($event);" ng-mouseleave="hideControls($event)">
+    <video preload="auto" data-setup="{}" ng-src="{{trustedUrl}}" class="video-js" id="{{vId}}"></video>
+  <div class="play-button-wrapper clickable" ng-click="playVideo($event)">
+    <div class="play-button clickable"></div>
+  </div>
+  <div class="menu-bar" id="menuBar">
+    <div class="menu-bar-inner">
+      <input type="range" class="seek-bar" ng-model="seekBarValue" ng-change="seekBarChange()" id="seekBar" value="0">
+    </div>
+  </div>
+  <div ng-if="fullScreenEnabled" id="fullscreenButton" ng-click="handleFullscreen($event)" class="fullscreen-button clickable"></div>
+</section>

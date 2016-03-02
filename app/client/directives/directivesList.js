@@ -1,5 +1,1 @@
-const PTDirectives = [
-  myVideoPlayer,
-  fileSelect,
-  campaignCard,
-];
+const PTDirectives = [myVideoPlayer, fileSelect, campaignCard];

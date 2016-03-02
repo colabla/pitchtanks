@@ -1,21 +1,17 @@
 'use strict';
 
-angular.module('pitchTanks').factory(
-  'LoadingService',
-  [() => {
-      let loading = false;
+angular.module('pitchTanks').factory('LoadingService', [() => {
+  let loading = false;
 
-      function isLoading() {
-        return loading;
-      }
+  function isLoading() {
+    return loading;
+  }
 
-      function setLoading(val) {
-        loading = val;
-      }
-      return ({
-        isLoading,
-        setLoading,
-      });
-    },
-  ]
-);
+  function setLoading(val) {
+    loading = val;
+  }
+  return {
+    isLoading,
+    setLoading
+  };
+}]);

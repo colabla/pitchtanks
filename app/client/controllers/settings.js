@@ -1,9 +1,11 @@
 'use strict';
+
 const settingsController = () => {
-  return ['$scope', '$state', 'aws', '$http', 'LoadingService', function($scope, $state, aws, $http, LoadingService) { // eslint-disable-line
+  return ['$scope', '$state', 'aws', '$http', 'LoadingService', function ($scope, $state, aws, $http, LoadingService) {
+    // eslint-disable-line
     $scope.userSettings = JSON.parse(JSON.stringify($scope.PTApp.user()));
     console.log($scope.userSettings);
-    $scope.username = `${$scope.userSettings.firstName} ${$scope.userSettings.lastName}`;
+    $scope.username = `${ $scope.userSettings.firstName } ${ $scope.userSettings.lastName }`;
     $scope.names = '';
     $scope.incompleteFields = [];
     $scope.file = {};
@@ -11,14 +13,14 @@ const settingsController = () => {
       console.log('loaded');
     };
 
-    $scope.myError = (e) => {
-      console.log(`error: ${e}`);
+    $scope.myError = e => {
+      console.log(`error: ${ e }`);
     };
 
     // TODO: Create loading bar.
     $scope.myProgress = (total, loaded) => {
-      console.log(`total: ${total}`);
-      console.log(`loaded: ${loaded}`);
+      console.log(`total: ${ total }`);
+      console.log(`loaded: ${ loaded }`);
     };
 
     $scope.validateForm = () => {
@@ -32,27 +34,24 @@ const settingsController = () => {
       if (!$scope.userSettings.email || !$scope.userSettings.email.length) {
         $scope.incompleteFields.push('email');
       }
-      return !($scope.incompleteFields.length);
+      return !$scope.incompleteFields.length;
     };
 
     // Message handling
     $scope.messages = {
       success: {
         message: 'Save success!',
-        class: 'success',
-      },
+        class: 'success'
+      }
     };
 
-    $scope.showMessage = (m) => {
+    $scope.showMessage = m => {
       $scope.message = m.message;
-      $('.message-section')
-        .removeClass('hidden animated fadeOut')
-        .addClass(`animated fadeOut ${m.class}`)
-        .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
-        function () { // eslint-disable-line
-          $(this).removeClass('fadeOut animated');
-          $(this).addClass('hidden');
-        });
+      $('.message-section').removeClass('hidden animated fadeOut').addClass(`animated fadeOut ${ m.class }`).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+        // eslint-disable-line
+        $(this).removeClass('fadeOut animated');
+        $(this).addClass('hidden');
+      });
     };
 
     $scope.incompleteFields = [];
@@ -67,11 +66,11 @@ const settingsController = () => {
       console.log('saving...');
       AWS.config.update({
         accessKeyId: aws.data.aws_access_key_id,
-        secretAccessKey: aws.data.aws_secret_access_key,
+        secretAccessKey: aws.data.aws_secret_access_key
       });
       AWS.config.region = 'us-west-2';
       const bucket = new AWS.S3({
-        params: { Bucket: `${aws.data.s3_bucket}/${folder}/${$scope.PTApp.user()._id}` },
+        params: { Bucket: `${ aws.data.s3_bucket }/${ folder }/${ $scope.PTApp.user()._id }` }
       });
       if (file) {
         LoadingService.setLoading(true);
@@ -80,7 +79,7 @@ const settingsController = () => {
           Key: file.name,
           ContentType: file.type,
           Body: file,
-          ServerSideEncryption: 'AES256',
+          ServerSideEncryption: 'AES256'
         };
 
         bucket.putObject(params, (err, data) => {
@@ -90,14 +89,13 @@ const settingsController = () => {
           }
           // else { Success! }
           console.log('Upload Done');
-          $scope.userSettings[prop] = `https://s3-us-west-2.amazonaws.com/${aws.data.s3_bucket}/${folder}/${$scope.PTApp.user()._id}/${file.name}`;
+          $scope.userSettings[prop] = `https://s3-us-west-2.amazonaws.com/${ aws.data.s3_bucket }/${ folder }/${ $scope.PTApp.user()._id }/${ file.name }`;
           LoadingService.setLoading(false);
           callback();
-        })
-        .on('httpUploadProgress', (progress) => {
+        }).on('httpUploadProgress', progress => {
           // Log Progress Information
           // TODO: create a loading bar.
-          console.log(`${Math.round(progress.loaded / progress.total * 100)}% done`);
+          console.log(`${ Math.round(progress.loaded / progress.total * 100) }% done`);
         });
       } else {
         callback();
@@ -108,7 +106,7 @@ const settingsController = () => {
       const n = $scope.username.split(' ');
       return {
         first: n.shift(),
-        last: n.length ? n.join(' ') : '',
+        last: n.length ? n.join(' ') : ''
       };
     };
 
@@ -117,19 +115,17 @@ const settingsController = () => {
       if ($scope.validateForm()) {
         $scope.userSettings.firstName = $scope.names.first;
         $scope.userSettings.lastName = $scope.names.last;
-        $http.post('/api/saveUser', $scope.userSettings)
-          .success((data) => {
-            $scope.PTApp.$session.user = JSON.parse(JSON.stringify(data));
-            $scope.userSettings = JSON.parse(JSON.stringify(data));
+        $http.post('/api/saveUser', $scope.userSettings).success(data => {
+          $scope.PTApp.$session.user = JSON.parse(JSON.stringify(data));
+          $scope.userSettings = JSON.parse(JSON.stringify(data));
 
-            if (!$scope.incompleteFields.length) {
-              $scope.showMessage($scope.messages.success);
-            }
-          })
-          .error((data, status, header, config) => {
-            console.log('error');
-            console.log(data);
-          });
+          if (!$scope.incompleteFields.length) {
+            $scope.showMessage($scope.messages.success);
+          }
+        }).error((data, status, header, config) => {
+          console.log('error');
+          console.log(data);
+        });
       } else {
         console.log('FAIL');
         LoadingService.setLoading(false);

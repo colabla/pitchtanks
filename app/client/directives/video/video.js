@@ -1,12 +1,13 @@
-const myVideoPlayer = (app) => {
+const myVideoPlayer = app => {
   app.directive('videoPlayer', ['$interval', '$sce', ($interval, $sce) => {
     return {
       restrict: 'E',
       scope: {
         vUrl: '=',
-        vId: '=',
+        vId: '='
       },
-      link: function($scope, element, attrs, controller, transcludeFn) { // eslint-disable-line
+      link: function ($scope, element, attrs, controller, transcludeFn) {
+        // eslint-disable-line
 
         $scope.$watch('vUrl', (newVal, oldVal) => {
           if (newVal !== oldVal) {
@@ -15,7 +16,7 @@ const myVideoPlayer = (app) => {
           }
         });
 
-        $scope.trustSrc = (src) => {
+        $scope.trustSrc = src => {
           return $sce.trustAsResourceUrl(src);
         };
 
@@ -24,48 +25,38 @@ const myVideoPlayer = (app) => {
         $scope.init = () => {
           $scope.getV = () => {
             if (!$scope.dirVideo) {
-              $scope.dirVideo = $(`#${$scope.vId}`)[0];
+              $scope.dirVideo = $(`#${ $scope.vId }`)[0];
             }
             return $scope.dirVideo;
           };
 
           $scope.isStopped = () => {
             const v = $scope.getV();
-            return (v.paused || v.ended);
+            return v.paused || v.ended;
           };
 
-          $scope.fullScreenEnabled = !!(document.fullscreenEnabled ||
-            document.mozFullScreenEnabled || document.msFullscreenEnabled ||
-            document.webkitSupportsFullscreen || document.webkitFullscreenEnabled ||
-            document.createElement('video').webkitRequestFullScreen);
+          $scope.fullScreenEnabled = !!(document.fullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled || document.webkitSupportsFullscreen || document.webkitFullscreenEnabled || document.createElement('video').webkitRequestFullScreen);
 
           $scope.isFullScreen = () => {
-             return !!(document.fullScreen || document.webkitIsFullScreen ||
-               document.mozFullScreen || document.msFullscreenElement ||
-               document.fullscreenElement);
+            return !!(document.fullScreen || document.webkitIsFullScreen || document.mozFullScreen || document.msFullscreenElement || document.fullscreenElement);
           };
 
-          $scope.handleFullscreen = (e) => {
+          $scope.handleFullscreen = e => {
             if ($scope.isFullScreen()) {
-               if (document.exitFullscreen) document.exitFullscreen();
-               else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
-               else if (document.webkitCancelFullScreen) document.webkitCancelFullScreen();
-               else if (document.msExitFullscreen) document.msExitFullscreen();
-               $scope.setFullscreenData(false);
+              if (document.exitFullscreen) document.exitFullscreen();else if (document.mozCancelFullScreen) document.mozCancelFullScreen();else if (document.webkitCancelFullScreen) document.webkitCancelFullScreen();else if (document.msExitFullscreen) document.msExitFullscreen();
+              $scope.setFullscreenData(false);
             } else {
-               if ($scope.getV().requestFullscreen) $scope.getV().requestFullscreen();
-               else if ($scope.getV().mozRequestFullScreen) $scope.getV().mozRequestFullScreen();
-               else if ($scope.getV().webkitRequestFullScreen) $scope.dirVideo.webkitRequestFullScreen(); // eslint-disable-line
-               else if ($scope.getV().msRequestFullscreen) $scope.getV().msRequestFullscreen();
-               $scope.setFullscreenData(true);
+              if ($scope.getV().requestFullscreen) $scope.getV().requestFullscreen();else if ($scope.getV().mozRequestFullScreen) $scope.getV().mozRequestFullScreen();else if ($scope.getV().webkitRequestFullScreen) $scope.dirVideo.webkitRequestFullScreen(); // eslint-disable-line
+              else if ($scope.getV().msRequestFullscreen) $scope.getV().msRequestFullscreen();
+              $scope.setFullscreenData(true);
             }
           };
 
-          $scope.setFullscreenData = (state) => {
+          $scope.setFullscreenData = state => {
             $scope.getV().setAttribute('data-fullscreen', !!state);
           };
 
-          $scope.showControls = (e) => {
+          $scope.showControls = e => {
             e.stopPropagation();
             if (!$scope.isStopped()) {
               $(e.currentTarget).find('#fullscreenButton').css({ top: '10px' });
@@ -73,7 +64,7 @@ const myVideoPlayer = (app) => {
             }
           };
 
-          $scope.hideControls = (e) => {
+          $scope.hideControls = e => {
             e.stopPropagation();
             if (!$scope.isStopped()) {
               $(e.currentTarget).find('#fullscreenButton').css({ top: '-25px' });
@@ -90,9 +81,9 @@ const myVideoPlayer = (app) => {
           };
 
           $scope.getCurrentTime = () => {
-            const vid = element.find(`#${$scope.vId}`);
+            const vid = element.find(`#${ $scope.vId }`);
             if (vid) {
-                return $(vid)[0].currentTime;
+              return $(vid)[0].currentTime;
             }
             return 0;
           };
@@ -100,20 +91,20 @@ const myVideoPlayer = (app) => {
           // Update seek bar
           $interval(() => {
             if (!$scope.isStopped() && $scope.getV()) {
-              $scope.seekBarValue = (100 / $scope.getV().duration) * $scope.getV().currentTime;
+              $scope.seekBarValue = 100 / $scope.getV().duration * $scope.getV().currentTime;
             }
           }, 100);
 
-          $scope.playVideo = (e) => {
+          $scope.playVideo = e => {
             // Get button & menubar
-            const button = $(($(e.currentTarget))[0]);
+            const button = $($(e.currentTarget)[0]);
             const menuBar = $(e.currentTarget).siblings('#menuBar');
             const fullscreenButton = $(e.currentTarget).siblings('#fullscreenButton');
 
             // What to do when vid is not playing
             const endVid = () => {
               button.css({
-                opacity: '1',
+                opacity: '1'
               });
               fullscreenButton.css({ top: '-25px' });
               menuBar.css({ bottom: '-28px' });
@@ -123,7 +114,7 @@ const myVideoPlayer = (app) => {
             if ($scope.isStopped()) {
               $scope.getV().play();
               button.css({
-                opacity: '0',
+                opacity: '0'
               });
               $scope.getV().onended = endVid;
             } else {
@@ -136,7 +127,7 @@ const myVideoPlayer = (app) => {
           $scope.init();
         }
       },
-      templateUrl: '/client/directives/video/video.html',
+      templateUrl: '/client/directives/video/video.html'
     };
   }]);
 };
