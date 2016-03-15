@@ -45,8 +45,25 @@ angular.module('pitchTanks').factory('TopCampaigns', ['$http', '$localStorage', 
     // No top campaigns, return empty list.
     return $localStorage.topCampaigns;
   };
+
+  var optionallyAppendCampaign = function(campaign, topCampaigns) {
+    // Check for small numbers of campaigns
+    if (topCampaigns.length < 2 && campaign.isComplete) {
+      var add = true;
+      for (var i = 0; i < topCampaigns.length; i++) {
+        if (topCampaigns[i].user === campaign.user) {
+          add = false;
+        }
+      }
+      if (add) {
+        topCampaigns.push(campaign);
+      }
+    }
+    return topCampaigns;
+  };
   return {
     getTopCampaigns: getTopCampaigns,
-    setTopCampaign: setTopCampaign
+    setTopCampaign: setTopCampaign,
+    optionallyAppendCampaign: optionallyAppendCampaign
   };
 }]);

@@ -1,6 +1,6 @@
 'use strict';
 
-var myVideoPlayer = function myVideoPlayer(app) {
+var myVideoPlayer = function (app) {
   app.directive('videoPlayer', ['$interval', '$sce', function ($interval, $sce) {
     return {
       restrict: 'E',

@@ -1,38 +1,28 @@
 'use strict';
 
 var campaignController = function campaignController() {
-  return ['$scope', '$state', 'aws', '$http', 'LoadingService', 'showMessage', 'topCampaigns', 'TopCampaigns', // eslint-disable-line
-  function ( // eslint-disable-line func-names
-  $scope, $state, aws, $http, LoadingService, showMessage, topCampaigns, TopCampaigns) {
+  return ['$scope', '$state', 'aws', '$http', 'LoadingService', 'showMessage', 'topCampaigns', 'TopCampaigns', 'UpvoteService',
+  function ($scope, $state, aws, $http, LoadingService, showMessage, topCampaigns, TopCampaigns, UpvoteService) {
     // Instantiate Campaign.
     $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.campaign()));
-    $scope.topCampaigns = topCampaigns;
+    $scope.topCampaigns = TopCampaigns.optionallyAppendCampaign($scope.campaign, topCampaigns);
 
-    // Check for small numbers of campaigns
-    if ($scope.topCampaigns.length < 2 && $scope.campaign.isComplete) {
-      var add = true;
-      for (var i = 0; i < $scope.topCampaigns.length; i++) {
-        if ($scope.topCampaigns[i].user === $scope.campaign.user) {
-          add = false;
-        }
-      }
-      if (add) {
-        $scope.topCampaigns.push($scope.campaign);
-      }
-    }
-
-    console.log(topCampaigns);
+    // Containers for individual files
     $scope.video = {};
     $scope.logo = {};
     $scope.thumbnail = {};
+    // Container for most recently uploaded file
+    $scope.file = {};
 
-    // Upvote handling
-    $scope.userCanUpvote = function () {
-      return !$scope.PTApp.user().upvotes.includes($scope.campaign._id);
-    };
+    // Are we editing?
+    $scope.editing = $scope.campaign.isComplete && $scope.campaign.user === $scope.PTApp.user()._id;
+
+    $scope.incompleteFields = [];
+
+    // Verify we have a user & return ID
+    $scope.userId = $scope.PTApp.user()? $scope.PTApp.user()._id : false;
 
     $scope.indexInTop = -1;
-
     $scope.$watch('indexInTop', function (newVal, oldVal) {
       if (newVal !== oldVal && $scope.indexInTop >= 0) {
         $scope.topCampaigns = TopCampaigns.setTopCampaign($scope.campaign, $scope.indexInTop);
@@ -41,27 +31,28 @@ var campaignController = function campaignController() {
       }
     });
 
-    $scope.userHasUpvoted = !$scope.userCanUpvote();
+    /////////////////////
+    // Upvote handling //
+    /////////////////////
 
-    $scope.voteUp = function () {
-      $scope.userHasUpvoted = true;
-      $http.post('/api/upvote/' + $scope.campaign._id + '/' + $scope.PTApp.user()._id).success(function (data) {
-        $scope.PTApp.$session.user = data.user;
-        $scope.PTApp.$storage.campaign = data.campaign;
-        $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.campaign()));
-        for (var i = 0; i < $scope.topCampaigns.length; i++) {
-          if ($scope.topCampaigns[i].user === $scope.campaign.user) {
-            $scope.indexInTop = i;
-          }
+    $scope.userCanUpvote = UpvoteService.userCanUpvote($scope.PTApp.user(), $scope.campaign._id);
+
+    // This is what we want to do after the user votes.
+    $scope.voteContinuation = function(data) {
+      // TODO: improve this variable shuffling.
+      $scope.PTApp.$session.user = data.user;
+      $scope.PTApp.$storage.campaign = data.campaign;
+      $scope.campaign = JSON.parse(JSON.stringify($scope.PTApp.campaign()));
+
+      for (var i = 0; i < $scope.topCampaigns.length; i++) {
+        if ($scope.topCampaigns[i].user === $scope.campaign.user) {
+          $scope.indexInTop = i;
         }
-      });
+      }
     };
 
-    // Are we editing?
-    $scope.editing = $scope.campaign.isComplete && $scope.campaign.user === $scope.PTApp.user()._id;
+    $scope.voteUp = UpvoteService.voteUp($scope.userId, $scope.campaign._id, $scope.voteContinuation);
 
-    // Container for most recently uploaded file
-    $scope.file = {};
 
     // Message handling
     // TODO: Make into a service!
@@ -85,8 +76,6 @@ var campaignController = function campaignController() {
       $scope.showMessage($scope.messages.success);
     }
 
-    $scope.incompleteFields = [];
-
     $scope.editorOptions = {
       toolbar: {
         buttons: ['bold', 'italic', 'underline', 'anchor', 'h1', 'h3', 'justifyCenter', 'justifyLeft', 'unorderedlist']
@@ -102,16 +91,16 @@ var campaignController = function campaignController() {
       return $scope.video.data || $scope.campaign.videoUrl;
     };
 
-    $scope.myLoaded = function (prop) {
-      console.log($scope.file);
-      console.log(prop);
-      $scope.setFile($scope.file.data, $scope.file.file, prop);
-    };
-
     $scope.setFile = function (data, file, prop) {
       $scope[prop].data = data;
       $scope[prop].file = file;
       $scope.$apply();
+    };
+
+    $scope.myLoaded = function (prop) {
+      console.log($scope.file);
+      console.log(prop);
+      $scope.setFile($scope.file.data, $scope.file.file, prop);
     };
 
     $scope.myError = function (e) {
@@ -133,7 +122,7 @@ var campaignController = function campaignController() {
       $scope.upload($scope.logo.file, 'campaignLogos', 'logo', function () {
         $scope.upload($scope.thumbnail.file, 'campaignThumbnails', 'thumbnail', function () {
           $scope.upload($scope.video.file, 'campaignVideos', 'videoUrl', function () {
-            $scope.campaign.videoUploadDate = Date.now();
+            $scope.campaign.videoUploadDate = Date.now(); // TODO: Fix this (we don't always want to update this value).
             $scope.saveCampaign(doSubmit);
           });
         });

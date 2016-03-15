@@ -1,6 +1,6 @@
 'use strict';
 
-var campaignCard = function campaignCard(app) {
+var campaignCard = function (app) {
   app.directive('campaignCard', ['$sce', function ($sce) {
     return {
       restrict: 'E',

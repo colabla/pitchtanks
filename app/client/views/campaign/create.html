@@ -141,13 +141,12 @@
           <div class="row m15-b" ng-if="campaign.isComplete">
             <div class="col-xs-6 col-sm-6 col-md-9 p30-l pt-subtitle" style="padding-top: 28px;">
               <i class="fa fa-clock-o"></i>
-              {{userCanUpvote}}
               {{PTApp.getPrettyDate(campaign.videoUploadDate)}}
             </div>
             <div class="col-xs-6 col-sm-6 col-md-3">
-              <button ng-click="voteUp()" class="btn btn-small btn-green" ng-class="[{ 'disabled': userHasUpvoted }];">
+              <button ng-click="voteUp()" class="btn btn-small btn-green" ng-class="[{ 'disabled': !userCanUpvote() }];">
                 <i class="fa fa-thumbs-up"></i>
-                Upvote{{userCanUpvote()? '' : 'd!'}} ({{campaign.upvotes.length}})
+                Upvote{{userCanUpvote()? 'd!' : ''}} ({{campaign.upvotes.length}})
               </button>
             </div>
           </div>

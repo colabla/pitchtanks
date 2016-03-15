@@ -1,6 +1,6 @@
 'use strict';
 
-var fileSelect = function fileSelect(app) {
+var fileSelect = function (app) {
   app.directive('fileSelect', ['$window', function ($window) {
     // eslint-disable-line
     return {
