@@ -1,10 +1,10 @@
 'use strict';
 
 directive('fixVideoHeight', ['$timeout', function ($timeout) {
-    // eslint-disable-line
+    
     // http://stackoverflow.com/questions/16935766/run-jquery-code-after-angularjs-completes-rendering-html
     return {
-        link: function link($scope, element, attrs) {
+        link: function ($scope, element, attrs) {
             $scope.$on('dataloaded', function () {
                 $timeout(function () {
                     // Fix for height mismatch.

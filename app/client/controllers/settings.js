@@ -1,10 +1,9 @@
 'use strict';
 
-var settingsController = function settingsController() {
+var settingsController = function () {
   return ['$scope', '$state', 'aws', '$http', 'LoadingService', function ($scope, $state, aws, $http, LoadingService) {
-    // eslint-disable-line
+    
     $scope.userSettings = JSON.parse(JSON.stringify($scope.PTApp.user()));
-    console.log($scope.userSettings);
     $scope.username = $scope.userSettings.firstName + ' ' + $scope.userSettings.lastName;
     $scope.names = '';
     $scope.incompleteFields = [];
@@ -48,7 +47,7 @@ var settingsController = function settingsController() {
     $scope.showMessage = function (m) {
       $scope.message = m.message;
       $('.message-section').removeClass('hidden animated fadeOut').addClass('animated fadeOut ' + m.class).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-        // eslint-disable-line
+        
         $(this).removeClass('fadeOut animated');
         $(this).addClass('hidden');
       });

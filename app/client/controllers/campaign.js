@@ -1,6 +1,6 @@
 'use strict';
 
-var campaignController = function campaignController() {
+var campaignController = function () {
   return ['$scope', '$state', 'aws', '$http', 'LoadingService', 'showMessage', 'topCampaigns', 'TopCampaigns', 'UpvoteService',
   function ($scope, $state, aws, $http, LoadingService, showMessage, topCampaigns, TopCampaigns, UpvoteService) {
     // Instantiate Campaign.
@@ -66,7 +66,7 @@ var campaignController = function campaignController() {
     $scope.showMessage = function (m) {
       $scope.message = m.message;
       $('.message-section').removeClass('hidden animated fadeOut').addClass('animated fadeOut ' + m.class).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-        // eslint-disable-line
+        
         $(this).removeClass('fadeOut animated');
         $(this).addClass('hidden');
       });

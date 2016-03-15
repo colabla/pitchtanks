@@ -1,5 +1,4 @@
 'use strict';
-
 var PitchTanks = angular.module('pitchTanks', ['ui.router', 'ngStorage', 'angular-medium-editor', 'ngSanitize', 'angularUtils.directives.dirPagination']);
 
 PitchTanks.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
@@ -7,18 +6,14 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $s
   $rootScope.$stateParams = $stateParams;
 }]).config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
   var DIR = './client/views';
-  console.log('ROUTER');
   $urlRouterProvider.otherwise('/');
   $stateProvider.state('app', {
     abstract: true,
     url: '/',
     templateUrl: DIR + '/layout.html',
-    onEnter: function() {
-      console.log('ENTER APP');
-    },
     resolve: {
       topCampaigns: ['TopCampaigns', '$localStorage', function (TopCampaigns, $localStorage) {
-        console.log(Date.now() - $localStorage.topCampaigns.timestamp);
+        console.log('HERE');
         if ($localStorage.topCampaigns && (Date.now() - $localStorage.topCampaigns.timestamp) < 3600000) {
           return $localStorage.topCampaigns.data;
         }
@@ -59,7 +54,7 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $s
   .state('app.loggedIn', {
     url: 'login/accept',
     templateUrl: DIR + '/login.html',
-    controller: ['$http', '$state', '$scope', 'LoadingService', function ( // eslint-disable-line func-names
+    controller: ['$http', '$state', '$scope', 'LoadingService', function (  
     $http, $state, $scope, LoadingService) {
       // Get user & save to localStorage
       $http.get('/api/user/').success(function (data) {
@@ -135,7 +130,7 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $s
       }]
     },
     onEnter: ['$state', '$localStorage', '$sessionStorage', function ($state, $localStorage, $sessionStorage) {
-      // eslint-disable-line
+      
       if (!$sessionStorage.user) {
         $state.go('app.login');
       }
@@ -168,7 +163,7 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $s
     },
     controller: campaignController(),
     onEnter: ['$state', '$localStorage', '$sessionStorage', '$stateParams', function ($state, $localStorage, $sessionStorage, $stateParams) {
-      // eslint-disable-line
+      
       if (!$sessionStorage.user) {
         $state.go('app.login');
       }
@@ -214,7 +209,7 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $s
           // allow owner
           $state.go('app.pitches');
         } else if (!foundCampaign.isComplete && foundCampaign.user === $scope.PTApp.user()._id) {
-          // eslint-disable-line
+          
           $state.go('app.campaign.create');
         }
       }
@@ -285,7 +280,7 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $s
     url: 'login',
     templateUrl: DIR + '/login.html',
     controller: ['LoadingService', '$scope', function (LoadingService, $scope) {
-      // eslint-disable-line
+      
       $scope.load = function () {
         LoadingService.setLoading(true);
       };
@@ -306,7 +301,7 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $s
     },
     templateUrl: DIR + '/pitches.html',
     controller: ['$state', '$scope', 'campaigns', function ($state, $scope, campaigns) {
-      // eslint-disable-line
+      
       $scope.campaigns = campaigns;
       $scope.log = function () {
         console.log($scope.pitchSort.sortBy);

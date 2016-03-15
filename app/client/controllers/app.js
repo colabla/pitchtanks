@@ -1,7 +1,7 @@
 'use strict';
 
-var appController = function appController(DIR) {
-  return ['$scope', '$state', '$http', 'LoadingService', '$localStorage', '$sessionStorage', function ( // eslint-disable-line func-names
+var appController = function (DIR) {
+  return ['$scope', '$state', '$http', 'LoadingService', '$localStorage', '$sessionStorage', function (
   $scope, $state, $http, LoadingService, $localStorage, $sessionStorage) {
     // Vars to be accessed throughout the app.
     $scope.PTApp = {
@@ -11,12 +11,12 @@ var appController = function appController(DIR) {
       user: function user() {
         return $scope.PTApp.$session.user;
       },
-      campaign: function campaign() {
+      campaign: function () {
         return $scope.PTApp.$storage.campaign;
       },
 
       // TODO: Make this a filter
-      getPrettyDate: function getPrettyDate(date) {
+      getPrettyDate: function (date) {
         var d = new Date(date);
         return [d.getMonth() + 1, d.getDate(), d.getFullYear() % 100].join('/');
       },
@@ -38,7 +38,7 @@ var appController = function appController(DIR) {
     };
 
     $scope.header = {
-      hasCampaign: function hasCampaign() {
+      hasCampaign: function () {
         return !!($scope.PTApp.$session.user && $scope.PTApp.$session.user.campaign);
       }
     };

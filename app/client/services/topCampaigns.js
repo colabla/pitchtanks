@@ -4,15 +4,15 @@ angular.module('pitchTanks').factory('TopCampaigns', ['$http', '$localStorage', 
   var promise = undefined;
   var refreshPeriod = 3600000;
 
-  var setTopCampaign = function setTopCampaign(campaign, i) {
+  var setTopCampaign = function (campaign, i) {
     $localStorage.topCampaigns.data[i] = campaign;
     console.log($localStorage.topCampaigns.data);
     return $localStorage.topCampaigns.data;
   };
 
-  var getTopCampaigns = function getTopCampaigns() {
+  var getTopCampaigns = function () {
     // Function for refreshing campaign data.
-    var refreshTopCampaigns = function refreshTopCampaigns() {
+    var refreshTopCampaigns = function () {
       if (!promise) {
         promise = $http({
           method: 'GET',
@@ -36,8 +36,8 @@ angular.module('pitchTanks').factory('TopCampaigns', ['$http', '$localStorage', 
       // Haven't looked yet, refresh.
       return refreshTopCampaigns();
     } else if (Date.now() - $localStorage.topCampaignsTimestamp < refreshPeriod) {
-      // eslint-disable-line
-      console.log('Refreshing from timestamp: ' + (Date.now() - $localStorage.topCampaignsTimestamp)); // eslint-disable-line
+      
+      console.log('Refreshing from timestamp: ' + (Date.now() - $localStorage.topCampaignsTimestamp)); 
       // Expired, refresh.
       return refreshTopCampaigns();
     }

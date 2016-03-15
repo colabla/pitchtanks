@@ -13,8 +13,8 @@ var campaignCard = function (app) {
         thumbnail: '=',
         big: '='
       },
-      link: function link($scope, element, attrs, controller, transcludeFn) {
-        // eslint-disable-line
+      link: function ($scope, element, attrs, controller, transcludeFn) {
+        
         $scope.$watchGroup(['name', 'tagline', 'upvoteCount', 'logo', 'thumbnail'], function (newValues, oldValues) {
           var props = ['name', 'tagline', 'upvoteCount'];
           for (var i; i < props.length; i++) {

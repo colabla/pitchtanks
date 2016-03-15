@@ -1,7 +1,7 @@
 'use strict';
 
-var homeController = function homeController() {
-  return ['$scope', '$state', 'topCampaigns', 'battle', '$http', function ( // eslint-disable-line func-names
+var homeController = function () {
+  return ['$scope', '$state', 'topCampaigns', 'battle', '$http', function ( 
   $scope, $state, topCampaigns, battle, $http) {
     $scope.topCampaigns = topCampaigns;
 
@@ -28,7 +28,7 @@ var homeController = function homeController() {
       }
       $scope.userHasVoted = true;
       if ($scope.PTApp.user()) {
-        $http.post('/api/voteForBattle/' + $scope.battleData.battle._id + '/' + vId + '/' + $scope.PTApp.user()._id) // eslint-disable-line
+        $http.post('/api/voteForBattle/' + $scope.battleData.battle._id + '/' + vId + '/' + $scope.PTApp.user()._id) 
         .success(function (data) {
           console.log(data);
           $scope.PTApp.$session.user = data.user;
@@ -40,20 +40,20 @@ var homeController = function homeController() {
     };
 
     $scope.howItWorks = {
-      isActive: function isActive(i) {
+      isActive: function (i) {
         return i === $scope.howItWorks.active;
       },
       active: 2,
-      anglePos: function anglePos() {
+      anglePos: function () {
         return 100 * ($scope.howItWorks.active / 3) + '%';
       },
-      angleColor: function angleColor() {
+      angleColor: function () {
         return 'color' + $scope.howItWorks.active;
       },
-      descBg: function descBg() {
+      descBg: function () {
         return 'bg' + $scope.howItWorks.active;
       },
-      setActive: function setActive(i) {
+      setActive: function (i) {
         $scope.howItWorks.active = i;
       }
     };

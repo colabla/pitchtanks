@@ -1,5 +1,0 @@
-  [90msource:[0m [36m/home/george/pitchtanks-node-develop/app/sass/main.scss[0m
-  [90mdest:[0m [36m/home/george/pitchtanks-node-develop/app/public/styles/main.css[0m
-  [90mread:[0m [36m/home/george/pitchtanks-node-develop/app/public/styles/main.css[0m
-  [90mrender:[0m [36m/home/george/pitchtanks-node-develop/app/sass/main.scss[0m
-Sat, 20 Feb 2016 05:29:24 GMT express deprecated res.json(status, obj): Use res.status(status).json(obj) instead at app/server/routes.js:51:9

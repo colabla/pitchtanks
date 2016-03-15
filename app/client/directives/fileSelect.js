@@ -2,12 +2,12 @@
 
 var fileSelect = function (app) {
   app.directive('fileSelect', ['$window', function ($window) {
-    // eslint-disable-line
+    
     return {
       restrict: 'A',
       require: 'ngModel',
-      link: function link(scope, el, attr, ctrl) {
-        // eslint-disable-line
+      link: function (scope, el, attr, ctrl) {
+        
         scope.fileName = '';
         var fileReader = new $window.FileReader();
 

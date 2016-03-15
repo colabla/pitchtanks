@@ -9,7 +9,7 @@ var myVideoPlayer = function (app) {
         vId: '='
       },
       link: function link($scope, element, attrs, controller, transcludeFn) {
-        // eslint-disable-line
+        
 
         $scope.$watch('vUrl', function (newVal, oldVal) {
           if (newVal !== oldVal) {
@@ -48,7 +48,7 @@ var myVideoPlayer = function (app) {
               if (document.exitFullscreen) document.exitFullscreen();else if (document.mozCancelFullScreen) document.mozCancelFullScreen();else if (document.webkitCancelFullScreen) document.webkitCancelFullScreen();else if (document.msExitFullscreen) document.msExitFullscreen();
               $scope.setFullscreenData(false);
             } else {
-              if ($scope.getV().requestFullscreen) $scope.getV().requestFullscreen();else if ($scope.getV().mozRequestFullScreen) $scope.getV().mozRequestFullScreen();else if ($scope.getV().webkitRequestFullScreen) $scope.dirVideo.webkitRequestFullScreen(); // eslint-disable-line
+              if ($scope.getV().requestFullscreen) $scope.getV().requestFullscreen();else if ($scope.getV().mozRequestFullScreen) $scope.getV().mozRequestFullScreen();else if ($scope.getV().webkitRequestFullScreen) $scope.dirVideo.webkitRequestFullScreen(); 
               else if ($scope.getV().msRequestFullscreen) $scope.getV().msRequestFullscreen();
               $scope.setFullscreenData(true);
             }
