@@ -13,7 +13,6 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $s
     templateUrl: DIR + '/layout.html',
     resolve: {
       topCampaigns: ['TopCampaigns', '$localStorage', function (TopCampaigns, $localStorage) {
-        console.log('HERE');
         if ($localStorage.topCampaigns && (Date.now() - $localStorage.topCampaigns.timestamp) < 3600000) {
           return $localStorage.topCampaigns.data;
         }
@@ -34,9 +33,6 @@ PitchTanks.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $s
   .state('app.home', {
     url: '',
     templateUrl: DIR + '/home.html',
-    onEnter: function() {
-      console.log('ENTER HOME');
-    },
     resolve: {
       battle: ['$http', function ($http) {
         return $http({
